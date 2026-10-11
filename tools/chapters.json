@@ -2,7 +2,91 @@
   "note": "章の設計（節の案と、最初に読む公式ページ）。chapter-prep.mjs が作業ファイルを作るときに使う。節の案は目安で、公式情報の量に応じて作成者が統合・分割してよい（4〜8節）",
   "chapters": [
     {
-      "id": "a04", "file": "a04-projects", "part": "a", "title": "第4章 プロジェクト",
+      "id": "a01",
+      "file": "a01-overview",
+      "part": "a",
+      "title": "第1章 Claudeの全体像",
+      "surfacesHint": [
+        "web",
+        "desktop",
+        "mobile"
+      ],
+      "sections": [
+        "1.1 Claude とは（何ができるか、得意なこと・注意が要ること）",
+        "1.2 使える場所（Web・デスクトップ・モバイル・Claude Code・API の違いと使い分け）",
+        "1.3 モデルの種類と選び方（モデルのファミリーの考え方、モデル・effort・thinking の切り替え。具体的な性能値は書かない）",
+        "1.4 プランの考え方（無料・有料・チーム向けの違いは「プランによって異なる」とし、公式ページへ案内。数値は書かない）",
+        "1.5 チャットと Cowork の関係、ベータ・プレビュー機能の扱い",
+        "1.6 このアプリの読み方（第1部・第2部の構成と、公式ドキュメントで確かめる習慣）"
+      ],
+      "sources": [
+        "https://support.claude.com/en/articles/8114491-get-started-with-claude",
+        "https://support.claude.com/en/articles/7996845-what-are-some-things-i-can-use-claude-for",
+        "https://support.claude.com/en/articles/8461763-where-can-i-access-claude",
+        "https://support.claude.com/en/articles/8114487-what-interfaces-can-i-use-to-access-claude",
+        "https://support.claude.com/en/articles/8664678-change-the-model-effort-and-thinking-settings",
+        "https://support.claude.com/en/articles/14503520-available-beta-and-research-preview-features",
+        "https://support.claude.com/en/articles/16761823-claude-cowork-and-chat-are-one-claude",
+        "https://support.claude.com/en/articles/11647753-how-do-usage-and-length-limits-work"
+      ]
+    },
+    {
+      "id": "a02",
+      "file": "a02-chat",
+      "part": "a",
+      "title": "第2章 チャットの基本",
+      "surfacesHint": [
+        "web",
+        "desktop",
+        "mobile"
+      ],
+      "sections": [
+        "2.1 指示の書き方（目的・条件・形式を伝える、例を見せる、少しずつ直す）",
+        "2.2 ファイル・画像の添付（できること、向いている使い方。サイズや個数の上限は書かない）",
+        "2.3 編集と再生成、会話の分岐（送った指示を直す、答えを作り直す）",
+        "2.4 会話の整理と共有（名前の変更・削除、共有リンク、特定の人との共有）",
+        "2.5 個人設定と言語（personal preferences・Instructions for Claude など公式の現行の機能、表示言語、外観）"
+      ],
+      "sources": [
+        "https://support.claude.com/en/articles/8114491-get-started-with-claude",
+        "https://support.claude.com/en/articles/8241126-upload-files-to-claude",
+        "https://support.claude.com/en/articles/8230524-delete-or-rename-a-conversation",
+        "https://support.claude.com/en/articles/10593882-share-and-unshare-chats",
+        "https://support.claude.com/en/articles/16762496-share-a-chat-with-specific-people",
+        "https://support.claude.com/en/articles/10185728-understanding-claude-s-personalization-features",
+        "https://support.claude.com/en/articles/10769299-how-to-use-claude-in-your-preferred-language",
+        "https://support.claude.com/en/articles/8887527-customizing-your-appearance-settings"
+      ]
+    },
+    {
+      "id": "a03",
+      "file": "a03-research",
+      "part": "a",
+      "title": "第3章 ウェブ検索とリサーチ",
+      "surfacesHint": [
+        "web",
+        "desktop",
+        "mobile"
+      ],
+      "sections": [
+        "3.1 調べものの3つの道具（web search・extended thinking・Research の違い）",
+        "3.2 ウェブ検索を使う（オンにする、出典の確かめ方）",
+        "3.3 Research を使う（時間をかけて広く調べる、進め方と結果の読み方）",
+        "3.4 使い分けと注意（どれを選ぶか、出典を確認する習慣、誤りへの備え）"
+      ],
+      "sources": [
+        "https://support.claude.com/en/articles/11095361-when-should-i-use-web-search-extended-thinking-and-research",
+        "https://support.claude.com/en/articles/10684626-enable-and-use-web-search",
+        "https://support.claude.com/en/articles/11088861-use-research-on-claude",
+        "https://support.claude.com/en/articles/8664678-change-the-model-effort-and-thinking-settings",
+        "https://support.claude.com/en/articles/8114494-how-up-to-date-is-claude-s-training-data"
+      ]
+    },
+    {
+      "id": "a04",
+      "file": "a04-projects",
+      "part": "a",
+      "title": "第4章 プロジェクト",
       "sections": [
         "4.1 プロジェクトとは（何のための機能か、通常のチャットとの違い）",
         "4.2 プロジェクトを作る・管理する（作成、名前と説明、チャットの整理、アーカイブなど）",
@@ -11,7 +95,11 @@
         "4.5 共有と共同作業（Team・Enterprise での共有、権限。プランによって異なる点はリンクで案内）",
         "4.6 使いこなしのコツ（向いている使い方・向かない使い方、ナレッジと指示の整理、Cowork のプロジェクトとの関係に一言触れる）"
       ],
-      "surfacesHint": ["web", "desktop", "mobile"],
+      "surfacesHint": [
+        "web",
+        "desktop",
+        "mobile"
+      ],
       "sources": [
         "https://support.claude.com/en/articles/9517075-what-are-projects",
         "https://support.claude.com/en/articles/9519177-how-can-i-create-and-manage-projects",
@@ -21,7 +109,228 @@
       ]
     },
     {
-      "id": "c13", "file": "c13-context", "part": "c", "title": "第13章 CLAUDE.md とコンテキスト管理",
+      "id": "a05",
+      "file": "a05-artifacts",
+      "part": "a",
+      "title": "第5章 アーティファクトとファイル作成",
+      "surfacesHint": [
+        "web",
+        "desktop",
+        "mobile"
+      ],
+      "sections": [
+        "5.1 アーティファクトとは（チャットの横に作る成果物、どんなときに作られるか）",
+        "5.2 文書・スライド・表などのファイルを作る・直す（Create and edit files）",
+        "5.3 図や対話的な表示（visual and interactive content、custom visuals）",
+        "5.4 共有と書き出し（共有の仕方、公開範囲の注意）",
+        "5.5 Claude Docs・Dashboards・Design の位置づけ（何のための機能かを短く。詳細は公式へ）"
+      ],
+      "sources": [
+        "https://support.claude.com/en/articles/17153992-what-are-artifacts-and-how-do-i-use-them",
+        "https://support.claude.com/en/articles/9547008-share-artifacts",
+        "https://support.claude.com/en/articles/12111783-create-and-edit-files-with-claude",
+        "https://support.claude.com/en/articles/13641943-visual-and-interactive-content",
+        "https://support.claude.com/en/articles/13979539-custom-visuals-in-chat-and-cowork",
+        "https://support.claude.com/en/articles/16923645-get-started-with-claude-docs",
+        "https://support.claude.com/en/articles/17454700-get-started-with-claude-dashboards",
+        "https://support.claude.com/en/articles/14604416-get-started-with-claude-design"
+      ]
+    },
+    {
+      "id": "a06",
+      "file": "a06-memory",
+      "part": "a",
+      "title": "第6章 メモリと過去のチャット",
+      "surfacesHint": [
+        "web",
+        "desktop",
+        "mobile"
+      ],
+      "sections": [
+        "6.1 Claude が覚えておく仕組み（memory と chat search の違い）",
+        "6.2 過去のチャットを探して使う（chat search）",
+        "6.3 メモリを確認・編集・削除する、オン／オフ",
+        "6.4 メモリの書き出し・取り込み",
+        "6.5 記録を残さない使い方（incognito chats）とプライバシーの考え方"
+      ],
+      "sources": [
+        "https://support.claude.com/en/articles/11817273-use-claude-s-chat-search-and-memory-to-build-on-previous-context",
+        "https://support.claude.com/en/articles/12123587-import-and-export-your-memory-from-claude",
+        "https://support.claude.com/en/articles/12260368-use-incognito-chats",
+        "https://support.claude.com/en/articles/10185728-understanding-claude-s-personalization-features"
+      ]
+    },
+    {
+      "id": "a07",
+      "file": "a07-connectors",
+      "part": "a",
+      "title": "第7章 コネクタと連携",
+      "surfacesHint": [
+        "web",
+        "desktop",
+        "mobile"
+      ],
+      "sections": [
+        "7.1 コネクタとは（外部のサービスとつなぐ意味、MCP の考え方を短く）",
+        "7.2 コネクタを追加して使う（ディレクトリから選ぶ、認証）",
+        "7.3 Google Workspace・GitHub などの連携の例（何ができるかの概要）",
+        "7.4 Web とデスクトップのコネクタの違い、対話的なコネクタ",
+        "7.5 権限とツールの許可（Claude に何を許すか、確認の仕組み、安全な使い方）"
+      ],
+      "sources": [
+        "https://support.claude.com/en/articles/11176164-use-connectors-to-extend-claude-s-capabilities",
+        "https://support.claude.com/en/articles/11725091-when-to-use-desktop-and-web-connectors",
+        "https://support.claude.com/en/articles/13730515-manage-claude-s-tool-access",
+        "https://support.claude.com/en/articles/11596036-anthropic-connectors-directory-faq",
+        "https://support.claude.com/en/articles/10166901-use-google-workspace-connectors",
+        "https://support.claude.com/en/articles/10167454-use-the-github-integration",
+        "https://support.claude.com/en/articles/13454812-use-interactive-connectors-in-claude",
+        "https://support.claude.com/en/articles/14730684-how-claude-suggests-connected-apps",
+        "https://support.claude.com/en/collections/17879441-custom-connectors"
+      ]
+    },
+    {
+      "id": "a08",
+      "file": "a08-skills",
+      "part": "a",
+      "title": "第8章 スキルとプラグイン",
+      "surfacesHint": [
+        "web",
+        "desktop",
+        "mobile"
+      ],
+      "sections": [
+        "8.1 スキルとは（手順や知識のまとまりを必要なときに使う仕組み）",
+        "8.2 スキルを使う（有効にする、呼び出され方）",
+        "8.3 スキルを自作する（何を書くか、試し方、共有の注意）",
+        "8.4 プラグインとディレクトリ（スキル・コネクタ・プラグインの関係、入れるときの注意）"
+      ],
+      "sources": [
+        "https://support.claude.com/en/articles/12512176-what-are-skills",
+        "https://support.claude.com/en/articles/12512180-use-skills-in-claude",
+        "https://support.claude.com/en/articles/12512198-how-to-create-custom-skills",
+        "https://support.claude.com/en/articles/13837440-use-plugins-in-claude",
+        "https://support.claude.com/en/articles/14328846-browse-skills-connectors-and-plugins-in-one-directory"
+      ]
+    },
+    {
+      "id": "a09",
+      "file": "a09-devices",
+      "part": "a",
+      "title": "第9章 デスクトップ・モバイル・音声・ブラウザ拡張",
+      "surfacesHint": [
+        "desktop",
+        "mobile",
+        "chrome"
+      ],
+      "sections": [
+        "9.1 デスクトップアプリ（インストール、quick entry、デスクトップ拡張）",
+        "9.2 モバイルアプリ（iOS のショートカット・ウィジェットなどの連携の概要）",
+        "9.3 音声で使う（音声入力と voice mode の違い）",
+        "9.4 Claude in Chrome（ブラウザで操作を任せる、権限、安全な使い方）",
+        "9.5 Claude に PC を操作させる（computer use の考え方と注意）"
+      ],
+      "sources": [
+        "https://support.claude.com/en/articles/10065433-install-claude-desktop",
+        "https://support.claude.com/en/articles/12626668-use-quick-entry-with-claude-desktop-on-mac",
+        "https://support.claude.com/en/collections/17879657-desktop-extensions",
+        "https://support.claude.com/en/articles/10263469-use-claude-app-intents-shortcuts-and-widgets-on-ios",
+        "https://support.claude.com/en/articles/10065434-use-dictation-on-claude-mobile",
+        "https://support.claude.com/en/articles/11101966-use-voice-mode",
+        "https://support.claude.com/en/articles/12012173-get-started-with-claude-in-chrome",
+        "https://support.claude.com/en/articles/12902446-claude-in-chrome-permissions-guide",
+        "https://support.claude.com/en/articles/12902428-use-claude-in-chrome-safely",
+        "https://support.claude.com/en/articles/14128542-let-claude-use-your-computer-in-cowork"
+      ]
+    },
+    {
+      "id": "a10",
+      "file": "a10-cowork",
+      "part": "a",
+      "title": "第10章 Cowork と予約・お任せ",
+      "surfacesHint": [
+        "web",
+        "desktop",
+        "mobile"
+      ],
+      "sections": [
+        "10.1 Claude Cowork とは（長い作業を任せる場所、チャットとの関係）",
+        "10.2 Cowork を安全に使う（任せてよいこと・確認すべきこと、権限）",
+        "10.3 Cowork のプロジェクトでタスクを整理する",
+        "10.4 予約タスク（決まった時刻・間隔で実行させる）",
+        "10.5 どこからでも依頼する（Web・デスクトップ・モバイル）、組み込みのブラウザ・live artifacts の概要"
+      ],
+      "sources": [
+        "https://support.claude.com/en/articles/13345190-get-started-with-claude-cowork",
+        "https://support.claude.com/en/articles/13364135-use-claude-cowork-safely",
+        "https://support.claude.com/en/articles/15520349-use-claude-cowork-on-web-desktop-and-mobile",
+        "https://support.claude.com/en/articles/14116274-organize-your-tasks-with-projects-in-claude-cowork",
+        "https://support.claude.com/en/articles/13854387-schedule-recurring-tasks-in-claude-cowork",
+        "https://support.claude.com/en/articles/13947068-assign-tasks-from-anywhere-in-claude-cowork",
+        "https://support.claude.com/en/articles/16607400-use-the-built-in-browser-in-claude-cowork",
+        "https://support.claude.com/en/articles/14729249-use-live-artifacts-in-claude-cowork",
+        "https://support.claude.com/en/articles/16761823-claude-cowork-and-chat-are-one-claude"
+      ]
+    },
+    {
+      "id": "c11",
+      "file": "c11-start",
+      "part": "c",
+      "title": "第11章 Claude Codeの全体像と始め方",
+      "surfacesHint": [
+        "cli",
+        "desktop",
+        "ide"
+      ],
+      "sections": [
+        "11.1 Claude Code とは（エージェントとして動く仕組み：読む・考える・実行する、のループ）",
+        "11.2 使える場所（CLI・デスクトップアプリ・Web（クラウド）・VS Code / JetBrains・モバイル）と選び方",
+        "11.3 インストールと認証（方法の種類だけを示し、具体的な手順は公式へ。Claude のプランでのログインと API キーの違い）",
+        "11.4 最初のセッション（練習用フォルダで起動し、質問してみる）",
+        "11.5 うまく使うための心構え（小さく頼む、確認しながら進める、練習用のリポジトリで試す）"
+      ],
+      "sources": [
+        "https://code.claude.com/docs/en/overview.md",
+        "https://code.claude.com/docs/en/quickstart.md",
+        "https://code.claude.com/docs/en/how-claude-code-works.md",
+        "https://code.claude.com/docs/en/platforms.md",
+        "https://code.claude.com/docs/en/setup.md",
+        "https://code.claude.com/docs/en/authentication.md",
+        "https://code.claude.com/docs/en/desktop-quickstart.md",
+        "https://code.claude.com/docs/en/vs-code.md",
+        "https://support.claude.com/en/articles/11145838-use-claude-code-with-your-pro-or-max-plan"
+      ]
+    },
+    {
+      "id": "c12",
+      "file": "c12-basics",
+      "part": "c",
+      "title": "第12章 基本操作",
+      "surfacesHint": [
+        "cli"
+      ],
+      "sections": [
+        "12.1 対話の流れ（指示 → ツールの実行 → 確認、承認の求められ方）",
+        "12.2 `@` でファイルを指す、画像を渡す",
+        "12.3 `!` でコマンドを実行する（bash モード）",
+        "12.4 中断と取り消し（Esc、やり直し）",
+        "12.5 再開と履歴（--continue・--resume、/resume、セッションの名前）",
+        "12.6 よく使うキー操作とスラッシュコマンドの全体像（詳細は辞典へ）"
+      ],
+      "sources": [
+        "https://code.claude.com/docs/en/interactive-mode.md",
+        "https://code.claude.com/docs/en/common-workflows.md",
+        "https://code.claude.com/docs/en/sessions.md",
+        "https://code.claude.com/docs/en/commands.md",
+        "https://code.claude.com/docs/en/cli-reference.md",
+        "https://code.claude.com/docs/en/how-claude-code-works.md"
+      ]
+    },
+    {
+      "id": "c13",
+      "file": "c13-context",
+      "part": "c",
+      "title": "第13章 CLAUDE.md とコンテキスト管理",
       "sections": [
         "13.1 CLAUDE.md の役割（何を書くと効くか、/init で作る）",
         "13.2 メモリファイルの種類と読み込まれる場所（ユーザー・プロジェクト・ローカル・管理者、親・子ディレクトリ、import）",
@@ -30,7 +339,11 @@
         "13.5 コンテキストを確認する・空ける（/context、/compact、/clear、自動の圧縮、使い分け）",
         "13.6 長い作業を上手に進めるコツ（セッションを分ける、要点を CLAUDE.md に残す、サブエージェントに任せる、の考え方）"
       ],
-      "surfacesHint": ["cli", "desktop", "ide"],
+      "surfacesHint": [
+        "cli",
+        "desktop",
+        "ide"
+      ],
       "sources": [
         "https://code.claude.com/docs/en/memory.md",
         "https://code.claude.com/docs/en/claude-directory.md",
@@ -38,6 +351,168 @@
         "https://code.claude.com/docs/en/commands.md",
         "https://code.claude.com/docs/en/best-practices.md",
         "https://code.claude.com/docs/en/how-claude-code-works.md"
+      ]
+    },
+    {
+      "id": "c14",
+      "file": "c14-safety",
+      "part": "c",
+      "title": "第14章 権限・プランモード・巻き戻し",
+      "surfacesHint": [
+        "cli",
+        "desktop",
+        "ide"
+      ],
+      "sections": [
+        "14.1 権限の仕組み（ツールごとの許可、許可・確認・拒否のルール）",
+        "14.2 permission modes（モードの種類と切り替え、Shift+Tab）",
+        "14.3 プランモード（読むだけで計画を立てさせる、計画を直してから実行）",
+        "14.4 チェックポイントと巻き戻し（/rewind、戻せるもの・戻せないもの）",
+        "14.5 サンドボックスと安全な使い方（危険な操作の許可を広げすぎない、練習用リポジトリ、秘密情報の扱い）"
+      ],
+      "sources": [
+        "https://code.claude.com/docs/en/permissions.md",
+        "https://code.claude.com/docs/en/permission-modes.md",
+        "https://code.claude.com/docs/en/checkpointing.md",
+        "https://code.claude.com/docs/en/sandboxing.md",
+        "https://code.claude.com/docs/en/security.md",
+        "https://code.claude.com/docs/en/common-workflows.md",
+        "https://code.claude.com/docs/en/best-practices.md"
+      ]
+    },
+    {
+      "id": "c15",
+      "file": "c15-settings",
+      "part": "c",
+      "title": "第15章 設定とカスタマイズ",
+      "surfacesHint": [
+        "cli",
+        "desktop",
+        "ide"
+      ],
+      "sections": [
+        "15.1 settings.json の階層と優先順位（ユーザー・プロジェクト・ローカル・管理）",
+        "15.2 よく使う設定の例（permissions など。設定キーの詳細は辞典へ）",
+        "15.3 モデルの選択（/model、エイリアスの考え方、fast mode の概要。料金は書かない）",
+        "15.4 出力スタイル（output styles）",
+        "15.5 ステータスラインとキー割り当て、ターミナルの設定"
+      ],
+      "sources": [
+        "https://code.claude.com/docs/en/settings.md",
+        "https://code.claude.com/docs/en/settings-reference.md",
+        "https://code.claude.com/docs/en/settings-example.md",
+        "https://code.claude.com/docs/en/model-config.md",
+        "https://code.claude.com/docs/en/fast-mode.md",
+        "https://code.claude.com/docs/en/output-styles.md",
+        "https://code.claude.com/docs/en/statusline.md",
+        "https://code.claude.com/docs/en/keybindings.md",
+        "https://code.claude.com/docs/en/terminal-config.md"
+      ]
+    },
+    {
+      "id": "c16",
+      "file": "c16-extend",
+      "part": "c",
+      "title": "第16章 自作コマンド・サブエージェント・スキル",
+      "surfacesHint": [
+        "cli",
+        "desktop",
+        "ide"
+      ],
+      "sections": [
+        "16.1 拡張の全体像（CLAUDE.md・スキル・サブエージェント・フック・MCP・プラグインの使い分け）",
+        "16.2 スキルを作る（SKILL.md、置き場所、/名前 で呼ぶ、自作コマンドとの関係）",
+        "16.3 サブエージェント（別のコンテキストで任せる、作り方、/agents）",
+        "16.4 使い分けと設計のコツ（何をスキルにし、何をサブエージェントにするか）"
+      ],
+      "sources": [
+        "https://code.claude.com/docs/en/features-overview.md",
+        "https://code.claude.com/docs/en/skills.md",
+        "https://code.claude.com/docs/en/sub-agents.md",
+        "https://code.claude.com/docs/en/commands.md",
+        "https://code.claude.com/docs/en/agents.md",
+        "https://code.claude.com/docs/en/claude-directory.md"
+      ]
+    },
+    {
+      "id": "c17",
+      "file": "c17-hooks-mcp",
+      "part": "c",
+      "title": "第17章 フック・MCP・プラグイン",
+      "surfacesHint": [
+        "cli",
+        "desktop",
+        "ide"
+      ],
+      "sections": [
+        "17.1 フック（決まったタイミングで必ず動く処理、イベントの種類の概要）",
+        "17.2 フックを書く（設定の書き方、練習用の安全な例、注意）",
+        "17.3 MCP サーバーをつなぐ（claude mcp add、スコープ、認証の考え方）",
+        "17.4 プラグイン（入れる・管理する、マーケットプレイス）",
+        "17.5 信頼と安全（入れる前に確かめること、権限）"
+      ],
+      "sources": [
+        "https://code.claude.com/docs/en/hooks-guide.md",
+        "https://code.claude.com/docs/en/hooks.md",
+        "https://code.claude.com/docs/en/mcp-quickstart.md",
+        "https://code.claude.com/docs/en/mcp.md",
+        "https://code.claude.com/docs/en/plugins/overview.md",
+        "https://code.claude.com/docs/en/plugins/install.md",
+        "https://code.claude.com/docs/en/plugins/security.md"
+      ]
+    },
+    {
+      "id": "c18",
+      "file": "c18-parallel",
+      "part": "c",
+      "title": "第18章 並列作業とクラウド",
+      "surfacesHint": [
+        "cli",
+        "desktop",
+        "web"
+      ],
+      "sections": [
+        "18.1 並列で進める考え方（なぜ分けるか、ぶつからない分け方）",
+        "18.2 worktree で作業場所を分ける",
+        "18.3 複数のエージェントを動かす・見渡す（agents、agent view の概要）",
+        "18.4 クラウドで動かす（Claude Code on the web、環境の考え方）",
+        "18.5 手元のセッションを別の端末から続ける（Remote Control、モバイル）"
+      ],
+      "sources": [
+        "https://code.claude.com/docs/en/agents.md",
+        "https://code.claude.com/docs/en/worktrees.md",
+        "https://code.claude.com/docs/en/agent-view.md",
+        "https://code.claude.com/docs/en/claude-code-on-the-web.md",
+        "https://code.claude.com/docs/en/web-quickstart.md",
+        "https://code.claude.com/docs/en/remote-control.md",
+        "https://code.claude.com/docs/en/mobile.md",
+        "https://code.claude.com/docs/en/desktop.md"
+      ]
+    },
+    {
+      "id": "c19",
+      "file": "c19-automation",
+      "part": "c",
+      "title": "第19章 自動化と実践",
+      "surfacesHint": [
+        "cli",
+        "web"
+      ],
+      "sections": [
+        "19.1 ヘッドレス実行（claude -p、出力の形式、スクリプトから使う）",
+        "19.2 GitHub Actions で動かす（できることの概要、設定の流れ、秘密情報の扱いの注意）",
+        "19.3 予約実行と routines（決まった時刻に動かす、デスクトップの予約タスク）",
+        "19.4 「仕様書 → 実装計画 → フェーズ」で進める開発の流れ（プランモード・CLAUDE.md・確認の挟み方）",
+        "19.5 実践のコツ（検証の仕方を渡す、レビューする、ベストプラクティス）"
+      ],
+      "sources": [
+        "https://code.claude.com/docs/en/headless.md",
+        "https://code.claude.com/docs/en/github-actions.md",
+        "https://code.claude.com/docs/en/routines.md",
+        "https://code.claude.com/docs/en/scheduled-tasks.md",
+        "https://code.claude.com/docs/en/desktop-scheduled-tasks.md",
+        "https://code.claude.com/docs/en/best-practices.md",
+        "https://code.claude.com/docs/en/common-workflows.md"
       ]
     }
   ]

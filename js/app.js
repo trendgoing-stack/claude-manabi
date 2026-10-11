@@ -12,6 +12,9 @@ import { staleView } from './views/stale.js';
 import { settingsView } from './views/settings.js';
 import { helpView } from './views/help.js';
 import { placeholder } from './views/placeholder.js';
+import { glossaryView } from './views/glossary.js';
+import { quizView } from './views/quiz.js';
+import { recordsView } from './views/records.js';
 
 // ルート名 → 下部タブ
 const TAB_OF = {
@@ -62,6 +65,9 @@ const ROUTE_NEEDS = {
   home: ['texts', 'dict'],
   learn: ['texts', 'glossary', 'quiz', 'dict', 'try'],
   term: ['texts', 'glossary'],
+  terms: ['texts', 'glossary'],
+  quiz: ['texts', 'glossary', 'quiz'],
+  records: ['texts', 'quiz', 'dict', 'try'],
   stale: ['texts', 'dict'],
   settings: ALL_KINDS,
 };
@@ -89,12 +95,12 @@ async function main() {
   route('home', needs(n('home'), homeView));
   route('learn', needs(n('learn'), learnView));
   route('dict', placeholder('辞典', 'フェーズ3', 'dict'));
-  route('terms', placeholder('用語集', 'フェーズ2', 'terms'));
+  route('terms', needs(n('terms'), glossaryView));
   route('term', needs(n('term'), termView));
   route('cards', placeholder('暗記カード', 'フェーズ3', 'cards'));
-  route('quiz', placeholder('演習', 'フェーズ2'));
+  route('quiz', needs(n('quiz'), quizView));
   route('try', placeholder('やってみよう', 'フェーズ3'));
-  route('records', placeholder('記録', 'フェーズ2'));
+  route('records', needs(n('records'), recordsView));
   route('stale', needs(n('stale'), staleView));
   route('settings', needs(n('settings'), settingsView));
   route('help', helpView);

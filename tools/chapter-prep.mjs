@@ -44,8 +44,11 @@ for (const id of ids) {
     '## 用語集にすでにある用語（同じ表記で書けば自動でリンクされる。重複して追加しない）',
     glossary.terms.length ? glossary.terms.map((t) => `${t.id} ${t.term}${t.aliases?.length ? `（${t.aliases.join('・')}）` : ''}`).join('\n') : '（まだない）',
     '',
-    '## ほかの章の節（内容を重複させない。触れるときは「第N章で扱う」と書く）',
+    '## ほかの章（内容を重複させない。触れるときは「第N章で扱う」と書く）',
+    '### 作成済みの節',
     others.length ? others.join('\n') : '（まだない）',
+    '### 作成予定の章（節の案）',
+    chapters.filter((x) => x.id !== c.id && !others.some((o) => o.startsWith(`${x.id}-`))).map((x) => `- ${x.title}：${x.sections.map((t) => t.replace(/（.*$/, '')).join('／')}`).join('\n'),
     '',
   ].join('\n');
   await writeFile(path.join(ROOT, 'work', `${c.id}-brief.md`), md);

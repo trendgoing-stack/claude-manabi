@@ -33,14 +33,23 @@ for (const id of ids) {
   const terms = (await work(`${id}-terms.json`).catch(() => ({ terms: [] }))).terms ?? [];
   const names = new Map(glossary.terms.flatMap((t) => [t.term, ...(t.aliases ?? [])].map((n) => [n.toLowerCase(), t.id])));
   const skipped = [];
+  const rename = new Map(); // 追加しなかった用語の id → 既存の用語の id（章の中の参照を付け替える）
   for (const t of terms) {
     const clash = glossary.terms.find((g) => g.id === t.id)?.id ?? [t.term, ...(t.aliases ?? [])].map((n) => names.get(n.toLowerCase())).find(Boolean);
     if (clash) {
       skipped.push(`${t.id}（${t.term}）→ 既存の ${clash}`);
+      if (clash !== t.id) rename.set(t.id, clash);
       continue;
     }
     glossary.terms.push(t);
     for (const n of [t.term, ...(t.aliases ?? [])]) names.set(n.toLowerCase(), t.id);
+  }
+  if (rename.size) {
+    // 章・クイズの [[表示|id]] と、用語の related を既存の id に付け替える
+    const swap = (str) => str.replace(/\[\[([^\]|]+)\|([^\]]+)\]\]/g, (m, x, y) => (rename.has(y) ? `[[${x}|${rename.get(y)}]]` : m));
+    await save(`data/text/${plan.file}.json`, JSON.parse(swap(JSON.stringify(draft))));
+    if (quiz) await save(`data/quiz/${plan.file}.json`, JSON.parse(swap(JSON.stringify(quiz))));
+    for (const g of glossary.terms) if (g.related) g.related = [...new Set(g.related.map((r) => rename.get(r) ?? r))].filter((r) => r !== g.id);
   }
   console.log(`${id}: ${draft.sections.length}節・クイズ ${quiz?.questions?.length ?? 0}問・用語 ${terms.length - skipped.length}語を追加`);
   for (const s of skipped) console.log(`  用語を追加しなかった：${s}`);
