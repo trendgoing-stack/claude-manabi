@@ -1,0 +1,315 @@
+{
+ "schemaVersion": 1,
+ "id": "c99",
+ "part": "c",
+ "order": 99,
+ "title": "第99章 表示テスト",
+ "summary": "実機確認用のテストデータ（?fixture=1 のときだけ読む）。",
+ "minutes": 2,
+ "sections": [
+  {
+   "id": "c99-01",
+   "title": "99.1 図とコード",
+   "points": [
+    "要点のテスト1（`/compact` を含む）",
+    "要点のテスト2"
+   ],
+   "digest": {
+    "text": "要約のテスト。[[CLAUDE.md]] は自動でリンクされ、`/compact` はコードとして表示される。",
+    "keys": [
+     "覚える項目1",
+     "覚える項目2"
+    ]
+   },
+   "blocks": [
+    {
+     "type": "p",
+     "text": "CLAUDE.md はプロジェクトの指示を書くファイルです。内容はコンテキストウィンドウに読み込まれます。`claude --resume <id>` のようなインラインのコードも書けます。2回目の CLAUDE.md はリンクされません。"
+    },
+    {
+     "type": "h",
+     "text": "図のテスト"
+    },
+    {
+     "type": "figure",
+     "figure": {
+      "type": "chat",
+      "title": "プロジェクト：旅行の計画",
+      "items": [
+       {
+        "role": "note",
+        "text": "カスタム指示とナレッジが読み込まれる"
+       },
+       {
+        "role": "user",
+        "text": "3日目の予定を考えて。移動は電車だけにしてください。"
+       },
+       {
+        "role": "tool",
+        "text": "ナレッジ「旅程メモ.md」を参照"
+       },
+       {
+        "role": "claude",
+        "text": "旅程メモの条件（移動は電車のみ）に合わせて、3日目は午前に美術館、午後は港の周辺を歩く案にしました。",
+        "hl": true
+       }
+      ],
+      "input": ""
+     }
+    },
+    {
+     "type": "figure",
+     "figure": {
+      "type": "terminal",
+      "title": "Claude Code",
+      "caption": "図　ターミナルの例",
+      "lines": [
+       {
+        "kind": "prompt",
+        "text": "/context"
+       },
+       {
+        "kind": "dim",
+        "text": "（コンテキストの使用状況の概要）"
+       },
+       {
+        "kind": "hl",
+        "text": "Memory files: CLAUDE.md"
+       },
+       {
+        "kind": "ok",
+        "text": "OK done"
+       },
+       {
+        "text": "通常の出力 with English text"
+       }
+      ]
+     }
+    },
+    {
+     "type": "figure",
+     "figure": {
+      "type": "dir",
+      "tree": [
+       {
+        "name": "my-project/",
+        "children": [
+         {
+          "name": "CLAUDE.md",
+          "note": "チームで共有する指示",
+          "hl": true
+         },
+         {
+          "name": ".claude/",
+          "children": [
+           {
+            "name": "settings.json",
+            "note": "共有する設定"
+           },
+           {
+            "name": "settings.local.json",
+            "note": "自分だけの設定"
+           }
+          ]
+         },
+         {
+          "name": "src/"
+         }
+        ]
+       }
+      ]
+     }
+    },
+    {
+     "type": "figure",
+     "figure": {
+      "type": "layers",
+      "arrow": [
+       "優先",
+       "後回し"
+      ],
+      "levels": [
+       {
+        "label": "管理者の設定",
+        "note": "変更不可"
+       },
+       {
+        "label": "プロジェクトの設定",
+        "hl": true
+       },
+       {
+        "label": "ユーザーの設定"
+       }
+      ]
+     }
+    },
+    {
+     "type": "code",
+     "lang": "shell",
+     "code": "claude --help\nclaude -p \"このリポジトリを要約して\""
+    },
+    {
+     "type": "code",
+     "lang": "json",
+     "caption": "設定例",
+     "code": "{\n  \"permissions\": {\n    \"allow\": [\"Bash(npm run test:*)\"]\n  }\n}"
+    },
+    {
+     "type": "note",
+     "kind": "caution",
+     "text": "注意（caution）のテスト。"
+    },
+    {
+     "type": "note",
+     "kind": "pitfall",
+     "text": "つまずきやすい点（pitfall）のテスト。"
+    },
+    {
+     "type": "note",
+     "kind": "tip",
+     "text": "コツ（tip）のテスト。"
+    },
+    {
+     "type": "table",
+     "title": "表のテスト",
+     "table": {
+      "header": [
+       "コマンド",
+       "働き"
+      ],
+      "rows": [
+       [
+        "`/clear`",
+        "会話を消して新しく始める"
+       ],
+       [
+        "`/compact`",
+        "これまでの会話を要約して空きを作る"
+       ]
+      ]
+     }
+    },
+    {
+     "type": "steps",
+     "title": "手順のテスト",
+     "items": [
+      "一つ目の手順",
+      "二つ目の手順"
+     ]
+    },
+    {
+     "type": "list",
+     "items": [
+      "箇条書き1",
+      "箇条書き2"
+     ]
+    },
+    {
+     "type": "example",
+     "title": "例",
+     "text": "指示の例",
+     "answer": "答えと考え方"
+    }
+   ],
+   "surfaces": [
+    "cli",
+    "desktop",
+    "ide"
+   ],
+   "status": "ga",
+   "sources": [
+    {
+     "title": "Claude にプロジェクトを記憶させる（メモリ）",
+     "url": "https://code.claude.com/docs/ja/memory"
+    }
+   ],
+   "checkedAt": "2026-10-12",
+   "verification": {
+    "status": "doc-verified",
+    "note": ""
+   },
+   "tryIds": [],
+   "dictIds": []
+  },
+  {
+   "id": "c99-02",
+   "title": "99.2 確認日が古い節（ベータ）",
+   "points": [
+    "要点のテスト1（`/compact` を含む）",
+    "要点のテスト2"
+   ],
+   "digest": {
+    "text": "要約のテスト。[[CLAUDE.md]] は自動でリンクされ、`/compact` はコードとして表示される。",
+    "keys": [
+     "覚える項目1",
+     "覚える項目2"
+    ]
+   },
+   "blocks": [
+    {
+     "type": "p",
+     "text": "この節は checkedAt を 2026-01-01 にしてあるので、鮮度の警告が出る。"
+    }
+   ],
+   "surfaces": [
+    "cli",
+    "desktop",
+    "ide"
+   ],
+   "status": "beta",
+   "sources": [
+    {
+     "title": "Claude にプロジェクトを記憶させる（メモリ）",
+     "url": "https://code.claude.com/docs/ja/memory"
+    }
+   ],
+   "checkedAt": "2026-01-01",
+   "verification": {
+    "status": "doc-verified",
+    "note": ""
+   },
+   "tryIds": [],
+   "dictIds": []
+  },
+  {
+   "id": "c99-03",
+   "title": "99.3 未確認の節",
+   "points": [
+    "要点のテスト1（`/compact` を含む）",
+    "要点のテスト2"
+   ],
+   "digest": {
+    "text": "要約のテスト。[[CLAUDE.md]] は自動でリンクされ、`/compact` はコードとして表示される。",
+    "keys": [
+     "覚える項目1",
+     "覚える項目2"
+    ]
+   },
+   "blocks": [
+    {
+     "type": "p",
+     "text": "この節は unverified なので、クイズは出題されない。"
+    }
+   ],
+   "surfaces": [
+    "cli",
+    "desktop",
+    "ide"
+   ],
+   "status": "ga",
+   "sources": [
+    {
+     "title": "Claude にプロジェクトを記憶させる（メモリ）",
+     "url": "https://code.claude.com/docs/ja/memory"
+    }
+   ],
+   "checkedAt": "2026-10-12",
+   "verification": {
+    "status": "unverified",
+    "note": ""
+   },
+   "tryIds": [],
+   "dictIds": []
+  }
+ ]
+}

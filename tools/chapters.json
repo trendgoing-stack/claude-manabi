@@ -1,0 +1,44 @@
+{
+  "note": "章の設計（節の案と、最初に読む公式ページ）。chapter-prep.mjs が作業ファイルを作るときに使う。節の案は目安で、公式情報の量に応じて作成者が統合・分割してよい（4〜8節）",
+  "chapters": [
+    {
+      "id": "a04", "file": "a04-projects", "part": "a", "title": "第4章 プロジェクト",
+      "sections": [
+        "4.1 プロジェクトとは（何のための機能か、通常のチャットとの違い）",
+        "4.2 プロジェクトを作る・管理する（作成、名前と説明、チャットの整理、アーカイブなど）",
+        "4.3 プロジェクトのナレッジ（ファイルの追加、どう参照されるか、容量が大きいときの RAG の考え方）",
+        "4.4 カスタム指示（プロジェクトの指示の書き方、個人設定・スタイルとの関係）",
+        "4.5 共有と共同作業（Team・Enterprise での共有、権限。プランによって異なる点はリンクで案内）",
+        "4.6 使いこなしのコツ（向いている使い方・向かない使い方、ナレッジと指示の整理、Cowork のプロジェクトとの関係に一言触れる）"
+      ],
+      "surfacesHint": ["web", "desktop", "mobile"],
+      "sources": [
+        "https://support.claude.com/en/articles/9517075-what-are-projects",
+        "https://support.claude.com/en/articles/9519177-how-can-i-create-and-manage-projects",
+        "https://support.claude.com/en/articles/11473015-retrieval-augmented-generation-rag-for-projects",
+        "https://support.claude.com/en/articles/14116274-organize-your-tasks-with-projects-in-claude-cowork",
+        "https://support.claude.com/en/collections/18031719-features-and-capabilities"
+      ]
+    },
+    {
+      "id": "c13", "file": "c13-context", "part": "c", "title": "第13章 CLAUDE.md とコンテキスト管理",
+      "sections": [
+        "13.1 CLAUDE.md の役割（何を書くと効くか、/init で作る）",
+        "13.2 メモリファイルの種類と読み込まれる場所（ユーザー・プロジェクト・ローカル・管理者、親・子ディレクトリ、import）",
+        "13.3 .claude/ ディレクトリの中身（設定・コマンド・エージェント・スキルなどの置き場所の全体図。詳細は後の章）",
+        "13.4 コンテキストウィンドウとは（何が入っているか、いっぱいになると何が起きるか）",
+        "13.5 コンテキストを確認する・空ける（/context、/compact、/clear、自動の圧縮、使い分け）",
+        "13.6 長い作業を上手に進めるコツ（セッションを分ける、要点を CLAUDE.md に残す、サブエージェントに任せる、の考え方）"
+      ],
+      "surfacesHint": ["cli", "desktop", "ide"],
+      "sources": [
+        "https://code.claude.com/docs/en/memory.md",
+        "https://code.claude.com/docs/en/claude-directory.md",
+        "https://code.claude.com/docs/en/context-window.md",
+        "https://code.claude.com/docs/en/commands.md",
+        "https://code.claude.com/docs/en/best-practices.md",
+        "https://code.claude.com/docs/en/how-claude-code-works.md"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,120 @@
+{
+ "schemaVersion": 1,
+ "chapterId": "c99",
+ "questions": [
+  {
+   "id": "c99-01-q1",
+   "sectionId": "c99-01",
+   "question": "テストの問題 1-1",
+   "choices": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "answer": 1,
+   "explanation": "テストの解説。",
+   "sources": [
+    {
+     "title": "メモリ",
+     "url": "https://code.claude.com/docs/ja/memory"
+    }
+   ]
+  },
+  {
+   "id": "c99-01-q2",
+   "sectionId": "c99-01",
+   "question": "テストの問題 1-2",
+   "choices": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "answer": 2,
+   "explanation": "テストの解説。",
+   "sources": [
+    {
+     "title": "メモリ",
+     "url": "https://code.claude.com/docs/ja/memory"
+    }
+   ]
+  },
+  {
+   "id": "c99-02-q1",
+   "sectionId": "c99-02",
+   "question": "テストの問題 2-1",
+   "choices": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "answer": 1,
+   "explanation": "テストの解説。",
+   "sources": [
+    {
+     "title": "メモリ",
+     "url": "https://code.claude.com/docs/ja/memory"
+    }
+   ]
+  },
+  {
+   "id": "c99-02-q2",
+   "sectionId": "c99-02",
+   "question": "テストの問題 2-2",
+   "choices": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "answer": 2,
+   "explanation": "テストの解説。",
+   "sources": [
+    {
+     "title": "メモリ",
+     "url": "https://code.claude.com/docs/ja/memory"
+    }
+   ]
+  },
+  {
+   "id": "c99-03-q1",
+   "sectionId": "c99-03",
+   "question": "テストの問題 3-1",
+   "choices": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "answer": 1,
+   "explanation": "テストの解説。",
+   "sources": [
+    {
+     "title": "メモリ",
+     "url": "https://code.claude.com/docs/ja/memory"
+    }
+   ]
+  },
+  {
+   "id": "c99-03-q2",
+   "sectionId": "c99-03",
+   "question": "テストの問題 3-2",
+   "choices": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "answer": 2,
+   "explanation": "テストの解説。",
+   "sources": [
+    {
+     "title": "メモリ",
+     "url": "https://code.claude.com/docs/ja/memory"
+    }
+   ]
+  }
+ ]
+}

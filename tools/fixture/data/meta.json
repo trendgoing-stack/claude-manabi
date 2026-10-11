@@ -1,0 +1,32 @@
+{
+  "dataVersion": "2026.10.12-1",
+  "schemaVersion": 1,
+  "parts": [
+    {
+      "id": "a",
+      "title": "第1部 Claudeアプリ",
+      "order": 1
+    },
+    {
+      "id": "c",
+      "title": "第2部 Claude Code",
+      "order": 2
+    }
+  ],
+  "textFiles": [
+    "text/c99-sample.json"
+  ],
+  "dictFiles": [],
+  "quizFiles": [
+    "quiz/c99-sample.json"
+  ],
+  "glossaryFile": "glossary.json",
+  "tryFile": "try.json",
+  "counts": {
+    "sections": 3,
+    "quiz": 6,
+    "dict": 0,
+    "glossary": 2,
+    "try": 0
+  }
+}

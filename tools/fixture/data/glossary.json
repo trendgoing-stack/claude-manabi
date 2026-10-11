@@ -1,0 +1,27 @@
+{
+ "schemaVersion": 1,
+ "terms": [
+  {
+   "id": "g-claude-md",
+   "term": "CLAUDE.md",
+   "reading": "くろーどえむでぃー",
+   "definition": "テスト用の定義。",
+   "aliases": [],
+   "related": [
+    "g-context-window"
+   ]
+  },
+  {
+   "id": "g-context-window",
+   "term": "コンテキストウィンドウ",
+   "reading": "こんてきすとういんどう",
+   "definition": "テスト用の定義。",
+   "aliases": [
+    "context window"
+   ],
+   "related": [
+    "g-claude-md"
+   ]
+  }
+ ]
+}

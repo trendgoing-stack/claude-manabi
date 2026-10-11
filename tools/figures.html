@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>図の確認（開発用）</title>
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/views.css">
+  <style>.view { padding-bottom: 48px; } section { border-top: 1px solid var(--line); padding-top: 12px; }</style>
+</head>
+<body>
+  <main id="view" class="view"><h1>図の確認（開発用）</h1><p class="muted small">CONTENT.md の記述例と、解説データ中のすべての図を表示します。ライト／ダークの両方で確認してください。</p></main>
+  <script type="module">
+    import { h } from '../js/dom.js';
+    import { renderFigure } from '../js/render/figure.js';
+    const root = document.getElementById('view');
+    const get = async (u, t = 'json') => (await fetch(u, { cache: 'no-store' }))[t]();
+    const md = await get('../CONTENT.md', 'text');
+    const examples = [...md.matchAll(/```json\n(\{ "type": "[a-z]+"[\s\S]*?)\n```/g)].map((m) => JSON.parse(m[1]));
+    for (const fig of examples) root.append(h('section', null, h('h2', null, `記述例：${fig.type}`), renderFigure(fig)));
+    const meta = await get('../data/meta.json');
+    for (const f of meta.textFiles) {
+      const ch = await get('../data/' + f);
+      for (const s of ch.sections) {
+        s.blocks.forEach((b, i) => {
+          if (b.type === 'figure') root.append(h('section', null, h('h2', null, `${s.id} blocks[${i}]（${b.figure.type}）`), h('p', { class: 'small muted' }, s.title), renderFigure(b.figure)));
+        });
+      }
+    }
+  </script>
+</body>
+</html>
