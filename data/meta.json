@@ -2,13 +2,33 @@
   "dataVersion": "2026.10.12-1",
   "schemaVersion": 1,
   "parts": [
-    { "id": "a", "title": "第1部 Claudeアプリ", "order": 1 },
-    { "id": "c", "title": "第2部 Claude Code", "order": 2 }
+    {
+      "id": "a",
+      "title": "第1部 Claudeアプリ",
+      "order": 1
+    },
+    {
+      "id": "c",
+      "title": "第2部 Claude Code",
+      "order": 2
+    }
   ],
-  "textFiles": [],
+  "textFiles": [
+    "text/a04-projects.json",
+    "text/c13-context.json"
+  ],
   "dictFiles": [],
-  "quizFiles": [],
+  "quizFiles": [
+    "quiz/a04-projects.json",
+    "quiz/c13-context.json"
+  ],
   "glossaryFile": "glossary.json",
   "tryFile": "try.json",
-  "counts": { "sections": 0, "quiz": 0, "dict": 0, "glossary": 0, "try": 0 }
+  "counts": {
+    "sections": 12,
+    "quiz": 32,
+    "dict": 0,
+    "glossary": 19,
+    "try": 0
+  }
 }

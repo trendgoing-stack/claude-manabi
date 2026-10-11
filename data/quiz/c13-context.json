@@ -1,0 +1,341 @@
+{
+  "schemaVersion": 1,
+  "chapterId": "c13",
+  "questions": [
+    {
+      "id": "c13-01-q1",
+      "sectionId": "c13-01",
+      "question": "CLAUDE.md に書く内容として、最も効果が高いものはどれか。",
+      "choices": [
+        "コードを読めば分かるフォルダ構成の詳しい説明",
+        "テストを実行するコマンドと、チーム独自の命名規約",
+        "プログラミング言語の一般的な書き方の解説",
+        "毎日変わる作業の進み具合のメモ"
+      ],
+      "answer": 1,
+      "explanation": "CLAUDE.md には、Claude がコードを読むだけでは推測できない情報を書くと効果的です。実行コマンドや独自の規約がその代表です。フォルダ構成の説明や言語の一般的な書き方は Claude が自分で分かるため不要で、頻繁に変わる情報も書かないほうがよいとされています。",
+      "sources": [
+        {
+          "title": "Claude Code のベストプラクティス",
+          "url": "https://code.claude.com/docs/ja/best-practices"
+        }
+      ]
+    },
+    {
+      "id": "c13-01-q2",
+      "sectionId": "c13-01",
+      "question": "すでに CLAUDE.md があるプロジェクトで `/init` を実行すると、どうなるか。",
+      "choices": [
+        "既存の CLAUDE.md を削除して作り直す",
+        "何もせずに終了する",
+        "上書きはせず、改善案を示す",
+        "内容を CLAUDE.local.md に移してから作り直す"
+      ],
+      "answer": 2,
+      "explanation": "`/init` はコードを調べて CLAUDE.md の下書きを作るコマンドで、CLAUDE.md がすでにある場合は上書きせずに改善を提案します。削除や作り直しはしません。CLAUDE.local.md へ移すといった動作もありません。",
+      "sources": [
+        {
+          "title": "Claude があなたのプロジェクトを記憶する方法",
+          "url": "https://code.claude.com/docs/ja/memory"
+        }
+      ]
+    },
+    {
+      "id": "c13-01-q3",
+      "sectionId": "c13-01",
+      "question": "ファイルを編集するたびに必ず整形ツールを実行させたい。最も確実な方法はどれか。",
+      "choices": [
+        "CLAUDE.md に同じ指示を何度も書く",
+        "CLAUDE.local.md に指示を書く",
+        "会話の最初に毎回お願いする",
+        "フックとして設定する"
+      ],
+      "answer": 3,
+      "explanation": "CLAUDE.md や CLAUDE.local.md は Claude が読んで従おうとする指示であり、実行は保証されません。フックは決まったタイミングで必ず実行されるため、例外なく行いたい処理に向いています。会話で伝えた指示は、自動圧縮などで失われることもあります。",
+      "sources": [
+        {
+          "title": "Claude があなたのプロジェクトを記憶する方法",
+          "url": "https://code.claude.com/docs/ja/memory"
+        },
+        {
+          "title": "Claude Code のベストプラクティス",
+          "url": "https://code.claude.com/docs/ja/best-practices"
+        }
+      ]
+    },
+    {
+      "id": "c13-02-q1",
+      "sectionId": "c13-02",
+      "question": "このプロジェクトだけで使う、チームと共有しない自分用の指示を書く場所はどれか。",
+      "choices": [
+        "`./CLAUDE.md`",
+        "`~/.claude/CLAUDE.md`",
+        "`./CLAUDE.local.md`",
+        "`./.claude/CLAUDE.md`"
+      ],
+      "answer": 2,
+      "explanation": "`./CLAUDE.local.md` は、自分だけのプロジェクト用の指示を書く場所で、`.gitignore` に入れて共有しないようにします。`./CLAUDE.md` と `./.claude/CLAUDE.md` はチームで共有するプロジェクトの指示です。`~/.claude/CLAUDE.md` は自分用ですが、すべてのプロジェクトに効きます。",
+      "sources": [
+        {
+          "title": "Claude があなたのプロジェクトを記憶する方法",
+          "url": "https://code.claude.com/docs/ja/memory"
+        }
+      ]
+    },
+    {
+      "id": "c13-02-q2",
+      "sectionId": "c13-02",
+      "question": "起動したフォルダより下のサブフォルダにある CLAUDE.md は、いつ読み込まれるか。",
+      "choices": [
+        "Claude がそのサブフォルダのファイルを読んだり編集したりしたとき",
+        "Claude Code の起動時に、ほかの CLAUDE.md と一緒に",
+        "`/clear` を実行したとき",
+        "親の CLAUDE.md から `@` で取り込んだときだけ"
+      ],
+      "answer": 0,
+      "explanation": "起動したフォルダと親フォルダの CLAUDE.md は起動時に読み込まれますが、サブフォルダのものは、Claude がそのサブフォルダのファイルを扱った時点で読み込まれます。起動時に一緒に読み込まれるわけではなく、`@` で取り込まなくても読み込まれます。",
+      "sources": [
+        {
+          "title": "Claude があなたのプロジェクトを記憶する方法",
+          "url": "https://code.claude.com/docs/ja/memory"
+        }
+      ]
+    },
+    {
+      "id": "c13-02-q3",
+      "sectionId": "c13-02",
+      "question": "親フォルダの CLAUDE.md と作業フォルダの CLAUDE.md に、食い違う指示が書かれていた。どうなるか。",
+      "choices": [
+        "作業フォルダの CLAUDE.md だけが読み込まれる",
+        "親フォルダの CLAUDE.md だけが読み込まれる",
+        "起動時にエラーになって止まる",
+        "両方が読み込まれ、Claude がどちらか一方に従うことがある"
+      ],
+      "answer": 3,
+      "explanation": "見つかった CLAUDE.md は上書きし合わず、すべてコンテキストに読み込まれます。そのため指示が食い違うと、Claude がどちらかを選んで従うことがあります。どちらか一方だけが読まれたり、エラーになったりするわけではないので、矛盾は自分で取り除きます。",
+      "sources": [
+        {
+          "title": "Claude があなたのプロジェクトを記憶する方法",
+          "url": "https://code.claude.com/docs/ja/memory"
+        }
+      ]
+    },
+    {
+      "id": "c13-03-q1",
+      "sectionId": "c13-03",
+      "question": "このプロジェクトだけで効かせたい自分用の設定を、チームと共有せずに置くファイルはどれか。",
+      "choices": [
+        "`.claude/settings.json`",
+        "`.claude/settings.local.json`",
+        "`.mcp.json`",
+        "`~/.claude/CLAUDE.md`"
+      ],
+      "answer": 1,
+      "explanation": "`.claude/settings.local.json` は、そのプロジェクトでの自分用の上書き設定を置くファイルです。`.claude/settings.json` と `.mcp.json` はチームで共有するファイルです。`~/.claude/CLAUDE.md` は設定ではなく、すべてのプロジェクトに効く自分用の指示です。",
+      "sources": [
+        {
+          "title": ".claude ディレクトリを探索する",
+          "url": "https://code.claude.com/docs/ja/claude-directory"
+        }
+      ]
+    },
+    {
+      "id": "c13-03-q2",
+      "sectionId": "c13-03",
+      "question": "`.claude/rules/` に置いた、先頭に `paths` を書いたルールが読み込まれるのはいつか。",
+      "choices": [
+        "一致するファイルを Claude が読んだり編集したりするとき",
+        "セッションの開始時に、必ず毎回",
+        "`/compact` を実行したときだけ",
+        "`/memory` でルールを選んだときだけ"
+      ],
+      "answer": 0,
+      "explanation": "`paths` を書いたルールはパススコープのルールで、パターンに一致するファイルを Claude が扱うときだけ読み込まれます。セッション開始時に毎回読み込まれるのは、`paths` を書かないルールです。`/compact` や `/memory` の操作は読み込みのきっかけではありません。",
+      "sources": [
+        {
+          "title": "Claude があなたのプロジェクトを記憶する方法",
+          "url": "https://code.claude.com/docs/ja/memory"
+        }
+      ]
+    },
+    {
+      "id": "c13-04-q1",
+      "sectionId": "c13-04",
+      "question": "コンテキストウィンドウに入るものの説明として、正しいものはどれか。",
+      "choices": [
+        "あなたと Claude の会話の文章だけが入る",
+        "ターミナルに表示された文字だけが入る",
+        "会話のほか、読んだファイルの中身やコマンドの出力なども入る",
+        "CLAUDE.md は入らず、別の場所で参照される"
+      ],
+      "answer": 2,
+      "explanation": "コンテキストウィンドウには、会話だけでなく、Claude が読んだファイルの中身、コマンドの出力、CLAUDE.md なども入ります。ターミナルに1行しか表示されない読み込みでも、中身はコンテキストに入っています。CLAUDE.md もセッションの開始時にコンテキストへ読み込まれます。",
+      "sources": [
+        {
+          "title": "コンテキストウィンドウを探索する",
+          "url": "https://code.claude.com/docs/ja/context-window"
+        },
+        {
+          "title": "Claude Code の仕組み",
+          "url": "https://code.claude.com/docs/ja/how-claude-code-works"
+        }
+      ]
+    },
+    {
+      "id": "c13-04-q2",
+      "sectionId": "c13-04",
+      "question": "コンテキストがいっぱいに近づいたとき、Claude Code はどうするか。",
+      "choices": [
+        "セッションを終了して、新しいセッションを促す",
+        "古いツールの出力を消し、必要に応じて会話を要約して空きを作る",
+        "以後の入力を受け付けなくなる",
+        "最初のメッセージから順に削除し、要約は作らない"
+      ],
+      "answer": 1,
+      "explanation": "Claude Code はいっぱいに近づくと自動圧縮を行い、古いツールの出力を消したうえで、必要なら会話を要約します。そのため作業は止まりません。古いメッセージを要約なしで捨てるわけではありませんが、要約で細かな指示が失われることはあります。",
+      "sources": [
+        {
+          "title": "Claude Code の仕組み",
+          "url": "https://code.claude.com/docs/ja/how-claude-code-works"
+        }
+      ]
+    },
+    {
+      "id": "c13-04-q3",
+      "sectionId": "c13-04",
+      "question": "自動圧縮のあとも確実に効かせたいルールは、どこに書くのがよいか。",
+      "choices": [
+        "会話の冒頭で一度だけ伝える",
+        "サブフォルダの CLAUDE.md に書く",
+        "`paths` を書いたルールファイルに書く",
+        "プロジェクト直下の CLAUDE.md に書く"
+      ],
+      "answer": 3,
+      "explanation": "プロジェクト直下の CLAUDE.md は、圧縮のあとにファイルから読み直されます。会話で伝えた指示は要約で失われることがあります。サブフォルダの CLAUDE.md や `paths` 付きのルールは、圧縮後は対象のファイルを再び扱うまで読み込まれません。",
+      "sources": [
+        {
+          "title": "コンテキストウィンドウを探索する",
+          "url": "https://code.claude.com/docs/ja/context-window"
+        }
+      ]
+    },
+    {
+      "id": "c13-05-q1",
+      "sectionId": "c13-05",
+      "question": "同じ作業を続けたいが、会話が長くなってきた。空きを作るのに適したコマンドはどれか。",
+      "choices": [
+        "`/compact`",
+        "`/clear`",
+        "`/init`",
+        "`/memory`"
+      ],
+      "answer": 0,
+      "explanation": "`/compact` は会話を要約して空きを作り、同じ会話を続けられます。`/clear` は新しい会話を始めるので、関係のない作業に移るときに使います。`/init` は CLAUDE.md の下書きを作り、`/memory` はメモリファイルを開くコマンドです。",
+      "sources": [
+        {
+          "title": "コマンド",
+          "url": "https://code.claude.com/docs/ja/commands"
+        }
+      ]
+    },
+    {
+      "id": "c13-05-q2",
+      "sectionId": "c13-05",
+      "question": "起動時に CLAUDE.md が読み込まれたかを確かめるには、どうするのがよいか。",
+      "choices": [
+        "`/clear` を実行して表示を見る",
+        "`/compact` を実行して結果を見る",
+        "`/context` を実行し、Memory files の欄を見る",
+        "`/btw` で CLAUDE.md の中身を尋ねる"
+      ],
+      "answer": 2,
+      "explanation": "`/context` はコンテキストの使用状況を内訳つきで表示し、Memory files の欄で起動時に読み込まれた CLAUDE.md を確認できます。`/clear` や `/compact` はコンテキストを空ける操作で、確認には使いません。`/btw` は履歴に残さずに質問するためのコマンドです。",
+      "sources": [
+        {
+          "title": "Claude があなたのプロジェクトを記憶する方法",
+          "url": "https://code.claude.com/docs/ja/memory"
+        }
+      ]
+    },
+    {
+      "id": "c13-05-q3",
+      "sectionId": "c13-05",
+      "question": "`/clear` の説明として正しいものはどれか。",
+      "choices": [
+        "会話を要約して、同じ会話を続ける",
+        "空のコンテキストで新しい会話を始める。前の会話は `/resume` で戻れる",
+        "CLAUDE.md を削除して初期状態に戻す",
+        "自動メモリの内容をすべて消去する"
+      ],
+      "answer": 1,
+      "explanation": "`/clear` は空のコンテキストで新しい会話を始めるコマンドで、前の会話は `/resume` で再開できます。CLAUDE.md などのプロジェクトの記憶は残ります。会話を要約して続けるのは `/compact` です。",
+      "sources": [
+        {
+          "title": "コマンド",
+          "url": "https://code.claude.com/docs/ja/commands"
+        }
+      ]
+    },
+    {
+      "id": "c13-06-q1",
+      "sectionId": "c13-06",
+      "question": "同じ問題について2回直してもらったが、まだ直らない。公式のベストプラクティスに沿った対応はどれか。",
+      "choices": [
+        "同じ指摘を、より強い言葉で繰り返す",
+        "これまでの経緯をすべて CLAUDE.md に書き足す",
+        "`/compact` を何度も実行してから続ける",
+        "`/clear` し、学んだことを盛り込んだ具体的な依頼で始め直す"
+      ],
+      "answer": 3,
+      "explanation": "何度も直すと、失敗したやり方がコンテキストに残って邪魔になります。`/clear` で区切り、分かったことを盛り込んだより具体的な依頼で始め直すほうがうまくいくとされています。経緯をすべて CLAUDE.md に書くと、CLAUDE.md が長くなりすぎる原因になります。",
+      "sources": [
+        {
+          "title": "Claude Code のベストプラクティス",
+          "url": "https://code.claude.com/docs/ja/best-practices"
+        }
+      ]
+    },
+    {
+      "id": "c13-06-q2",
+      "sectionId": "c13-06",
+      "question": "大きな調べ物をサブエージェントに任せる利点として、正しいものはどれか。",
+      "choices": [
+        "別のコンテキストで作業し要約だけが戻るので、メインのコンテキストを節約できる",
+        "CLAUDE.md を読まないので、作業が速くなる",
+        "読んだファイルの中身がすべてメインの会話にそのまま入る",
+        "コンテキストウィンドウの大きさに制限がなくなる"
+      ],
+      "answer": 0,
+      "explanation": "サブエージェントは自分のコンテキストウィンドウで作業し、メインの会話には結果の要約が戻ります。そのため、たくさんのファイルを読んでもメインのコンテキストは埋まりにくくなります。読んだファイルの中身がそのままメインに入るわけではなく、コンテキストの大きさが無制限になるわけでもありません。",
+      "sources": [
+        {
+          "title": "Claude Code のベストプラクティス",
+          "url": "https://code.claude.com/docs/ja/best-practices"
+        },
+        {
+          "title": "Claude Code の仕組み",
+          "url": "https://code.claude.com/docs/ja/how-claude-code-works"
+        }
+      ]
+    },
+    {
+      "id": "c13-06-q3",
+      "sectionId": "c13-06",
+      "question": "昨日のセッションの続きから作業したい。ターミナルでの方法として適切なものはどれか。",
+      "choices": [
+        "`/clear` を実行する",
+        "`/init` を実行する",
+        "`claude --continue` で起動する",
+        "`/compact` を実行する"
+      ],
+      "answer": 2,
+      "explanation": "`claude --continue` で起動すると直前の会話を再開でき、`claude --resume` なら一覧から選べます。`/clear` は新しい会話を始め、`/compact` は今の会話を要約するコマンドです。`/init` は CLAUDE.md の下書きを作るコマンドで、会話の再開には使いません。",
+      "sources": [
+        {
+          "title": "Claude Code のベストプラクティス",
+          "url": "https://code.claude.com/docs/ja/best-practices"
+        }
+      ]
+    }
+  ]
+}

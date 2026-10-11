@@ -1,1 +1,240 @@
-{ "schemaVersion": 1, "terms": [] }
+{
+  "schemaVersion": 1,
+  "terms": [
+    {
+      "id": "g-instructions-for-claude",
+      "term": "Instructions for Claude",
+      "reading": "いんすとらくしょんずふぉーくろーど",
+      "aliases": [
+        "Claudeの指示"
+      ],
+      "definition": "設定画面で書く、アカウント全体に効く Claude への指示。ここに書いた内容は、すべての会話で使われる。",
+      "related": [
+        "g-project-instructions"
+      ]
+    },
+    {
+      "id": "g-agents-md",
+      "term": "AGENTS.md",
+      "reading": "えーじぇんつえむでぃー",
+      "aliases": [],
+      "definition": "AI のコーディングエージェント向けに、プロジェクトの指示を書くファイル。CLAUDE.md や CLAUDE.local.md がないリポジトリでは（既定の設定の場合）、Claude Code はこれをプロジェクトの指示として読み込める。",
+      "related": [
+        "g-claude-md"
+      ]
+    },
+    {
+      "id": "g-claude-md",
+      "term": "CLAUDE.md",
+      "reading": "くろーどえむでぃー",
+      "aliases": [],
+      "definition": "Claude Code がセッションの開始時に読み込む、指示を書いた Markdown ファイル。テストの実行方法や独自の規約など、毎回伝えたいことを書いておく。",
+      "related": [
+        "g-claude-local-md",
+        "g-auto-memory",
+        "g-context-window"
+      ]
+    },
+    {
+      "id": "g-cowork",
+      "term": "Claude Cowork",
+      "reading": "くろーどこわーく",
+      "aliases": [
+        "Cowork"
+      ],
+      "definition": "Claude に作業を任せて進めてもらう機能。Cowork にもプロジェクトがあり、指示や資料、定期実行のタスクなどをまとめられる。",
+      "related": [
+        "g-project"
+      ]
+    },
+    {
+      "id": "g-claude-local-md",
+      "term": "CLAUDE.local.md",
+      "reading": "くろーどろーかるえむでぃー",
+      "aliases": [],
+      "definition": "プロジェクトのフォルダに置く、自分だけの指示を書くファイル。CLAUDE.md と一緒に読み込まれる。チームと共有しないよう .gitignore に入れておく。",
+      "related": [
+        "g-claude-md"
+      ]
+    },
+    {
+      "id": "g-context-window",
+      "term": "コンテキストウィンドウ",
+      "reading": "こんてきすとういんどう",
+      "aliases": [
+        "context window"
+      ],
+      "definition": "Claude が一度に参照できる情報の範囲。指示や会話のやり取りのほか、添付した資料、Claude Code では読んだファイルの中身・コマンドの出力・CLAUDE.md なども入り、作業が進むと埋まっていく。",
+      "related": [
+        "g-rag",
+        "g-compaction",
+        "g-subagent"
+      ]
+    },
+    {
+      "id": "g-subagent",
+      "term": "サブエージェント",
+      "reading": "さぶえーじぇんと",
+      "aliases": [
+        "subagent"
+      ],
+      "definition": "Claude が作業の一部を任せる、別のコンテキストウィンドウで動く助手。調べ物などをして、結果の要約だけを元の会話に返す。",
+      "related": [
+        "g-context-window"
+      ]
+    },
+    {
+      "id": "g-compaction",
+      "term": "自動圧縮",
+      "reading": "じどうあっしゅく",
+      "aliases": [
+        "compaction",
+        "コンパクション"
+      ],
+      "definition": "コンテキストウィンドウがいっぱいに近づいたとき、Claude Code が古いツールの出力を消したり会話を要約したりして空きを作る仕組み。`/compact` で手動でも行える。",
+      "related": [
+        "g-context-window"
+      ]
+    },
+    {
+      "id": "g-auto-memory",
+      "term": "自動メモリ",
+      "reading": "じどうめもり",
+      "aliases": [
+        "auto memory"
+      ],
+      "definition": "Claude が作業中に、ユーザーの修正や好みなどを自分でメモとして残す仕組み。プロジェクトごとに保存され、目次の MEMORY.md の先頭部分が各セッションの開始時に読み込まれる。",
+      "related": [
+        "g-claude-md",
+        "g-context-window"
+      ]
+    },
+    {
+      "id": "g-skill",
+      "term": "スキル",
+      "reading": "すきる",
+      "aliases": [
+        "Skills"
+      ],
+      "definition": "手順や専門知識をまとめて、Claude に特定の作業のやり方を加える仕組み。Claude アプリでも Claude Code でも使える。Claude Code では SKILL.md に書き、普段は短い説明だけが読み込まれ、使うときに全体が読み込まれる。",
+      "related": [
+        "g-instructions-for-claude",
+        "g-context-window"
+      ]
+    },
+    {
+      "id": "g-checkpoint",
+      "term": "チェックポイント",
+      "reading": "ちぇっくぽいんと",
+      "aliases": [
+        "checkpoint"
+      ],
+      "definition": "Claude がファイルを変更する前に自動で残す、元に戻すための記録。`/rewind` で会話やコードを以前の時点に戻せる。",
+      "related": []
+    },
+    {
+      "id": "g-path-scoped-rule",
+      "term": "パススコープのルール",
+      "reading": "ぱすすこーぷのるーる",
+      "aliases": [
+        "path-scoped rule"
+      ],
+      "definition": "`.claude/rules/` に置くルールのうち、先頭の `paths` で対象のファイルを指定したもの。一致するファイルを Claude が扱うときだけ読み込まれる。",
+      "related": [
+        "g-claude-md"
+      ]
+    },
+    {
+      "id": "g-hook",
+      "term": "フック",
+      "reading": "ふっく",
+      "aliases": [
+        "hooks"
+      ],
+      "definition": "ファイルの編集後など、決まったタイミングで自動的に実行される処理（主にシェルコマンド）。CLAUDE.md の指示と違い、Claude の判断にかかわらず必ず実行される。",
+      "related": [
+        "g-claude-md"
+      ]
+    },
+    {
+      "id": "g-project",
+      "term": "プロジェクト",
+      "reading": "ぷろじぇくと",
+      "aliases": [
+        "Projects"
+      ],
+      "definition": "Claude アプリの Projects 機能で作る、テーマごとの作業場所。チャットの履歴と、資料を置くプロジェクトナレッジ、プロジェクト指示をひとまとめにする。",
+      "related": [
+        "g-project-knowledge",
+        "g-project-instructions"
+      ]
+    },
+    {
+      "id": "g-project-instructions",
+      "term": "プロジェクト指示",
+      "reading": "ぷろじぇくとしじ",
+      "aliases": [
+        "project instructions"
+      ],
+      "definition": "そのプロジェクトの中のチャットだけに効く、Claude の振る舞いや答え方についての指示。役割、口調、作業の手順などを書く。",
+      "related": [
+        "g-project",
+        "g-instructions-for-claude"
+      ]
+    },
+    {
+      "id": "g-project-knowledge",
+      "term": "プロジェクトナレッジ",
+      "reading": "ぷろじぇくとなれっじ",
+      "aliases": [
+        "Project knowledge",
+        "ナレッジ"
+      ],
+      "definition": "プロジェクトに追加しておく資料の置き場。ここに入れた文書やコードは、そのプロジェクトの中のすべてのチャットで背景として使われる。",
+      "related": [
+        "g-project",
+        "g-rag"
+      ]
+    },
+    {
+      "id": "g-project-knowledge-search",
+      "term": "project knowledge search tool",
+      "reading": "ぷろじぇくとなれっじさーちつーる",
+      "aliases": [
+        "プロジェクトナレッジの検索ツール"
+      ],
+      "definition": "RAG が有効なプロジェクトで、Claude がナレッジから関係する部分を探すときに使う道具。使われている様子はチャットの画面に表示される。",
+      "related": [
+        "g-rag",
+        "g-project-knowledge"
+      ]
+    },
+    {
+      "id": "g-memory",
+      "term": "メモリ",
+      "reading": "めもり",
+      "aliases": [
+        "Memory"
+      ],
+      "definition": "Claude が過去のチャットの内容を覚えておき、あとの会話に生かす機能。プロジェクトごとに分かれていて、プロジェクト外のチャットとは混ざらない。",
+      "related": [
+        "g-project"
+      ]
+    },
+    {
+      "id": "g-rag",
+      "term": "RAG",
+      "reading": "らぐ",
+      "aliases": [
+        "検索拡張生成",
+        "Retrieval Augmented Generation"
+      ],
+      "definition": "資料をすべて読み込む代わりに、質問に関係する部分だけを検索して取り出し、それをもとに答える方式。有料プランのプロジェクトでは、ナレッジの量が多くなると自動で使われる。",
+      "related": [
+        "g-project-knowledge",
+        "g-context-window",
+        "g-project-knowledge-search"
+      ]
+    }
+  ]
+}

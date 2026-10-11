@@ -1,0 +1,962 @@
+{
+  "schemaVersion": 1,
+  "id": "c13",
+  "part": "c",
+  "order": 13,
+  "title": "第13章 CLAUDE.md とコンテキスト管理",
+  "summary": "Claude Code に毎回伝えたいことを書いておく CLAUDE.md と、Claude が一度に参照できる情報の入れ物であるコンテキストウィンドウの扱い方を学びます。どこに何を書けば効くのか、いっぱいになったらどうするのかを押さえ、長い作業でも安定した結果を得られるようにします。",
+  "minutes": 13,
+  "sections": [
+    {
+      "id": "c13-01",
+      "title": "13.1 CLAUDE.md の役割",
+      "points": [
+        "CLAUDE.md は、セッションの開始時に毎回読み込まれる指示のファイル",
+        "コードを読んでも分からないこと（実行コマンド、独自の規約など）を書くと効く",
+        "`/init` で下書きを作り、使いながら書き足して育てる",
+        "指示は強制ではないので、短く具体的に書く"
+      ],
+      "digest": {
+        "text": "Claude Code のセッションは毎回まっさらな状態で始まるため、毎回伝えたいことは CLAUDE.md に書いておきます。効くのは、テストのコマンドやチーム独自の決まりなど、コードからは推測できない情報です。`/init` を使うと Claude がコードを調べて下書きを作ってくれます。CLAUDE.md は守ってほしい指示であって強制ではないので、長すぎたり食い違ったりすると守られにくくなります。必ず毎回実行したい処理はフックで決めます。",
+        "keys": [
+          "CLAUDE.md は毎セッションの開始時に読み込まれる",
+          "コードから推測できないことを書く",
+          "`/init` で下書きを作る（既存なら改善案を出す）",
+          "長すぎ・あいまい・矛盾は守られにくい",
+          "必ず実行したい処理はフックで"
+        ]
+      },
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Claude Code のセッションは、毎回まっさらな状態から始まります。前回の会話の内容は引き継がれません。そこで、毎回伝えたいことを書いておくファイルが CLAUDE.md です。Markdown で書く普通のテキストファイルで、Claude Code はセッションの開始時にこれを読み込みます。"
+        },
+        {
+          "type": "p",
+          "text": "書くと効くのは、Claude がコードを読むだけでは分からないことです。たとえば、テストを実行するコマンド、チームで決めた命名のルール、手で触ってはいけないフォルダなどです。逆に、コードを読めば分かること、言語の一般的な書き方、頻繁に変わる情報は書かなくてかまいません。"
+        },
+        {
+          "type": "table",
+          "title": "例：架空の「レシピ帳アプリ」の場合",
+          "table": {
+            "header": [
+              "書く例",
+              "書かなくてよい例"
+            ],
+            "rows": [
+              [
+                "「起動は `make serve` で行う」（ほかの起動方法と迷いそうなとき）",
+                "「`src/` に画面のファイルがある」（フォルダを見れば分かる）"
+              ],
+              [
+                "「金額は円単位の整数で扱う」（このアプリ独自の決まり）",
+                "「関数名は分かりやすくする」（当たり前の心がけ）"
+              ],
+              [
+                "「`legacy/` は触らない」（触ると困るフォルダ）",
+                "「今週のリリース準備の進み具合」（すぐ変わる情報）"
+              ]
+            ]
+          }
+        },
+        {
+          "type": "h",
+          "text": "/init で下書きを作る"
+        },
+        {
+          "type": "steps",
+          "items": [
+            "練習用のプロジェクトのフォルダで、ターミナルから Claude Code を起動します。",
+            "`/init` を実行します。Claude がコードを調べ、見つけたコマンドや規約をもとに CLAUDE.md の下書きを作ります。",
+            "できたファイルを読み、Claude が自分では気づけないこと（チームの決まりなど）を書き足します。"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "すでに CLAUDE.md があるときに `/init` を実行すると、上書きはせず、改善案を示してくれます。書き足すときは、次のように見出しと箇条書きで短くまとめると、Claude が従いやすくなります。"
+        },
+        {
+          "type": "code",
+          "lang": "markdown",
+          "caption": "CLAUDE.md の例（練習用プロジェクト）",
+          "code": "# 開発の決まり\n- テストは `npm test` で実行する。コミットの前に必ず通す\n- 日付は `YYYY-MM-DD` 形式で表示する\n- `docs/generated/` は自動生成なので手で編集しない"
+        },
+        {
+          "type": "p",
+          "text": "「日付をきれいに表示する」より「日付は YYYY-MM-DD 形式」のように、守れたかどうかを確かめられる具体的な書き方が効果的です。"
+        },
+        {
+          "type": "note",
+          "kind": "pitfall",
+          "title": "書きすぎると効かなくなる",
+          "text": "CLAUDE.md は守ってほしい指示であって、強制される設定ではありません。長すぎたり、あいまいだったり、指示どうしが食い違ったりすると、守られにくくなります。その行がなくても Claude が正しく作業できるなら、不要な行は削りましょう。編集のたびに必ず実行したい処理などは、後の章で扱うフック（hooks）で決めます。"
+        },
+        {
+          "type": "note",
+          "kind": "tip",
+          "text": "同じ指摘を2回したら CLAUDE.md に書く、と決めておくと、内容が自然に育ちます。"
+        }
+      ],
+      "surfaces": [
+        "cli",
+        "desktop",
+        "ide"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "Claude があなたのプロジェクトを記憶する方法",
+          "url": "https://code.claude.com/docs/ja/memory"
+        },
+        {
+          "title": "Claude Code のベストプラクティス",
+          "url": "https://code.claude.com/docs/ja/best-practices"
+        },
+        {
+          "title": "Desktop application",
+          "url": "https://code.claude.com/docs/ja/desktop"
+        },
+        {
+          "title": "VS Code で Claude Code を使用する",
+          "url": "https://code.claude.com/docs/ja/vs-code"
+        }
+      ],
+      "checkedAt": "2026-10-12",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "tryIds": [],
+      "dictIds": []
+    },
+    {
+      "id": "c13-02",
+      "title": "13.2 CLAUDE.md の置き場所と読み込み順",
+      "points": [
+        "置く場所で効く範囲が変わる：管理者・ユーザー・プロジェクト・ローカル",
+        "起動したフォルダと親フォルダのものは起動時に、サブフォルダのものは必要になったときに読み込まれる",
+        "`@パス` でほかのファイルを取り込める",
+        "Claude 自身が書く自動メモリもある"
+      ],
+      "digest": {
+        "text": "CLAUDE.md は、組織の管理者が配るもの、自分用の `~/.claude/CLAUDE.md`、チームで共有するプロジェクトのもの、自分だけの CLAUDE.local.md の4種類に分けて置けます。見つかったファイルは上書きし合わずにすべて読み込まれ、範囲の広いものが先に並びます。起動したフォルダより下にある CLAUDE.md は、そのフォルダのファイルを扱ったときに読み込まれます。`@パス` で別のファイルを取り込めますが、読み込まれる量は減りません。このほか、Claude が自分でメモを残す自動メモリもあります。",
+        "keys": [
+          "管理者・ユーザー・プロジェクト・ローカルの4種類",
+          "CLAUDE.local.md は自分だけ（.gitignore に入れる）",
+          "親フォルダは起動時、サブフォルダは必要になったとき",
+          "`@パス` で取り込み。外部ファイルは承認が必要",
+          "自動メモリは `/memory` で確認・切り替え"
+        ]
+      },
+      "blocks": [
+        {
+          "type": "p",
+          "text": "CLAUDE.md は、置く場所によって効く範囲が変わります。主な置き場所は次の4つです。"
+        },
+        {
+          "type": "table",
+          "table": {
+            "header": [
+              "種類",
+              "場所",
+              "向いている内容"
+            ],
+            "rows": [
+              [
+                "管理者（組織）",
+                "OS ごとに決まったシステムの場所",
+                "会社全体のルール。IT 部門などが配布する"
+              ],
+              [
+                "ユーザー",
+                "`~/.claude/CLAUDE.md`",
+                "自分の好み。すべてのプロジェクトで有効"
+              ],
+              [
+                "プロジェクト",
+                "`./CLAUDE.md` または `./.claude/CLAUDE.md`",
+                "チームで共有する決まり。git で共有する"
+              ],
+              [
+                "ローカル",
+                "`./CLAUDE.local.md`",
+                "自分だけのプロジェクト用メモ。`.gitignore` に入れる"
+              ]
+            ]
+          }
+        },
+        {
+          "type": "figure",
+          "figure": {
+            "type": "layers",
+            "arrow": [
+              "先に読む",
+              "後に読む"
+            ],
+            "levels": [
+              {
+                "label": "管理者の CLAUDE.md",
+                "note": "組織全体"
+              },
+              {
+                "label": "ユーザーの CLAUDE.md",
+                "note": "~/.claude"
+              },
+              {
+                "label": "プロジェクトの CLAUDE.md",
+                "note": "チームで共有",
+                "hl": true
+              },
+              {
+                "label": "CLAUDE.local.md",
+                "note": "自分だけ"
+              }
+            ],
+            "caption": "見つかったファイルは上書きし合わず、すべて読み込まれます。範囲の広いものが先、作業場所に近いものが後に並びます"
+          }
+        },
+        {
+          "type": "p",
+          "text": "ほかのコーディングエージェント向けの AGENTS.md だけがあるリポジトリでは、Claude Code はそれをプロジェクトの指示として読み込めます。"
+        },
+        {
+          "type": "h",
+          "text": "親フォルダとサブフォルダ"
+        },
+        {
+          "type": "p",
+          "text": "Claude Code は、起動したフォルダと、その上にあるすべての親フォルダから CLAUDE.md と CLAUDE.local.md を探し、起動時に読み込みます。一方、起動したフォルダより下のサブフォルダにある CLAUDE.md は、起動時には読み込まれません。Claude がそのサブフォルダのファイルを読んだり編集したりした時点で読み込まれます。"
+        },
+        {
+          "type": "p",
+          "text": "内容が食い違っても、どちらかが自動的に優先されるわけではありません。両方が読み込まれ、Claude がどちらか一方に従うことがあります。ときどき見直して、矛盾を取り除きましょう。"
+        },
+        {
+          "type": "h",
+          "text": "ほかのファイルを取り込む"
+        },
+        {
+          "type": "p",
+          "text": "CLAUDE.md の中に `@パス` と書くと、そのファイルの内容を取り込めます。相対パスは、作業フォルダではなく、その CLAUDE.md がある場所が基準です。"
+        },
+        {
+          "type": "code",
+          "lang": "markdown",
+          "code": "# 参考資料\n- プロジェクトの概要は @README.md を参照\n- コミットの決まり: @docs/commit-rules.md"
+        },
+        {
+          "type": "note",
+          "kind": "caution",
+          "text": "プロジェクトの CLAUDE.md が作業フォルダの外のファイルを取り込もうとすると、最初に承認のダイアログが表示されます。ほかの人がコミットしたファイルから、知らないファイルを読み込まないための仕組みです。心当たりのないファイルは承認しないでください。"
+        },
+        {
+          "type": "note",
+          "kind": "tip",
+          "text": "取り込んだファイルも起動時に読み込まれます。ファイルを分けると整理はしやすくなりますが、読み込まれる量は減りません。"
+        },
+        {
+          "type": "h",
+          "text": "Claude が自分で書くメモ"
+        },
+        {
+          "type": "p",
+          "text": "Claude は作業中に、あなたの修正や好みを自動メモリ（auto memory）として残すことがあります。保存先はプロジェクトごとのフォルダ（`~/.claude/projects/<project>/memory/`）で、目次にあたる `MEMORY.md` の先頭部分がセッションの開始時に読み込まれます。ターミナルでは `/memory` を実行すると（VS Code 拡張機能では Customize の Memory や Instructions から）、CLAUDE.md の一覧を開いて編集したり、自動メモリのオン・オフを切り替えたりできます。"
+        }
+      ],
+      "surfaces": [
+        "cli",
+        "desktop",
+        "ide"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "Claude があなたのプロジェクトを記憶する方法",
+          "url": "https://code.claude.com/docs/ja/memory"
+        },
+        {
+          "title": "Desktop application",
+          "url": "https://code.claude.com/docs/ja/desktop"
+        },
+        {
+          "title": "VS Code で Claude Code を使用する",
+          "url": "https://code.claude.com/docs/ja/vs-code"
+        }
+      ],
+      "checkedAt": "2026-10-12",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "tryIds": [],
+      "dictIds": []
+    },
+    {
+      "id": "c13-03",
+      "title": "13.3 .claude/ ディレクトリの全体図",
+      "points": [
+        "プロジェクトの `.claude/` はそのプロジェクトだけ、`~/.claude/` はすべてのプロジェクトに効く",
+        "設定・ルール・スキル・サブエージェントなどの置き場所が決まっている",
+        "`.claude/rules/` で指示を話題ごとに分け、`paths` で対象のファイルを絞れる"
+      ],
+      "digest": {
+        "text": "Claude Code の設定や拡張は、プロジェクトの `.claude/` と、ホームフォルダの `~/.claude/` にまとめて置きます。チームで共有する settings.json と、自分だけの settings.local.json を分けて使うのが基本です。スキルやサブエージェントにもそれぞれ決まったフォルダがあります。`.claude/rules/` に話題ごとのルールを置き、`paths` を付けると、一致するファイルを扱うときだけ読み込まれるパススコープのルールになります。",
+        "keys": [
+          "`.claude/` はプロジェクト用、`~/.claude/` は全プロジェクト用",
+          "settings.json は共有、settings.local.json は自分用",
+          "skills/・agents/・rules/ などに置き場所がある",
+          "`paths` 付きのルールは一致するファイルを扱うときだけ読み込まれる"
+        ]
+      },
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Claude Code の設定や拡張は、プロジェクトの `.claude/` フォルダと、ホームフォルダの `~/.claude/` フォルダにまとめて置きます。プロジェクト側はそのプロジェクトだけに、ホーム側はすべてのプロジェクトに効きます。それぞれの詳しい使い方は後の章で扱います。ここでは「何がどこにあるか」の地図を持っておきましょう。"
+        },
+        {
+          "type": "figure",
+          "figure": {
+            "type": "dir",
+            "tree": [
+              {
+                "name": "my-app/",
+                "children": [
+                  {
+                    "name": "CLAUDE.md",
+                    "note": "チームの指示",
+                    "hl": true
+                  },
+                  {
+                    "name": "CLAUDE.local.md",
+                    "note": "自分だけの指示"
+                  },
+                  {
+                    "name": ".mcp.json",
+                    "note": "共有する MCP"
+                  },
+                  {
+                    "name": ".claude/",
+                    "children": [
+                      {
+                        "name": "settings.json",
+                        "note": "権限・フックなど"
+                      },
+                      {
+                        "name": "settings.local.json",
+                        "note": "自分用の上書き"
+                      },
+                      {
+                        "name": "rules/",
+                        "note": "話題別の指示"
+                      },
+                      {
+                        "name": "skills/",
+                        "note": "スキル"
+                      },
+                      {
+                        "name": "agents/",
+                        "note": "サブエージェント"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "~/.claude/",
+                "children": [
+                  {
+                    "name": "CLAUDE.md",
+                    "note": "全プロジェクト共通",
+                    "hl": true
+                  },
+                  {
+                    "name": "settings.json",
+                    "note": "全プロジェクト共通の設定"
+                  },
+                  {
+                    "name": "rules/",
+                    "note": "自分のルール"
+                  },
+                  {
+                    "name": "skills/",
+                    "note": "自分のスキル"
+                  },
+                  {
+                    "name": "projects/",
+                    "note": "自動メモリなど"
+                  }
+                ]
+              }
+            ],
+            "caption": "主なファイルとフォルダだけを示した簡略図です"
+          }
+        },
+        {
+          "type": "table",
+          "title": "やりたいことと置き場所",
+          "table": {
+            "header": [
+              "やりたいこと",
+              "置き場所"
+            ],
+            "rows": [
+              [
+                "プロジェクトの決まりを伝える",
+                "CLAUDE.md"
+              ],
+              [
+                "許可するコマンドやフックを決める",
+                "`settings.json`"
+              ],
+              [
+                "自分だけの設定を git に入れない",
+                "`settings.local.json`"
+              ],
+              [
+                "`/名前` で呼び出す手順を作る",
+                "`skills/<名前>/SKILL.md`"
+              ],
+              [
+                "専門の作業をする助手を定義する",
+                "`agents/*.md`"
+              ],
+              [
+                "話題ごとに指示を分ける",
+                "`rules/*.md`"
+              ]
+            ]
+          }
+        },
+        {
+          "type": "p",
+          "text": "プロジェクト側の `.claude/` の中身は、多くがチームで共有するために git にコミットするものです。一方、`settings.local.json` や CLAUDE.local.md は自分だけのものとして扱います。ホーム側の `~/.claude/` には、自分の設定のほか、Claude Code が作業中に書き込むデータ（会話の記録など）も保存されます。会話の記録は暗号化されないため、Claude に秘密情報を含むファイルを読ませないようにしましょう。"
+        },
+        {
+          "type": "h",
+          "text": "rules/ で指示を分ける"
+        },
+        {
+          "type": "p",
+          "text": "プロジェクトが大きくなったら、`.claude/rules/` に話題ごとの Markdown ファイルを置いて、指示を分けられます。何も付けないルールは、プロジェクトの CLAUDE.md と同じように起動時に読み込まれます。先頭に `paths` を書いたルールはパススコープのルール（path-scoped rule）になり、一致するファイルを Claude が読んだり編集したりするときだけ読み込まれます。"
+        },
+        {
+          "type": "code",
+          "lang": "markdown",
+          "caption": ".claude/rules/api.md の例",
+          "code": "---\npaths:\n  - \"src/api/**/*.ts\"\n---\n# API のルール\n- 受け取った値は必ず検証する\n- エラーは決められた形式で返す"
+        },
+        {
+          "type": "note",
+          "kind": "tip",
+          "text": "`commands/` に置く1ファイルのコマンドと `skills/` は、今では同じ仕組みです。新しく作るなら、補助ファイルもまとめて置ける `skills/` が勧められています。"
+        },
+        {
+          "type": "note",
+          "kind": "caution",
+          "text": "`settings.json` はチームで共有されます。自分だけに効かせたい設定は `settings.local.json` に分けましょう。Claude Code がこのファイルに設定を保存するときは、git の管理対象から外されます。"
+        }
+      ],
+      "surfaces": [
+        "cli",
+        "desktop",
+        "ide"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": ".claude ディレクトリを探索する",
+          "url": "https://code.claude.com/docs/ja/claude-directory"
+        },
+        {
+          "title": "Claude があなたのプロジェクトを記憶する方法",
+          "url": "https://code.claude.com/docs/ja/memory"
+        },
+        {
+          "title": "Desktop application",
+          "url": "https://code.claude.com/docs/ja/desktop"
+        },
+        {
+          "title": "VS Code で Claude Code を使用する",
+          "url": "https://code.claude.com/docs/ja/vs-code"
+        }
+      ],
+      "checkedAt": "2026-10-12",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "tryIds": [],
+      "dictIds": []
+    },
+    {
+      "id": "c13-04",
+      "title": "13.4 コンテキストウィンドウとは",
+      "points": [
+        "コンテキストウィンドウは、Claude がいま参照できる情報の入れ物",
+        "会話だけでなく、読んだファイルの中身やコマンドの出力も入る",
+        "いっぱいに近づくと自動圧縮が働くが、細かな指示は失われることがある"
+      ],
+      "digest": {
+        "text": "コンテキストウィンドウには、会話のほか、Claude が読んだファイルの中身、コマンドの出力、CLAUDE.md などがすべて入ります。何も入力しないうちから、システムの指示や CLAUDE.md、ツール名などが読み込まれています。作業が進むと空きが減り、いっぱいに近づくと Claude Code が自動圧縮で古い出力を消したり会話を要約したりします。要約で細かな指示が抜けることがあるので、ずっと守ってほしいルールはプロジェクト直下の CLAUDE.md に書きます。",
+        "keys": [
+          "会話・ファイルの中身・コマンド出力・CLAUDE.md が入る",
+          "画面に1行でも、中身はコンテキストに入っている",
+          "いっぱいに近づくと自動圧縮が働く",
+          "直下の CLAUDE.md は圧縮後に読み直される"
+        ]
+      },
+      "blocks": [
+        {
+          "type": "p",
+          "text": "コンテキストウィンドウ（context window）は、Claude がいま参照できる情報の入れ物です。会話のやり取りだけでなく、Claude が読んだファイルの中身、実行したコマンドの出力、CLAUDE.md なども、すべてここに入ります。"
+        },
+        {
+          "type": "h",
+          "text": "何が入っているか"
+        },
+        {
+          "type": "p",
+          "text": "あなたが何か入力する前から、いくつかの情報が読み込まれています。システムの指示、CLAUDE.md、自動メモリ、使える MCP ツールの名前、スキルの短い説明などです。作業が進むと、ファイルの読み込みやコマンドの出力が次々に加わります。ターミナルには「ファイルを読んだ」と1行しか表示されなくても、中身はコンテキストに入っています。"
+        },
+        {
+          "type": "p",
+          "text": "セッションを新しく始めると、コンテキストは前の会話の履歴を含まない状態から始まります。そこへ CLAUDE.md や自動メモリがあらためて読み込まれます。セッションをまたいで覚えておいてほしいことを CLAUDE.md に書くのは、このためです。"
+        },
+        {
+          "type": "figure",
+          "figure": {
+            "type": "seq",
+            "rows": [
+              {
+                "title": "開始時",
+                "cells": [
+                  {
+                    "text": "システム",
+                    "kind": "dim"
+                  },
+                  {
+                    "text": "CLAUDE.md",
+                    "kind": "hl"
+                  },
+                  {
+                    "text": "自動メモリ"
+                  },
+                  {
+                    "text": "ツール名など"
+                  },
+                  {
+                    "text": "空き",
+                    "kind": "empty"
+                  },
+                  {
+                    "text": "空き",
+                    "kind": "empty"
+                  }
+                ]
+              },
+              {
+                "title": "作業中",
+                "cells": [
+                  {
+                    "text": "開始時の内容",
+                    "kind": "dim"
+                  },
+                  {
+                    "text": "会話"
+                  },
+                  {
+                    "text": "ファイルの中身",
+                    "kind": "hl"
+                  },
+                  {
+                    "text": "コマンド出力",
+                    "kind": "hl"
+                  },
+                  {
+                    "text": "会話"
+                  },
+                  {
+                    "text": "空き",
+                    "kind": "empty"
+                  }
+                ]
+              }
+            ],
+            "caption": "作業を進めるほど、読み込んだファイルや出力で空きが減っていきます（イメージ）"
+          }
+        },
+        {
+          "type": "h",
+          "text": "いっぱいに近づくと"
+        },
+        {
+          "type": "p",
+          "text": "コンテキストがいっぱいに近づくと、Claude Code は自動圧縮（compaction）を行います。古いツールの出力を消し、必要に応じて会話を要約して、空きを作ります。そのため、いっぱいになっても作業が止まるわけではありません。"
+        },
+        {
+          "type": "p",
+          "text": "ただし要約なので、細かな内容は失われることがあります。何をしているかという大筋は引き継がれても、序盤に一度だけ伝えた注文は要約からこぼれることがあります。また、コンテキストが埋まるほど、Claude は前の指示を忘れたり、間違いが増えたりしやすくなります。"
+        },
+        {
+          "type": "note",
+          "kind": "tip",
+          "text": "ずっと守ってほしいルールは、会話で伝えるのではなく CLAUDE.md に書きます。プロジェクト直下の CLAUDE.md は、自動圧縮のあとにもファイルから読み直されます。"
+        },
+        {
+          "type": "note",
+          "kind": "pitfall",
+          "text": "サブフォルダの CLAUDE.md やパススコープのルールは、圧縮のあと、対象のファイルを再び扱うまで読み込まれません。圧縮をまたいで必ず効かせたい指示は、プロジェクト直下の CLAUDE.md に置きましょう。"
+        }
+      ],
+      "surfaces": [
+        "cli",
+        "desktop",
+        "ide"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "コンテキストウィンドウを探索する",
+          "url": "https://code.claude.com/docs/ja/context-window"
+        },
+        {
+          "title": "Claude Code の仕組み",
+          "url": "https://code.claude.com/docs/ja/how-claude-code-works"
+        },
+        {
+          "title": "Claude Code のベストプラクティス",
+          "url": "https://code.claude.com/docs/ja/best-practices"
+        },
+        {
+          "title": "Desktop application",
+          "url": "https://code.claude.com/docs/ja/desktop"
+        },
+        {
+          "title": "VS Code で Claude Code を使用する",
+          "url": "https://code.claude.com/docs/ja/vs-code"
+        }
+      ],
+      "checkedAt": "2026-10-12",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "tryIds": [],
+      "dictIds": []
+    },
+    {
+      "id": "c13-05",
+      "title": "13.5 コンテキストを確認する・空ける",
+      "points": [
+        "`/context` で、何がコンテキストを使っているかを確かめる",
+        "同じ作業を続けるなら `/compact`、別の作業に移るなら `/clear`",
+        "`/compact` に指示を付けると、要約で残す内容を指定できる"
+      ],
+      "digest": {
+        "text": "コンテキストの状態は `/context` で確かめられ、Memory files の欄で CLAUDE.md が読み込まれたかも分かります。同じ作業を続けたいけれど会話が長くなったときは `/compact` で要約して空きを作り、後ろに指示を付けると残す内容を選べます。関係のない作業に移るときは `/clear` で新しい会話を始めます。CLAUDE.md などのプロジェクトの記憶は残り、前の会話は `/resume` で戻れます。ちょっとした質問には `/btw` が使えます。",
+        "keys": [
+          "`/context`：使用状況と Memory files を確認",
+          "`/compact [指示]`：要約して同じ会話を続ける",
+          "`/clear`：新しい会話を始める（前の会話は `/resume`）",
+          "`/rewind` で一部だけ要約もできる",
+          "`/btw` の答えは履歴に入らない"
+        ]
+      },
+      "blocks": [
+        {
+          "type": "p",
+          "text": "コンテキストの状態は自分で確かめ、必要なら空けられます。まず覚えたいのは次の3つのコマンドです。"
+        },
+        {
+          "type": "table",
+          "table": {
+            "header": [
+              "コマンド",
+              "すること",
+              "使う場面"
+            ],
+            "rows": [
+              [
+                "`/context`",
+                "使用状況を色付きのグリッドで表示する",
+                "何が場所を取っているか知りたい"
+              ],
+              [
+                "`/compact [指示]`",
+                "ここまでの会話を要約して空ける",
+                "同じ作業を続けたいが長くなった"
+              ],
+              [
+                "`/clear`",
+                "空のコンテキストで新しい会話を始める",
+                "関係のない別の作業に移る"
+              ]
+            ]
+          }
+        },
+        {
+          "type": "figure",
+          "figure": {
+            "type": "terminal",
+            "title": "Claude Code",
+            "lines": [
+              {
+                "kind": "prompt",
+                "text": "/context"
+              },
+              {
+                "kind": "dim",
+                "text": "（使用状況のグリッドと内訳が表示される）"
+              },
+              {
+                "kind": "hl",
+                "text": "Memory files: CLAUDE.md"
+              },
+              {
+                "kind": "prompt",
+                "text": "/compact ログイン修正の経緯を残して"
+              },
+              {
+                "kind": "ok",
+                "text": "Conversation compacted"
+              }
+            ],
+            "caption": "簡略化した表示例です。実際の表示とは異なります"
+          }
+        },
+        {
+          "type": "h",
+          "text": "/context で確かめる"
+        },
+        {
+          "type": "p",
+          "text": "`/context` は、コンテキストの使い方を内訳つきで表示し、減らすためのヒントも示します。Memory files の欄を見ると、起動時に読み込まれた CLAUDE.md を確認できます。書いたはずの指示が効かないときは、まずここに載っているかを確かめましょう。会話がコンテキストウィンドウを超えてしまったときは、どれだけ超えているかと、空けるためのコマンドが警告として表示されます。"
+        },
+        {
+          "type": "h",
+          "text": "/compact と /clear の使い分け"
+        },
+        {
+          "type": "p",
+          "text": "`/compact` は、会話を要約に置き換えて空きを作ります。同じ会話を続けられるのが特徴です。後ろに指示を付けると、要約で何を残すかを指定できます。"
+        },
+        {
+          "type": "code",
+          "lang": "prompt",
+          "code": "/compact 変更したファイルの一覧と、テストの実行方法を残して"
+        },
+        {
+          "type": "p",
+          "text": "`/clear` は、会話をまっさらにして新しく始めます。CLAUDE.md などのプロジェクトの記憶は残ります。前の会話は `/resume` で呼び戻せます。"
+        },
+        {
+          "type": "p",
+          "text": "自動圧縮のたびに残してほしいことは、CLAUDE.md に「Compact Instructions」という見出しを作って書いておく方法もあります。デスクトップアプリでは入力欄の横の使用量の表示、VS Code 拡張機能ではプロンプト欄の表示でコンテキストの使用量を確かめられ、`/compact` と入力して早めに要約することもできます。"
+        },
+        {
+          "type": "note",
+          "kind": "tip",
+          "text": "会話の一部だけを要約したいときは、`/rewind`（または入力欄が空のときに `Esc` を2回）でメッセージを選び、Summarize from here か Summarize up to here を選びます。`/rewind` は、コードや会話をチェックポイントまで戻すときにも使います。"
+        },
+        {
+          "type": "note",
+          "kind": "tip",
+          "text": "作業と関係のないちょっとした質問は `/btw` で聞くと、答えが会話の履歴に入らず、コンテキストを増やしません。"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "コマンド",
+          "url": "https://code.claude.com/docs/ja/commands"
+        },
+        {
+          "title": "コンテキストウィンドウを探索する",
+          "url": "https://code.claude.com/docs/ja/context-window"
+        },
+        {
+          "title": "Claude Code の仕組み",
+          "url": "https://code.claude.com/docs/ja/how-claude-code-works"
+        },
+        {
+          "title": "VS Code で Claude Code を使用する",
+          "url": "https://code.claude.com/docs/ja/vs-code"
+        }
+      ],
+      "checkedAt": "2026-10-12",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "tryIds": [],
+      "dictIds": []
+    },
+    {
+      "id": "c13-06",
+      "title": "13.6 長い作業を上手に進めるコツ",
+      "points": [
+        "関係のない作業は `/clear` で区切り、セッションを分ける",
+        "次回も必要な決まりは CLAUDE.md に残す",
+        "大きな調べ物はサブエージェントに任せて、メインのコンテキストを空けておく"
+      ],
+      "digest": {
+        "text": "コンテキストは Claude Code でいちばん大切な資源です。関係のない作業を1つの会話に詰め込まず、作業が変わったら `/clear` で区切ります。同じことで何度直しても直らないときも、学んだことを盛り込んだ依頼で始め直すほうがうまくいきます。次回も必要な決まりは CLAUDE.md に残し、たくさんのファイルを読む調べ物はサブエージェントに任せます。何日かにまたがる作業は `/rename` で名前を付け、`claude --continue` や `claude --resume` で再開します。",
+        "keys": [
+          "作業が変わったら `/clear` で区切る",
+          "直らないときは具体的な依頼で始め直す",
+          "残したい決まりは CLAUDE.md へ",
+          "調べ物はサブエージェントに任せる",
+          "`/rename` で名前を付け、`--continue`・`--resume` で再開"
+        ]
+      },
+      "blocks": [
+        {
+          "type": "p",
+          "text": "コンテキストは、Claude Code を使ううえでいちばん大切な資源です。長い作業ほど、何をコンテキストに入れ、何を外に出すかを意識すると、結果が安定します。次の依頼をする前に、流れ図のように考えてみましょう。"
+        },
+        {
+          "type": "figure",
+          "figure": {
+            "type": "flow",
+            "steps": [
+              {
+                "id": "a",
+                "label": "次の依頼",
+                "kind": "terminal",
+                "row": 0
+              },
+              {
+                "id": "b",
+                "label": "前の作業の続き？",
+                "kind": "decision",
+                "row": 1,
+                "next": [
+                  {
+                    "to": "c",
+                    "label": "はい"
+                  },
+                  {
+                    "to": "d",
+                    "label": "いいえ"
+                  }
+                ]
+              },
+              {
+                "id": "c",
+                "label": "調べ物が多い？",
+                "kind": "decision",
+                "row": 2,
+                "next": [
+                  {
+                    "to": "e",
+                    "label": "はい"
+                  },
+                  {
+                    "to": "f",
+                    "label": "いいえ"
+                  }
+                ]
+              },
+              {
+                "id": "d",
+                "label": "/clear で区切る",
+                "col": 1,
+                "row": 1,
+                "next": []
+              },
+              {
+                "id": "e",
+                "label": "サブエージェントへ",
+                "col": -1,
+                "row": 3,
+                "next": []
+              },
+              {
+                "id": "f",
+                "label": "そのまま続ける",
+                "col": 0,
+                "row": 3
+              }
+            ],
+            "caption": "依頼の前に、コンテキストをどう使うかを判断する流れ（目安）"
+          }
+        },
+        {
+          "type": "h",
+          "text": "セッションを分ける"
+        },
+        {
+          "type": "p",
+          "text": "関係のない作業を1つの会話に詰め込むと、コンテキストが無関係な情報でいっぱいになります。作業が変わったら `/clear` で区切りましょう。同じことを2回直しても直らないときも、失敗したやり方がコンテキストに残っています。学んだことを盛り込んだ、より具体的な依頼で始め直すほうが、うまくいくことが多いです。"
+        },
+        {
+          "type": "h",
+          "text": "要点を CLAUDE.md に残す"
+        },
+        {
+          "type": "p",
+          "text": "会話で伝えただけの指示は、`/clear` や自動圧縮で消えることがあります。次のセッションでも必要な決まりは CLAUDE.md に書いておきます。「これを CLAUDE.md に追加して」と頼めば、Claude に書き足してもらうこともできます。"
+        },
+        {
+          "type": "h",
+          "text": "調べ物はサブエージェントに任せる"
+        },
+        {
+          "type": "p",
+          "text": "コードベースの調査では多くのファイルを読むため、コンテキストがすぐに埋まります。サブエージェント（subagent）は別のコンテキストウィンドウで作業し、結果の要約だけを返します。大きな調べ物を任せれば、メインの会話を実装のために空けておけます。"
+        },
+        {
+          "type": "code",
+          "lang": "prompt",
+          "code": "サブエージェントを使って、このプロジェクトでログイン状態をどう管理しているか調べ、要点だけ教えて"
+        },
+        {
+          "type": "h",
+          "text": "続きは名前を付けて再開する"
+        },
+        {
+          "type": "p",
+          "text": "作業が何日かにまたがるときは、`/rename` でセッションに分かりやすい名前を付けておきます。次回は `claude --continue` で直前の会話を、`claude --resume` で一覧から選んだ会話を再開できます。"
+        },
+        {
+          "type": "note",
+          "kind": "pitfall",
+          "text": "範囲を決めずに「調べて」と頼むと、Claude が大量のファイルを読んで、コンテキストを使い切ってしまうことがあります。調べる範囲を絞るか、サブエージェントに任せましょう。"
+        },
+        {
+          "type": "note",
+          "kind": "tip",
+          "text": "いつも区切ればよいわけではありません。1つの難しい問題に深く取り組んでいて、これまでの経緯が役に立つときは、会話を続けるほうがよい場合もあります。"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "Claude Code のベストプラクティス",
+          "url": "https://code.claude.com/docs/ja/best-practices"
+        },
+        {
+          "title": "Claude Code の仕組み",
+          "url": "https://code.claude.com/docs/ja/how-claude-code-works"
+        },
+        {
+          "title": "コマンド",
+          "url": "https://code.claude.com/docs/ja/commands"
+        }
+      ],
+      "checkedAt": "2026-10-12",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "tryIds": [],
+      "dictIds": []
+    }
+  ]
+}

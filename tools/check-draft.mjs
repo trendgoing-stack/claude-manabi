@@ -30,8 +30,12 @@ input.swText = null;
 const r = validateAll(input);
 const errors = r.errors.filter((e) => !(e.where === 'meta.json' && e.msg.startsWith('counts.')));
 const ch = draft.sections ?? [];
-const chars = ch.flatMap((s) => s.blocks ?? []).filter((b) => b.type !== 'figure').reduce((n, b) => n + JSON.stringify(b).length, 0);
-console.log(`${id}: ${ch.length}節・ブロックの文字数 約${chars}・図 ${ch.flatMap((s) => s.blocks ?? []).filter((b) => b.type === 'figure').length}個・クイズ ${quiz?.questions?.length ?? 0}問・追加用語 ${terms.terms?.length ?? 0}語`);
+// 本文の字数：text・items・answer・code・表のセル（図は数えない）
+const bodyChars = (b) => [b.text, b.answer, b.code, ...(b.items ?? []), ...(b.table?.rows?.flat() ?? [])].filter(Boolean).join('').length;
+const chars = ch.flatMap((s) => s.blocks ?? []).reduce((n, b) => n + bodyChars(b), 0);
+const minutes = Math.ceil(chars / 500);
+if (draft.minutes !== minutes) console.log(`注意 minutes（${draft.minutes}）が本文の字数から求めた値（${minutes}）と違う`);
+console.log(`${id}: ${ch.length}節・本文 約${chars}字（読む時間 約${minutes}分）・図 ${ch.flatMap((s) => s.blocks ?? []).filter((b) => b.type === 'figure').length}個・クイズ ${quiz?.questions?.length ?? 0}問・追加用語 ${terms.terms?.length ?? 0}語`);
 for (const w of r.warnings) console.log(`警告 ${w.where}: ${w.msg}`);
 for (const e of errors) console.log(`エラー ${e.where}: ${e.msg}`);
 console.log(errors.length ? `エラー ${errors.length}件` : 'OK');
