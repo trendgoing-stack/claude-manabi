@@ -177,7 +177,30 @@
 
 ## 7. 辞典・課題
 
-`js/types.js` の `DictItem`・`TryTask` のとおり（フェーズ3で作成）。辞典の id は種類を接頭辞にする（`slash-compact`、`key-shift-tab`、`flag-resume`、`set-permissions-allow`、`path-claude-settings-json`）。課題の id は `try-<章番号2桁>-<連番>`。
+### 辞典（`data/dict/<種類>.json`）
+
+`{ "schemaVersion": 1, "kind": "<種類>", "items": [ … ] }`。項目の形式は `js/types.js` の `DictItem`、書き方は `tools/DICT_BRIEF.md`。
+
+- id は種類を接頭辞にする：`slash-compact`、`key-shift-tab`、`flag-resume`（サブコマンドは `flag-cmd-mcp-add`）、`set-permissions-allow`、`path-claude-settings-json`（`~` の付くパスは `path-home-…`）
+- キー操作で Windows と Mac が違うものだけ `os: { win, mac }`。`name` は Windows／Linux の表記
+- `summary`・`details` では `[[用語]]` が使える（一覧と暗記カードでは記号を外して表示）
+- `sectionIds` を書けば、`node tools/merge-extra.mjs` が節の `dictIds` を自動で作る
+- CLI オプションは手元の CLI の `--help` の出力（`work/cli-help.txt`）に無いものを載せない
+
+### 課題（`data/try.json`）
+
+`{ "schemaVersion": 1, "tasks": [ … ] }`。形式は `js/types.js` の `TryTask`、書き方は `tools/TRY_BRIEF.md`。
+
+- id は `try-<章番号2桁>-<連番2桁>`。すべて練習用のフォルダ・リポジトリ・チャットで行う前提で書く
+- `sectionIds` から節の `tryIds` を自動で作る（`merge-extra.mjs`）
+
+### 作成と取り込み
+
+`node tools/dict-prep.mjs <種類>...` → 作成（Opus・DICT_BRIEF）→ `node tools/check-dict.mjs <種類>` → 検査（別の Opus）→ 反映（Sonnet）→ `node tools/merge-extra.mjs dict <種類>...`。課題は TRY_BRIEF → `check-try.mjs` → 検査 → 反映 → `merge-extra.mjs try`。
+
+### `[[ ]]` を使えない欄
+
+節の題名・`points`、クイズの問題文・選択肢、用語集の定義（`related` でつなぐ）、図の中。validate がエラーにする。
 
 ## 8. 情報源のルール
 

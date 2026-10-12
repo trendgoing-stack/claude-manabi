@@ -162,7 +162,14 @@
       "tryIds": [
         "try-15-01"
       ],
-      "dictIds": []
+      "dictIds": [
+        "flag-settings",
+        "set-env",
+        "path-claude-settings-json",
+        "path-claude-settings-local-json",
+        "path-home-claude-settings-json",
+        "path-home-claude-json"
+      ]
     },
     {
       "id": "c15-02",
@@ -305,7 +312,15 @@
         "slash-config",
         "slash-status",
         "slash-theme",
-        "slash-update-config"
+        "slash-update-config",
+        "flag-safe-mode",
+        "flag-settings",
+        "flag-cmd-doctor",
+        "set-language",
+        "set-env",
+        "set-attribution",
+        "set-theme",
+        "path-home-claude-settings-json"
       ]
     },
     {
@@ -450,7 +465,12 @@
         "slash-effort",
         "key-alt-p",
         "key-alt-t",
-        "key-alt-o"
+        "key-alt-o",
+        "flag-model",
+        "flag-effort",
+        "set-model",
+        "set-effortlevel",
+        "set-alwaysthinkingenabled"
       ]
     },
     {
@@ -552,7 +572,8 @@
       },
       "tryIds": [],
       "dictIds": [
-        "slash-output-style"
+        "slash-output-style",
+        "set-outputstyle"
       ]
     },
     {
@@ -688,7 +709,8 @@
       },
       "tryIds": [],
       "dictIds": [
-        "slash-statusline"
+        "slash-statusline",
+        "set-statusline"
       ]
     },
     {
@@ -793,7 +815,10 @@
         "slash-terminal-setup",
         "key-shift-enter",
         "key-ctrl-j",
-        "key-ctrl-g"
+        "key-ctrl-g",
+        "set-theme",
+        "set-editormode",
+        "path-home-claude-keybindings-json"
       ]
     }
   ]

@@ -448,7 +448,10 @@
         "try-11-01"
       ],
       "dictIds": [
-        "slash-doctor"
+        "slash-doctor",
+        "flag-version",
+        "flag-cmd-update",
+        "flag-cmd-doctor"
       ]
     },
     {
@@ -562,7 +565,8 @@
       },
       "tryIds": [],
       "dictIds": [
-        "slash-status"
+        "slash-status",
+        "path-home-claude-credentials-json"
       ]
     },
     {

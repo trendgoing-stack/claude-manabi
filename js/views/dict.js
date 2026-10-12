@@ -7,7 +7,7 @@ import { app } from '../state.js';
 import { learnNav } from './learn.js';
 import { search, debounce } from '../search.js';
 import { linked } from '../render/lesson.js';
-import { richText } from '../render/text.js';
+import { richText, plainText } from '../render/text.js';
 import { renderCodeBlock } from '../render/code.js';
 import { metaBadges, staleNotice, sourceList } from '../render/badges.js';
 import { findSection, sectionHref } from '../parts.js';
@@ -45,7 +45,7 @@ function listView(root) {
         ? h('section', { class: 'card' }, h('ul', { class: 'link-list' }, hits.slice(0, MAX).map((d) =>
             h('li', null, h('a', { href: `#/dict/${encodeURIComponent(d.id)}` },
               h('span', { class: 'term-name mono' }, d.kind === 'key' ? keyLabel(d) : d.name),
-              h('span', { class: 'muted small link-title' }, `${DICT_KINDS[d.kind].short}・${d.summary}`))))))
+              h('span', { class: 'muted small link-title' }, `${DICT_KINDS[d.kind].short}・${plainText(d.summary)}`))))))
         : h('p', { class: 'muted' }, app.data.dict.length ? '該当する項目がありません。' : '辞典を読み込めませんでした。'),
     );
   };
@@ -71,7 +71,7 @@ function itemView(root, id) {
     metaBadges(d),
     staleNotice(d),
     d.syntax ? h('p', null, h('code', { class: 'inline' }, d.syntax)) : null,
-    h('section', { class: 'card' }, h('p', { class: 'term-def' }, richText(d.summary))),
+    h('section', { class: 'card' }, h('p', { class: 'term-def' }, linked(d.summary))),
     h('div', { class: 'lesson-body' }, h('p', null, linked(d.details))),
     d.examples?.length
       ? h('section', { class: 'related' }, h('h2', null, '使い方の例'), h('div', { class: 'lesson-body' }, d.examples.map((ex) => [renderCodeBlock({ code: ex.code, caption: ex.desc })])))

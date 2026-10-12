@@ -1,0 +1,584 @@
+{
+  "schemaVersion": 1,
+  "kind": "path",
+  "items": [
+    {
+      "id": "path-claude-md",
+      "kind": "path",
+      "name": "CLAUDE.md",
+      "syntax": "./CLAUDE.md または ./.claude/CLAUDE.md",
+      "summary": "プロジェクトのルートに置く、Claude への指示書です。セッションを始めるたびに読み込まれます。",
+      "details": "ビルドやテストのコマンド、コーディングの決まり、フォルダ構成など、毎回守ってほしいことを書きます。git にコミットしてチームで共有するのが基本です。ルートを散らかしたくないときは .claude/CLAUDE.md に置いても同じように読まれます。/init で下書きを作り、/memory で開いて直せます。[[CLAUDE.md]] は指示として読まれるだけで強制はされないので、必ず止めたい操作は権限やフックで設定します。リポジトリに [[AGENTS.md]] しかない場合は、そちらが代わりに読まれます。",
+      "examples": [
+        {
+          "code": "/init",
+          "desc": "練習用フォルダで実行すると、コードを調べて CLAUDE.md の下書きを作ります"
+        },
+        {
+          "code": "## Commands\n- Test: `npm test`\n- Lint: `npm run lint`",
+          "desc": "よく使うコマンドを書いておく例"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "Claude がプロジェクトを記憶する仕組み",
+          "url": "https://code.claude.com/docs/ja/memory"
+        },
+        {
+          "title": ".claude ディレクトリを探索する",
+          "url": "https://code.claude.com/docs/ja/claude-directory"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c13-01",
+        "c13-02"
+      ]
+    },
+    {
+      "id": "path-claude-local-md",
+      "kind": "path",
+      "name": "CLAUDE.local.md",
+      "syntax": "./CLAUDE.local.md",
+      "summary": "このプロジェクトでの自分だけの指示を書くファイルです。CLAUDE.md と一緒に読み込まれます。",
+      "details": "自分用のテスト環境の URL や好みの進め方など、チームに共有しない指示を書きます。自動では作られないので自分で作り、.gitignore に追加してコミットされないようにします。同じフォルダでは CLAUDE.md の後に読まれます。gitignore したファイルなので、別の [[worktree]] には存在しない点に注意します。[[AGENTS.md]] を使うリポジトリでこのファイルを置くと、既定では AGENTS.md が読まれなくなります。",
+      "examples": [
+        {
+          "code": "echo CLAUDE.local.md >> .gitignore",
+          "desc": "練習用リポジトリで、コミットの対象から外しておく（Git Bash などで実行します。Windows PowerShell では、エディタで .gitignore に1行足します）"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "Claude がプロジェクトを記憶する仕組み",
+          "url": "https://code.claude.com/docs/ja/memory"
+        },
+        {
+          "title": ".claude ディレクトリを探索する",
+          "url": "https://code.claude.com/docs/ja/claude-directory"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c13-02"
+      ]
+    },
+    {
+      "id": "path-home-claude-claude-md",
+      "kind": "path",
+      "name": "~/.claude/CLAUDE.md",
+      "summary": "すべてのプロジェクトに共通する、自分の好みを書く指示ファイルです。",
+      "details": "返答の書き方、コミットメッセージの形式など、どのプロジェクトでも同じにしたいことを書きます。ホームディレクトリにあるので、どのリポジトリにもコミットされません。プロジェクトの [[CLAUDE.md]] と一緒に読み込まれ、食い違うときはプロジェクト側の指示が優先されます。毎回読み込まれるので短く保ちます。",
+      "examples": [
+        {
+          "code": "- 説明は簡潔に\n- 変更を確かめるコマンドを示す",
+          "desc": "どのプロジェクトでも守ってほしい好みを書く例"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "Claude がプロジェクトを記憶する仕組み",
+          "url": "https://code.claude.com/docs/ja/memory"
+        },
+        {
+          "title": ".claude ディレクトリを探索する",
+          "url": "https://code.claude.com/docs/ja/claude-directory"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c13-02"
+      ]
+    },
+    {
+      "id": "path-claude-settings-json",
+      "kind": "path",
+      "name": ".claude/settings.json",
+      "summary": "プロジェクトで共有する設定ファイルです。権限、フック、環境変数などを決めます。",
+      "details": "許可・拒否する操作の[[権限ルール]]、決まった場面でスクリプトを動かす[[フック]]、既定のモデルなどを JSON で書きます。git にコミットすると、リポジトリを取得した全員に同じ設定が届きます。CLAUDE.md と違い、Claude の判断に関係なく必ず適用されます。~/.claude/settings.json より優先され、settings.local.json やコマンドラインの指定、管理設定には上書きされます。一部の項目は、各自がフォルダを信頼するまで効きません。API キーなどの秘密情報は書かず、コミットしても困らない内容だけにします。",
+      "examples": [
+        {
+          "code": "{\n  \"permissions\": {\n    \"allow\": [\"Bash(npm test *)\"]\n  }\n}",
+          "desc": "npm test から始まるコマンドを確認なしで実行させる"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "設定ファイルと優先順位",
+          "url": "https://code.claude.com/docs/ja/settings"
+        },
+        {
+          "title": ".claude ディレクトリを探索する",
+          "url": "https://code.claude.com/docs/ja/claude-directory"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c15-01",
+        "c13-03",
+        "c14-02"
+      ]
+    },
+    {
+      "id": "path-claude-settings-local-json",
+      "kind": "path",
+      "name": ".claude/settings.local.json",
+      "summary": "このプロジェクトでの自分だけの設定を書くファイルです。チームの settings.json を上書きします。",
+      "details": "形式は [[settings.json]] と同じで、自分だけ別のモデルを使う、追加の操作を許可するといった個人的な違いを書きます。権限の確認で「今後は確認しない」を選んだルールもここに保存されます。Claude Code がこのファイルを書くときは、git の全体の除外設定に追加してコミットされないようにします。自分で手作業で作ったときは .gitignore に追加します。ユーザーが編集できる設定ファイルの中では最も優先されます。",
+      "examples": [
+        {
+          "code": "{\n  \"permissions\": {\n    \"allow\": [\"Bash(docker *)\"]\n  }\n}",
+          "desc": "チームの設定に加えて、自分だけ docker コマンドを許可する"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "設定ファイルと優先順位",
+          "url": "https://code.claude.com/docs/ja/settings"
+        },
+        {
+          "title": ".claude ディレクトリを探索する",
+          "url": "https://code.claude.com/docs/ja/claude-directory"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c15-01",
+        "c14-02"
+      ]
+    },
+    {
+      "id": "path-home-claude-settings-json",
+      "kind": "path",
+      "name": "~/.claude/settings.json",
+      "summary": "すべてのプロジェクトに適用する、自分の既定の設定ファイルです。",
+      "details": "いつも許可したい操作、好みのモデル、どこでも動かしたい通知のフックなどを書きます。ホームディレクトリにあるので共有されません。プロジェクトの settings.json に同じ項目があればそちらが優先されますが、permissions.allow のような配列はすべての[[設定のスコープ]]の分が合わさります。CLAUDE.md のように両方が読まれるのではなく、項目ごとに優先順位で決まる点が違います。",
+      "examples": [
+        {
+          "code": "{\n  \"permissions\": {\n    \"allow\": [\"Bash(git log *)\", \"Bash(git diff *)\"]\n  }\n}",
+          "desc": "どのプロジェクトでも git log と git diff を確認なしで実行させる"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "設定ファイルと優先順位",
+          "url": "https://code.claude.com/docs/ja/settings"
+        },
+        {
+          "title": ".claude ディレクトリを探索する",
+          "url": "https://code.claude.com/docs/ja/claude-directory"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c15-01",
+        "c15-02"
+      ]
+    },
+    {
+      "id": "path-claude-rules",
+      "kind": "path",
+      "name": ".claude/rules/",
+      "syntax": ".claude/rules/<トピック>.md",
+      "summary": "指示をトピックごとのファイルに分けて置くフォルダです。特定のファイルを扱うときだけ読ませることもできます。",
+      "details": "testing.md や api-design.md のように、1ファイルに1つのテーマを書きます。frontmatter の paths にファイルのパターンを書くと[[パススコープのルール]]になり、合うファイルを読む・書くときだけ読み込まれます。paths がないルールは CLAUDE.md と同じくセッションの最初に読まれます。CLAUDE.md が長くなってきたら分ける先として使い、チームで共有するならコミットします。すべてのプロジェクトに効かせたい個人のルールは ~/.claude/rules/ に置きます。",
+      "examples": [
+        {
+          "code": "---\npaths:\n  - \"src/api/**/*.ts\"\n---\n# API のルール\n- 入力を必ず検証する",
+          "desc": "src/api の TypeScript ファイルを扱うときだけ読まれるルール"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "Claude がプロジェクトを記憶する仕組み",
+          "url": "https://code.claude.com/docs/ja/memory"
+        },
+        {
+          "title": ".claude ディレクトリを探索する",
+          "url": "https://code.claude.com/docs/ja/claude-directory"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c13-02",
+        "c13-03"
+      ]
+    },
+    {
+      "id": "path-claude-skills",
+      "kind": "path",
+      "name": ".claude/skills/",
+      "syntax": ".claude/skills/<名前>/SKILL.md",
+      "summary": "プロジェクトの[[スキル]]を置くフォルダです。1つのスキルは SKILL.md を入れたフォルダ1つです。",
+      "details": "フォルダ名（frontmatter に name を書いたときはその名前）がコマンドの名前になり、/名前 で呼び出せます。説明に合う作業のときは Claude が自分で使うこともあります。[[SKILL.md]] のほかに、手順書やテンプレートなどの補助ファイルを同じフォルダに入れられます。チームで使うならコミットします。どのプロジェクトでも使いたい自分のスキルは ~/.claude/skills/ に置きます。以前の .claude/commands/ の1ファイル形式も使えますが、新しく作るならスキルにします。",
+      "examples": [
+        {
+          "code": ".claude/skills/explain-code/SKILL.md",
+          "desc": "/explain-code で呼び出せるスキルを置く場所"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": ".claude ディレクトリを探索する",
+          "url": "https://code.claude.com/docs/ja/claude-directory"
+        },
+        {
+          "title": "スキル",
+          "url": "https://code.claude.com/docs/ja/skills"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c16-02",
+        "c13-03"
+      ]
+    },
+    {
+      "id": "path-claude-agents",
+      "kind": "path",
+      "name": ".claude/agents/",
+      "syntax": ".claude/agents/<名前>.md",
+      "summary": "プロジェクトの[[サブエージェント]]を定義するファイルを置くフォルダです。",
+      "details": "1つの Markdown ファイルが1つのサブエージェントになり、frontmatter に名前、説明、使えるツールなどを書き、本文がそのエージェントへの指示になります。サブエージェントは自分専用のコンテキストで動くので、メインの会話を散らかさずに調べものやレビューを任せられます。説明に合う作業で Claude が任せるほか、@ で選んで直接頼むこともできます。チームで使うならコミットし、自分用は ~/.claude/agents/ に置きます。",
+      "examples": [
+        {
+          "code": "---\nname: code-reviewer\ndescription: コードをレビューする\ntools: Read, Grep, Glob\n---\n正しさと読みやすさの観点でレビューしてください。",
+          "desc": "読み取りだけできるレビュー用のサブエージェント"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": ".claude ディレクトリを探索する",
+          "url": "https://code.claude.com/docs/ja/claude-directory"
+        },
+        {
+          "title": "サブエージェント",
+          "url": "https://code.claude.com/docs/ja/sub-agents"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c16-05",
+        "c13-03"
+      ]
+    },
+    {
+      "id": "path-mcp-json",
+      "kind": "path",
+      "name": ".mcp.json",
+      "summary": "プロジェクトで共有する [[MCP サーバー]]を設定するファイルです。プロジェクトのルートに置きます。",
+      "details": "データベースや外部のサービスなど、チーム全員が使う MCP サーバーをここに書き、コミットして共有します。.claude/ の中ではなくルートに置く点に注意します。トークンなどの秘密情報は値を直接書かず、環境変数を参照する書き方にして、ファイルに残らないようにします。リポジトリを取ってきた人が起動すると、そのサーバーを使うか承認を求められます。知らないリポジトリのサーバーは、中身を確かめてから承認します（選び直すときは claude mcp reset-project-choices）。自分だけが使うサーバーは .mcp.json に書かず、claude mcp add で追加します（既定の local はこのリポジトリだけ、--scope user は全プロジェクト。どちらも ~/.claude.json に保存されます）。",
+      "examples": [
+        {
+          "code": "{\n  \"mcpServers\": {\n    \"notion\": {\n      \"command\": \"npx\",\n      \"args\": [\"-y\", \"@notionhq/notion-mcp-server\"],\n      \"env\": { \"NOTION_TOKEN\": \"${NOTION_TOKEN}\" }\n    }\n  }\n}",
+          "desc": "トークンはシェルの環境変数から読み、ファイルには書かない例"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": ".claude ディレクトリを探索する",
+          "url": "https://code.claude.com/docs/ja/claude-directory"
+        },
+        {
+          "title": "MCP を使用して Claude Code をツールに接続する",
+          "url": "https://code.claude.com/docs/ja/mcp"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c17-03",
+        "c17-04"
+      ]
+    },
+    {
+      "id": "path-home-claude-json",
+      "kind": "path",
+      "name": "~/.claude.json",
+      "summary": "Claude Code が自分で書き込む、アプリの状態と個人の設定のファイルです。",
+      "details": "ログインの情報、プロジェクトごとの信頼の判断、自分用の MCP サーバー、/config で変える一部の設定などが入っています。~/.claude/ フォルダの中ではなくホームディレクトリ直下にある点に注意します。基本は /config などから変更し、直接編集する必要はほとんどありません。ログインのセッションや、claude mcp add で渡したトークンが平文で入ることがあります。コミットしたり、中身をチャットに貼ったり、人に見せたりしないでください。ログインの状態も含むので消さないようにします。",
+      "examples": [
+        {
+          "code": "/config",
+          "desc": "このファイルに保存される設定を画面から変更する"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": ".claude ディレクトリを探索する",
+          "url": "https://code.claude.com/docs/ja/claude-directory"
+        },
+        {
+          "title": "設定ファイルと優先順位",
+          "url": "https://code.claude.com/docs/ja/settings"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c15-01",
+        "c17-04"
+      ]
+    },
+    {
+      "id": "path-worktreeinclude",
+      "kind": "path",
+      "name": ".worktreeinclude",
+      "summary": "新しい worktree を作るときに、gitignore しているファイルをコピーさせる一覧です。プロジェクトのルートに置きます。",
+      "details": "[[worktree]] は新しく取り出した作業場所なので、.env のような git に含めないファイルは最初はありません。このファイルに .gitignore と同じ書き方でパターンを並べると、合うファイルがコピーされます。コピーされるのは gitignore されているファイルだけです。このファイル自体はコミットして共有でき、秘密情報の中身ではなくファイル名だけを書きます。--worktree、サブエージェントの worktree、デスクトップアプリの並列セッションで使われます。",
+      "examples": [
+        {
+          "code": ".env\n.env.local",
+          "desc": "ローカルの環境変数のファイルを、新しい worktree にもコピーする"
+        }
+      ],
+      "surfaces": [
+        "cli",
+        "desktop"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "worktree で並列セッションを実行する",
+          "url": "https://code.claude.com/docs/ja/worktrees"
+        },
+        {
+          "title": ".claude ディレクトリを探索する",
+          "url": "https://code.claude.com/docs/ja/claude-directory"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c18-02"
+      ]
+    },
+    {
+      "id": "path-claude-worktrees",
+      "kind": "path",
+      "name": ".claude/worktrees/",
+      "syntax": ".claude/worktrees/<名前>/",
+      "summary": "claude --worktree で作った worktree が置かれるフォルダです。",
+      "details": "claude --worktree 名前 で始めると、リポジトリのルートの下のこのフォルダに作業場所ができ、worktree-名前 という新しいブランチで作業します。メインの作業場所で未追跡のファイルとして表示されないよう、.claude/worktrees/ を .gitignore に追加しておくのがおすすめです。終えるときに変更がなければ自動で片付けられ（名前を付けたセッションでは確認が出ます）、変更があれば残すか消すかを聞かれます。-p の実行では片付けられません。",
+      "examples": [
+        {
+          "code": "claude --worktree feature-auth",
+          "desc": "練習用リポジトリで、.claude/worktrees/feature-auth/ に作業場所を作って始める"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "worktree で並列セッションを実行する",
+          "url": "https://code.claude.com/docs/ja/worktrees"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c18-02"
+      ]
+    },
+    {
+      "id": "path-home-claude-projects-memory",
+      "kind": "path",
+      "name": "~/.claude/projects/<project>/memory/",
+      "summary": "[[自動メモリ]]の保存場所です。Claude が作業しながら書き残したメモがプロジェクトごとに入ります。",
+      "details": "Claude が気づいたビルドのコマンドや、あなたから受けた訂正などを自分でメモします。中心になる MEMORY.md が目次の役割をし、セッションの最初に読み込まれます。くわしいトピックのファイルは必要なときに読まれます。同じリポジトリの worktree やサブフォルダでは同じ場所を共有しますが、ほかのマシンとは共有されず、どこにもコミットされません。中身は普通の Markdown なので、/memory で確認して直したり消したりできます。",
+      "examples": [
+        {
+          "code": "/memory",
+          "desc": "自動メモリのオン／オフを切り替えたり、メモを開いて確かめたりする"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "Claude がプロジェクトを記憶する仕組み",
+          "url": "https://code.claude.com/docs/ja/memory"
+        },
+        {
+          "title": ".claude ディレクトリを探索する",
+          "url": "https://code.claude.com/docs/ja/claude-directory"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c13-02",
+        "c13-03"
+      ]
+    },
+    {
+      "id": "path-home-claude-keybindings-json",
+      "kind": "path",
+      "name": "~/.claude/keybindings.json",
+      "summary": "ターミナル版のキー操作を自分好みに割り当て直すファイルです。",
+      "details": "/keybindings を実行すると、このファイルが作られるか開かれます。どの画面でどのキーに何を割り当てるかを JSON で書き、保存すると実行中のセッションにも反映されます。Ctrl+C や Ctrl+D など一部のキーは予約されていて変えられません。自分用の設定なので共有されません。",
+      "examples": [
+        {
+          "code": "/keybindings",
+          "desc": "キー割り当てのファイルを作る、または開く"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": ".claude ディレクトリを探索する",
+          "url": "https://code.claude.com/docs/ja/claude-directory"
+        },
+        {
+          "title": "キーボードショートカットのカスタマイズ",
+          "url": "https://code.claude.com/docs/ja/keybindings"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c15-06"
+      ]
+    },
+    {
+      "id": "path-home-claude-credentials-json",
+      "kind": "path",
+      "name": "~/.claude/.credentials.json",
+      "summary": "Linux と Windows で、Claude Code のログイン情報が保存されるファイルです。",
+      "details": "/login でログインすると保存され、/logout で消えます。macOS では通常、暗号化されたキーチェーンに保存されます。中身は認証の情報そのものなので、開いて人に見せたり、コピーしてリポジトリに入れたり、チャットに貼ったりしないでください。直接編集せず、ログインし直したいときは /logout と /login を使います。",
+      "examples": [
+        {
+          "code": "/logout",
+          "desc": "保存されたログイン情報を消して、ログインし直す準備をする"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "認証",
+          "url": "https://code.claude.com/docs/ja/authentication"
+        },
+        {
+          "title": ".claude ディレクトリを探索する",
+          "url": "https://code.claude.com/docs/ja/claude-directory"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c11-04"
+      ]
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 {
-  "dataVersion": "2026.10.12-2",
+  "dataVersion": "2026.10.13-1",
   "schemaVersion": 1,
   "parts": [
     {
@@ -36,7 +36,10 @@
   ],
   "dictFiles": [
     "dict/slash.json",
-    "dict/key.json"
+    "dict/key.json",
+    "dict/cli-flag.json",
+    "dict/setting.json",
+    "dict/path.json"
   ],
   "quizFiles": [
     "quiz/a01-overview.json",
@@ -64,7 +67,7 @@
   "counts": {
     "sections": 113,
     "quiz": 281,
-    "dict": 61,
+    "dict": 131,
     "glossary": 162,
     "try": 31
   }

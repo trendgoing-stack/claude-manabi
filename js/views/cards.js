@@ -5,7 +5,7 @@ import { h, fill, put } from '../dom.js';
 import * as storage from '../storage.js';
 import { app } from '../state.js';
 import { learnNav } from './learn.js';
-import { richText } from '../render/text.js';
+import { richText, plainText } from '../render/text.js';
 import { parts, chaptersOf } from '../parts.js';
 import { shuffled } from '../quiz.js';
 import { cardOf, cardsInScope, judgeCard, dueCards } from '../review.js';
@@ -103,7 +103,7 @@ export function cardsView(root, [mode]) {
       'div',
       { class: 'flashcard' + (state.flipped ? ' is-flipped' : ''), role: 'button', tabindex: '0', 'aria-label': state.flipped ? `${c.front}の説明` : `${c.front}。タップで説明を表示` },
       state.flipped
-        ? [h('p', { class: 'flash-term small' }, c.front), c.keys ? h('p', { class: 'muted small' }, c.keys) : null, h('p', { class: 'flash-def' }, richText(c.back))]
+        ? [h('p', { class: 'flash-term small' }, c.front), c.keys ? h('p', { class: 'muted small' }, c.keys) : null, h('p', { class: 'flash-def' }, richText(plainText(c.back)))]
         : [h('p', { class: 'muted small' }, c.sub), h('p', { class: 'flash-front' }, c.front), h('p', { class: 'muted small' }, 'タップで説明を表示')],
       h('span', { class: 'flash-hint flash-hint-ok', 'aria-hidden': 'true' }, '覚えた'),
       h('span', { class: 'flash-hint flash-hint-ng', 'aria-hidden': 'true' }, 'まだ'),

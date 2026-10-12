@@ -185,7 +185,9 @@
         "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
       },
       "tryIds": [],
-      "dictIds": []
+      "dictIds": [
+        "flag-safe-mode"
+      ]
     },
     {
       "id": "c16-02",
@@ -354,7 +356,8 @@
       ],
       "dictIds": [
         "slash-skills",
-        "slash-code-review"
+        "slash-code-review",
+        "path-claude-skills"
       ]
     },
     {
@@ -779,7 +782,8 @@
         "try-16-02"
       ],
       "dictIds": [
-        "slash-agents"
+        "slash-agents",
+        "path-claude-agents"
       ]
     },
     {

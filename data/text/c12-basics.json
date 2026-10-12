@@ -736,7 +736,11 @@
         "slash-export",
         "slash-exit",
         "key-ctrl-d",
-        "key-up"
+        "key-up",
+        "flag-continue",
+        "flag-resume",
+        "flag-name",
+        "flag-fork-session"
       ]
     },
     {

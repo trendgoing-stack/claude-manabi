@@ -1,0 +1,811 @@
+{
+  "schemaVersion": 1,
+  "kind": "setting",
+  "items": [
+    {
+      "id": "set-permissions-allow",
+      "kind": "setting",
+      "name": "permissions.allow",
+      "syntax": "\"permissions\": { \"allow\": [\"<ルール>\", …] }",
+      "summary": "確認なしで使ってよいツールの操作を、ルールの一覧で決めるキーです。",
+      "details": "毎回の承認が手間になる安全なコマンドを登録すると、確認の画面が出なくなります。ルールは `Bash(npm run test *)` のように「ツール名(対象)」の形で書く[[権限ルール|g-permission-rule]]です。複数の設定ファイルに書いた一覧は上書きではなく合わせて使われます。チームで共有する `.claude/settings.json` に書いた allow は、各自がフォルダを信頼するまで効きません。",
+      "examples": [
+        {
+          "code": "{ \"permissions\": { \"allow\": [\"Bash(npm run lint)\", \"Bash(npm run test *)\"] } }",
+          "desc": "lint とテストのコマンドを確認なしで実行できるようにする"
+        },
+        {
+          "code": "{ \"permissions\": { \"allow\": [\"Bash(git diff *)\"] } }",
+          "desc": "git diff を確認なしで使えるようにする"
+        }
+      ],
+      "surfaces": [
+        "cli",
+        "ide"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "すべての設定（settings-reference）",
+          "url": "https://code.claude.com/docs/ja/settings-reference"
+        },
+        {
+          "title": "権限の設定",
+          "url": "https://code.claude.com/docs/ja/permissions"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c14-02",
+        "c14-01"
+      ]
+    },
+    {
+      "id": "set-permissions-ask",
+      "kind": "setting",
+      "name": "permissions.ask",
+      "syntax": "\"permissions\": { \"ask\": [\"<ルール>\", …] }",
+      "summary": "使う前に必ず確認を求めるツールの操作を、ルールの一覧で決めるキーです。",
+      "details": "git push のように、実行の前に自分の目で確かめたい操作に使います。編集を自動で受け入れるモードなどでも、ここに当てはまる操作は確認が出ます。ルールは deny、ask、allow の順に評価されるため、ask に当てはまれば allow に同じ操作があっても確認が出ます。",
+      "examples": [
+        {
+          "code": "{ \"permissions\": { \"ask\": [\"Bash(git push *)\"] } }",
+          "desc": "git push の前に毎回確認を出す"
+        }
+      ],
+      "surfaces": [
+        "cli",
+        "ide"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "すべての設定（settings-reference）",
+          "url": "https://code.claude.com/docs/ja/settings-reference"
+        },
+        {
+          "title": "権限の設定",
+          "url": "https://code.claude.com/docs/ja/permissions"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c14-02"
+      ]
+    },
+    {
+      "id": "set-permissions-deny",
+      "kind": "setting",
+      "name": "permissions.deny",
+      "syntax": "\"permissions\": { \"deny\": [\"<ルール>\", …] }",
+      "summary": "使わせたくないツールの操作を、ルールの一覧で禁止するキーです。",
+      "details": "`.env` のような秘密の情報を含むファイルを読ませない、といった用途に使います。deny は最初に評価され、allow や ask より強く効きます。ただし `grep -r` のようにファイル名を書かないコマンドなどには効かないので、確実に守りたいときは[[サンドボックス|g-sandbox]]と組み合わせます。チームの `.claude/settings.json` に書いた deny は、フォルダの信頼を待たずにすぐ効きます。",
+      "examples": [
+        {
+          "code": "{ \"permissions\": { \"deny\": [\"Read(./.env)\", \"Read(./.env.*)\"] } }",
+          "desc": ".env ファイルを読めないようにする"
+        },
+        {
+          "code": "{ \"permissions\": { \"deny\": [\"Read(./secrets/**)\"] } }",
+          "desc": "secrets フォルダの中身をすべて読めないようにする"
+        }
+      ],
+      "surfaces": [
+        "cli",
+        "ide"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "すべての設定（settings-reference）",
+          "url": "https://code.claude.com/docs/ja/settings-reference"
+        },
+        {
+          "title": "権限の設定",
+          "url": "https://code.claude.com/docs/ja/permissions"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c14-02",
+        "c14-06"
+      ]
+    },
+    {
+      "id": "set-permissions-defaultmode",
+      "kind": "setting",
+      "name": "permissions.defaultMode",
+      "syntax": "\"permissions\": { \"defaultMode\": \"<モード>\" }",
+      "summary": "新しいセッションをどの[[権限モード|g-permission-mode]]で始めるかを決めるキーです。",
+      "details": "値は `default`、`acceptEdits`（ファイルの編集も確認なし）、`plan`（計画を承認するまで編集しない）、`auto`、`dontAsk`、`bypassPermissions` などです。`auto` と `bypassPermissions` はプロジェクトや local の設定ファイルに書いても効きません。`bypassPermissions` はすべての確認を省くので、隔離したコンテナや VM の中以外では既定にしません。VS Code の拡張では、ユーザー設定に書いた値が使われます。1回のセッションだけ変えるときは `--permission-mode` を使います。",
+      "examples": [
+        {
+          "code": "{ \"permissions\": { \"defaultMode\": \"acceptEdits\" } }",
+          "desc": "ファイルの編集を確認なしで受け入れるモードで始める"
+        },
+        {
+          "code": "{ \"permissions\": { \"defaultMode\": \"plan\" } }",
+          "desc": "いつもプランモードで始める"
+        }
+      ],
+      "surfaces": [
+        "cli",
+        "ide"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "すべての設定（settings-reference）",
+          "url": "https://code.claude.com/docs/ja/settings-reference"
+        },
+        {
+          "title": "設定ファイルと優先順位",
+          "url": "https://code.claude.com/docs/ja/settings"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c14-03",
+        "c14-04"
+      ]
+    },
+    {
+      "id": "set-permissions-additionaldirectories",
+      "kind": "setting",
+      "name": "permissions.additionalDirectories",
+      "syntax": "\"permissions\": { \"additionalDirectories\": [\"<パス>\", …] }",
+      "summary": "起動したフォルダの外にあるフォルダも、Claude が扱えるようにするキーです。",
+      "details": "隣のフォルダにある資料やライブラリも一緒に読ませたいときに使います。セッションの途中で足すときは `/add-dir`、起動時だけなら `--add-dir` でも同じことができます。チームで共有する設定ファイルに書いた場合は、フォルダを信頼するまで効きません。",
+      "examples": [
+        {
+          "code": "{ \"permissions\": { \"additionalDirectories\": [\"../docs/\"] } }",
+          "desc": "隣の docs フォルダも作業の対象に加える"
+        }
+      ],
+      "surfaces": [
+        "cli",
+        "ide"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "すべての設定（settings-reference）",
+          "url": "https://code.claude.com/docs/ja/settings-reference"
+        },
+        {
+          "title": "権限の設定",
+          "url": "https://code.claude.com/docs/ja/permissions"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c14-01"
+      ]
+    },
+    {
+      "id": "set-model",
+      "kind": "setting",
+      "name": "model",
+      "syntax": "\"model\": \"<エイリアスまたはモデル ID>\"",
+      "summary": "新しいセッションで使うモデルを決めるキーです。",
+      "details": "`sonnet` のような[[モデルエイリアス|g-model-alias]]か、正式なモデル ID を書きます。セッションの途中では `/model` で切り替えられ、`/model` で選んだものは既定として保存されます。起動時の `--model` や環境変数 `ANTHROPIC_MODEL` はこのキーより優先されます。設定ファイルを書き換えても、実行中のセッションのモデルは変わりません。",
+      "examples": [
+        {
+          "code": "{ \"model\": \"sonnet\" }",
+          "desc": "いつも Sonnet で始める"
+        }
+      ],
+      "surfaces": [
+        "cli",
+        "ide"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "すべての設定（settings-reference）",
+          "url": "https://code.claude.com/docs/ja/settings-reference"
+        },
+        {
+          "title": "設定ファイルと優先順位",
+          "url": "https://code.claude.com/docs/ja/settings"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c15-03"
+      ]
+    },
+    {
+      "id": "set-effortlevel",
+      "kind": "setting",
+      "name": "effortLevel",
+      "syntax": "\"effortLevel\": \"low\" | \"medium\" | \"high\" | \"xhigh\"",
+      "summary": "モデルがどれだけ時間をかけて考えるか（[[effort|g-effort]]）の既定を決めるキーです。",
+      "details": "モデルごとに保存した値がないときに使われる既定の effort です。ただし、ユーザー設定（`~/.claude/settings.json`）に書いた値は新しいモデルでは無視されるので、自分用の既定は `/effort` で保存します。プロジェクトの設定に書いた値はすべてのモデルに効きます。セッションの中で `/effort` を使うと、このキーではなくモデルごとの設定として保存されます。1回のセッションだけ変えるときは `--effort` を使います。",
+      "examples": [
+        {
+          "code": "{ \"effortLevel\": \"high\" }",
+          "desc": "プロジェクトの設定で、既定の effort を high にする"
+        }
+      ],
+      "surfaces": [
+        "cli",
+        "ide"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "すべての設定（settings-reference）",
+          "url": "https://code.claude.com/docs/ja/settings-reference"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c15-03",
+        "a01-03"
+      ]
+    },
+    {
+      "id": "set-alwaysthinkingenabled",
+      "kind": "setting",
+      "name": "alwaysThinkingEnabled",
+      "syntax": "\"alwaysThinkingEnabled\": false",
+      "summary": "拡張思考（[[thinking|g-thinking]]）をすべてのセッションで切るためのキーです。",
+      "details": "thinking は対応するモデルでは最初からオンなので、意味があるのは `false` を書いたときです。いつも考えるように作られたモデルでは、`false` にしても無視されます。",
+      "examples": [
+        {
+          "code": "{ \"alwaysThinkingEnabled\": false }",
+          "desc": "拡張思考をオフにする"
+        }
+      ],
+      "surfaces": [
+        "cli",
+        "ide"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "すべての設定（settings-reference）",
+          "url": "https://code.claude.com/docs/ja/settings-reference"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c15-03",
+        "a01-03"
+      ]
+    },
+    {
+      "id": "set-language",
+      "kind": "setting",
+      "name": "language",
+      "syntax": "\"language\": \"<言語名>\"",
+      "summary": "Claude が答える言語を決めるキーです。",
+      "details": "`\"japanese\"` のように言語名を書くと、Claude がその言語で答えるようになります。同じ値が音声入力の言語や、自動で付くセッション名の言語にも使われます。書いた値の正しさは確かめられないので、つづりに気をつけます。",
+      "examples": [
+        {
+          "code": "{ \"language\": \"japanese\" }",
+          "desc": "日本語で答えてもらう"
+        }
+      ],
+      "surfaces": [
+        "cli",
+        "ide"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "すべての設定（settings-reference）",
+          "url": "https://code.claude.com/docs/ja/settings-reference"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c15-02"
+      ]
+    },
+    {
+      "id": "set-env",
+      "kind": "setting",
+      "name": "env",
+      "syntax": "\"env\": { \"<変数名>\": \"<値>\", … }",
+      "summary": "セッションと、そこから動くコマンドに渡す環境変数を決めるキーです。",
+      "details": "毎回シェルで export しなくても、Claude Code の動きを変える環境変数をまとめて書いておけます。値はすべて文字列で書きます。値は設定ファイルにそのまま残り、Claude Code が動かすすべてのコマンドに渡るので、API キーなどの秘密の値は書きません。ここに書いた値は、シェルで設定した同じ変数より優先されます。プロジェクトや local の設定では効かない変数があり、共有の設定ファイルの多くの値はフォルダを信頼してから効きます。",
+      "examples": [
+        {
+          "code": "{ \"env\": { \"DISABLE_AUTO_COMPACT\": \"1\" } }",
+          "desc": "自動の圧縮を止める環境変数を設定する"
+        }
+      ],
+      "surfaces": [
+        "cli",
+        "ide"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "すべての設定（settings-reference）",
+          "url": "https://code.claude.com/docs/ja/settings-reference"
+        },
+        {
+          "title": "設定ファイルと優先順位",
+          "url": "https://code.claude.com/docs/ja/settings"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c15-01",
+        "c15-02"
+      ]
+    },
+    {
+      "id": "set-hooks",
+      "kind": "setting",
+      "name": "hooks",
+      "syntax": "\"hooks\": { \"<イベント名>\": [{ \"matcher\": \"…\", \"hooks\": [ … ] }] }",
+      "summary": "Claude Code の動きの決まった時点で、自分のコマンドなどを自動で実行させる[[フック|g-hook]]を登録するキーです。",
+      "details": "`PreToolUse`（ツールを使う直前）のような[[フックイベント|g-hook-event]]ごとに、どのツールに反応するか（matcher）と、何を実行するかを書きます。複数の設定ファイルに書いたフックは合わせて使われます。フックはあなたの権限でコマンドを実行するので、中身を理解したものだけを登録します。受け取ったリポジトリの `.claude/settings.json` にあるフックも、動かす前に読みます。",
+      "examples": [
+        {
+          "code": "{ \"hooks\": { \"PreToolUse\": [{ \"matcher\": \"Bash\", \"hooks\": [{ \"type\": \"command\", \"command\": \"~/.claude/hooks/check-bash.sh\" }] }] } }",
+          "desc": "Bash を使う直前に、自分の確認用スクリプトを実行する"
+        }
+      ],
+      "surfaces": [
+        "cli",
+        "ide"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "すべての設定（settings-reference）",
+          "url": "https://code.claude.com/docs/ja/settings-reference"
+        },
+        {
+          "title": "フック",
+          "url": "https://code.claude.com/docs/ja/hooks"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c17-01",
+        "c17-02"
+      ]
+    },
+    {
+      "id": "set-disableallhooks",
+      "kind": "setting",
+      "name": "disableAllHooks",
+      "syntax": "\"disableAllHooks\": true",
+      "summary": "フックと、自作のステータスライン、自作の @ ファイル候補のコマンドをまとめて止めるキーです。",
+      "details": "フックが原因で動きがおかしいときに、いったん全部を止めて切り分けるのに役立ちます。個々のフックの設定は消さずに残したまま止められます。",
+      "examples": [
+        {
+          "code": "{ \"disableAllHooks\": true }",
+          "desc": "フックなどをすべて止める"
+        }
+      ],
+      "surfaces": [
+        "cli",
+        "ide"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "すべての設定（settings-reference）",
+          "url": "https://code.claude.com/docs/ja/settings-reference"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c17-01"
+      ]
+    },
+    {
+      "id": "set-statusline",
+      "kind": "setting",
+      "name": "statusLine",
+      "syntax": "\"statusLine\": { \"type\": \"command\", \"command\": \"<コマンド>\" }",
+      "summary": "入力欄の下に出す[[ステータスライン|g-status-line]]を、自分のコマンドで作るキーです。",
+      "details": "指定したコマンドがセッションの情報を JSON で受け取り、出力した文字がステータスラインに表示されます。モデル名やコンテキストの使用率など、いつも見たい情報を出すのに使います。`padding` で余白も調整できます。",
+      "examples": [
+        {
+          "code": "{ \"statusLine\": { \"type\": \"command\", \"command\": \"~/.claude/statusline.sh\" } }",
+          "desc": "自作のスクリプトでステータスラインを表示する"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "すべての設定（settings-reference）",
+          "url": "https://code.claude.com/docs/ja/settings-reference"
+        },
+        {
+          "title": "ステータスライン",
+          "url": "https://code.claude.com/docs/ja/statusline"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c15-05"
+      ]
+    },
+    {
+      "id": "set-outputstyle",
+      "kind": "setting",
+      "name": "outputStyle",
+      "syntax": "\"outputStyle\": \"<スタイル名>\"",
+      "summary": "Claude の役割や口調、答え方の形を変える[[出力スタイル|g-output-style]]を選ぶキーです。",
+      "details": "組み込みのスタイルか、自分で作ったスタイルの名前を書きます。たとえば `Explanatory` を選ぶと、作業しながら考え方の説明も添えてくれます。書かなければ既定のスタイルになります。",
+      "examples": [
+        {
+          "code": "{ \"outputStyle\": \"Explanatory\" }",
+          "desc": "説明を多めに添えるスタイルにする"
+        }
+      ],
+      "surfaces": [
+        "cli",
+        "ide"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "すべての設定（settings-reference）",
+          "url": "https://code.claude.com/docs/ja/settings-reference"
+        },
+        {
+          "title": "出力スタイル",
+          "url": "https://code.claude.com/docs/ja/output-styles"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c15-04"
+      ]
+    },
+    {
+      "id": "set-enabledplugins",
+      "kind": "setting",
+      "name": "enabledPlugins",
+      "syntax": "\"enabledPlugins\": { \"<プラグイン名>@<マーケットプレイス名>\": true | false }",
+      "summary": "入れた[[プラグイン|g-plugin]]を、1つずつオンまたはオフにするキーです。",
+      "details": "キーは「プラグイン名@[[マーケットプレイス|g-marketplace]]名」の形で書き、値を true か false にします。`/plugin` や `claude plugin enable` で操作すると、このキーが書き換わります。チームの `.claude/settings.json` に書けば、同じプラグインを全員で有効にできます（プラグインの出どころによっては、各自のインストールが必要です）。",
+      "examples": [
+        {
+          "code": "{ \"enabledPlugins\": { \"code-formatter@team-tools\": true, \"experimental-features@personal\": false } }",
+          "desc": "1つのプラグインをオンに、別の1つをオフにする"
+        }
+      ],
+      "surfaces": [
+        "cli",
+        "ide"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "すべての設定（settings-reference）",
+          "url": "https://code.claude.com/docs/ja/settings-reference"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c17-05"
+      ]
+    },
+    {
+      "id": "set-attribution",
+      "kind": "setting",
+      "name": "attribution",
+      "syntax": "\"attribution\": { \"commit\": \"…\", \"pr\": \"…\" }",
+      "summary": "Claude Code がコミットやプルリクエストに付ける「Claude と作った」という表記を、変えたり消したりするキーです。",
+      "details": "`commit` はコミットメッセージの末尾に付く文、`pr` はプルリクエストの説明に付く文です。空の文字列にすると、その表記は付かなくなります。`sessionUrl` でセッションへのリンクを付けるかを決められ、`\"attribution\": false` と書けば表記をまとめて消せます。以前の `includeCoAuthoredBy` は非推奨になり、こちらに置き換わりました。",
+      "examples": [
+        {
+          "code": "{ \"attribution\": { \"pr\": \"\" } }",
+          "desc": "プルリクエストの説明に表記を付けない"
+        }
+      ],
+      "surfaces": [
+        "cli",
+        "ide"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "すべての設定（settings-reference）",
+          "url": "https://code.claude.com/docs/ja/settings-reference"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c15-02"
+      ]
+    },
+    {
+      "id": "set-theme",
+      "kind": "setting",
+      "name": "theme",
+      "syntax": "\"theme\": \"<テーマ名>\"",
+      "summary": "画面の色のテーマを選ぶキーです。",
+      "details": "`dark`、`light`、色の見分けに配慮した `dark-daltonized`・`light-daltonized`、ターミナルの色に合わせる `dark-ansi`・`light-ansi`、`auto` などから選びます。`/config` の画面で選んでも同じキーが保存されます。",
+      "examples": [
+        {
+          "code": "{ \"theme\": \"light\" }",
+          "desc": "明るい色のテーマにする"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "すべての設定（settings-reference）",
+          "url": "https://code.claude.com/docs/ja/settings-reference"
+        },
+        {
+          "title": "設定ファイルと優先順位",
+          "url": "https://code.claude.com/docs/ja/settings"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c15-06",
+        "c15-02"
+      ]
+    },
+    {
+      "id": "set-editormode",
+      "kind": "setting",
+      "name": "editorMode",
+      "syntax": "\"editorMode\": \"normal\" | \"vim\"",
+      "summary": "入力欄のキー操作を、ふつうの操作か vim 風の操作かに切り替えるキーです。",
+      "details": "`\"vim\"` にすると[[Vim モード|g-vim-mode]]になり、NORMAL・INSERT・VISUAL のモードを切り替えて入力を編集できます。vim に慣れていなければ `\"normal\"` のままで構いません。",
+      "examples": [
+        {
+          "code": "{ \"editorMode\": \"vim\" }",
+          "desc": "入力欄を vim 風の操作にする"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "すべての設定（settings-reference）",
+          "url": "https://code.claude.com/docs/ja/settings-reference"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c15-06"
+      ]
+    },
+    {
+      "id": "set-automemoryenabled",
+      "kind": "setting",
+      "name": "autoMemoryEnabled",
+      "syntax": "\"autoMemoryEnabled\": true | false",
+      "summary": "[[自動メモリ|g-auto-memory]]を使うかどうかを決めるキーです。",
+      "details": "最初はオンで、Claude が作業で学んだことを自動メモリのフォルダに書き留め、次のセッションで読み返します。`false` にすると、そのフォルダの読み書きをしなくなります。`/memory` で切り替えると、ユーザー設定にこのキーが保存されます。",
+      "examples": [
+        {
+          "code": "{ \"autoMemoryEnabled\": false }",
+          "desc": "自動メモリを使わないようにする"
+        }
+      ],
+      "surfaces": [
+        "cli",
+        "ide"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "すべての設定（settings-reference）",
+          "url": "https://code.claude.com/docs/ja/settings-reference"
+        },
+        {
+          "title": "メモリ",
+          "url": "https://code.claude.com/docs/ja/memory"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c13-02",
+        "c13-04"
+      ]
+    },
+    {
+      "id": "set-autocompactenabled",
+      "kind": "setting",
+      "name": "autoCompactEnabled",
+      "syntax": "\"autoCompactEnabled\": true | false",
+      "summary": "会話が長くなったときの[[自動圧縮|g-compaction]]を使うかどうかを決めるキーです。",
+      "details": "最初はオンで、[[コンテキストウィンドウ|g-context-window]]がいっぱいに近づくと会話を要約して空きを作ります。`false` にしても、`/compact` で自分から圧縮することはできます。",
+      "examples": [
+        {
+          "code": "{ \"autoCompactEnabled\": false }",
+          "desc": "自動の圧縮を止め、必要なときに自分で /compact する"
+        }
+      ],
+      "surfaces": [
+        "cli",
+        "ide"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "すべての設定（settings-reference）",
+          "url": "https://code.claude.com/docs/ja/settings-reference"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c13-05",
+        "c13-04"
+      ]
+    },
+    {
+      "id": "set-sandbox-enabled",
+      "kind": "setting",
+      "name": "sandbox.enabled",
+      "syntax": "\"sandbox\": { \"enabled\": true }",
+      "summary": "Bash のコマンドを[[サンドボックス|g-sandbox]]の中で動かすかどうかを決めるキーです。",
+      "details": "`true` にすると、Bash のコマンドが読み書きできるファイルや通信先を限られた範囲に閉じ込めて実行します。使えるのは macOS、Linux、WSL2 で、Linux と WSL2 では bubblewrap と socat が必要です。準備が足りず起動できないときはサンドボックスなしで動くので、`/sandbox` で状態を確かめます。オンにすると、サンドボックスの中で動くコマンドは確認なしで実行されるようになります（deny と、対象を指定した ask は効きます）。最初はオフで、プロジェクトや local の設定ファイルから変えられる範囲には制限があります。",
+      "examples": [
+        {
+          "code": "{ \"sandbox\": { \"enabled\": true } }",
+          "desc": "Bash のサンドボックスをオンにする"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "すべての設定（settings-reference）",
+          "url": "https://code.claude.com/docs/ja/settings-reference"
+        },
+        {
+          "title": "サンドボックス",
+          "url": "https://code.claude.com/docs/ja/sandboxing"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c14-06"
+      ]
+    },
+    {
+      "id": "set-enableallprojectmcpservers",
+      "kind": "setting",
+      "name": "enableAllProjectMcpServers",
+      "syntax": "\"enableAllProjectMcpServers\": true | false",
+      "summary": "プロジェクトの [[.mcp.json|g-mcp-json]] に書かれた MCP サーバーを、1つずつ確認せずにまとめて承認するキーです。",
+      "details": "ふだんは、プロジェクトの `.mcp.json` にある[[MCP サーバー|g-mcp-server]]ごとに、つないでよいか確認が出ます。`true` にするとすべて承認され、`disabledMcpjsonServers` に書いたものだけは拒否されます。決まったものだけを承認したいときは `enabledMcpjsonServers` に名前を並べます。ユーザー設定に書くと、受け取ったリポジトリも含めてすべてのプロジェクトに効くので、書くのはそのプロジェクトの設定ファイルだけにします。",
+      "examples": [
+        {
+          "code": "{ \"enabledMcpjsonServers\": [\"memory\", \"github\"] }",
+          "desc": "名前を挙げたサーバーだけを承認する（こちらのほうが安全）"
+        },
+        {
+          "code": "{ \"enableAllProjectMcpServers\": true }",
+          "desc": "自分で作った練習用プロジェクトの `.claude/settings.local.json` に書き、そのプロジェクトのサーバーだけをすべて承認する（ユーザー設定には書かない）"
+        }
+      ],
+      "surfaces": [
+        "cli",
+        "ide"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "すべての設定（settings-reference）",
+          "url": "https://code.claude.com/docs/ja/settings-reference"
+        },
+        {
+          "title": "MCP",
+          "url": "https://code.claude.com/docs/ja/mcp"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c17-04",
+        "c17-06"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1161 @@
+{
+  "schemaVersion": 1,
+  "kind": "cli-flag",
+  "items": [
+    {
+      "id": "flag-print",
+      "kind": "cli-flag",
+      "name": "--print（-p）",
+      "syntax": "claude -p \"<指示>\" [オプション]",
+      "summary": "対話画面を開かずに、指示を1回実行して結果を出力し、そのまま終了します。スクリプトや CI から Claude Code を使うときの基本のオプションです。",
+      "details": "[[非対話モード]]とも呼ばれ、パイプで渡した内容（ログなど）を読み込んで答えさせることもできます。-p では[[ワークスペースの信頼]]の確認が表示されず、フォルダの設定に書かれたフックや .mcp.json のサーバーもそのまま動くので、信頼できるフォルダでだけ使います。成功すると終了コード 0、失敗すると 0 以外を返すので、スクリプトで結果を判定できます。権限の確認に答える人がいないため、使ってよいツールは --allowedTools や --permission-mode で先に決めておきます。",
+      "examples": [
+        {
+          "code": "claude -p \"このフォルダの README.md を3行で要約して\"",
+          "desc": "1回だけ質問して、答えを表示して終わる"
+        },
+        {
+          "code": "cat build-error.txt | claude -p \"このエラーの原因を短く説明して\"",
+          "desc": "ファイルの中身をパイプで渡して説明させる"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "CLI リファレンス",
+          "url": "https://code.claude.com/docs/ja/cli-reference"
+        },
+        {
+          "title": "Claude Code をプログラムで実行する",
+          "url": "https://code.claude.com/docs/ja/headless"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c19-01"
+      ]
+    },
+    {
+      "id": "flag-continue",
+      "kind": "cli-flag",
+      "name": "--continue（-c）",
+      "syntax": "claude -c [-p \"<指示>\"]",
+      "summary": "今いるフォルダで最後に使った会話を、そのまま続きから開きます。",
+      "details": "ターミナルを閉じてしまったあとや、昨日の作業の続きをすぐ始めたいときに使います。どの会話を開くか選ぶ必要はなく、そのフォルダで一番新しい[[セッション]]が選ばれます。-p と組み合わせると、前の回答を踏まえた追加の指示をスクリプトから続けて送れます。ふだんの対話で -c を使うときは、-p で作った会話は対象になりません。",
+      "examples": [
+        {
+          "code": "claude -c",
+          "desc": "このフォルダの直前の会話を再開する"
+        },
+        {
+          "code": "claude -p \"続けて、テストの書き方も提案して\" -c",
+          "desc": "直前の会話に、非対話で追加の指示を送る"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "CLI リファレンス",
+          "url": "https://code.claude.com/docs/ja/cli-reference"
+        },
+        {
+          "title": "Claude Code をプログラムで実行する",
+          "url": "https://code.claude.com/docs/ja/headless"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c12-05",
+        "c19-01"
+      ]
+    },
+    {
+      "id": "flag-resume",
+      "kind": "cli-flag",
+      "name": "--resume（-r）",
+      "syntax": "claude --resume [セッションID・名前・検索語]",
+      "summary": "過去の会話を選んで再開します。ID や名前を付けると、その会話を直接開きます。",
+      "details": "何も付けずに実行すると[[セッションピッカー]]が開き、一覧から再開したい会話を選べます。--name で名前を付けておいた会話は、その名前で直接開けます。-p と組み合わせて、--output-format json で取り出したセッション ID を渡すと、スクリプトから特定の会話を続けられます。元の会話を残したまま枝分かれさせたいときは --fork-session を付けます。",
+      "examples": [
+        {
+          "code": "claude --resume",
+          "desc": "一覧から再開する会話を選ぶ"
+        },
+        {
+          "code": "claude --resume practice-readme",
+          "desc": "名前を付けておいた会話を直接再開する"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "CLI リファレンス",
+          "url": "https://code.claude.com/docs/ja/cli-reference"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c12-05"
+      ]
+    },
+    {
+      "id": "flag-name",
+      "kind": "cli-flag",
+      "name": "--name（-n）",
+      "syntax": "claude -n \"<名前>\"",
+      "summary": "これから始める会話に、表示用の名前を付けます。",
+      "details": "名前は再開の一覧やターミナルのタイトルに表示されるので、複数の作業を並べているときに見分けやすくなります。付けた名前は claude --resume のあとに書いて、その会話を直接開くのにも使えます。会話の途中で名前を変えたいときは /rename を使います。",
+      "examples": [
+        {
+          "code": "claude -n \"practice-readme\"",
+          "desc": "名前を付けて新しい会話を始める"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "CLI リファレンス",
+          "url": "https://code.claude.com/docs/ja/cli-reference"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c12-05"
+      ]
+    },
+    {
+      "id": "flag-fork-session",
+      "kind": "cli-flag",
+      "name": "--fork-session",
+      "syntax": "claude --resume <セッション> --fork-session",
+      "summary": "過去の会話を再開するときに、新しいセッション ID で別の会話として始めます。元の会話は変わりません。",
+      "details": "--resume か --continue と一緒に使います。同じところから別の方針を試したいときに、元の会話の流れを残したまま枝分かれできます。付けないと、再開した会話は元と同じセッション ID のまま続きます。",
+      "examples": [
+        {
+          "code": "claude --continue --fork-session",
+          "desc": "直前の会話を写して、別の会話として試す"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "CLI リファレンス",
+          "url": "https://code.claude.com/docs/ja/cli-reference"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c12-05"
+      ]
+    },
+    {
+      "id": "flag-model",
+      "kind": "cli-flag",
+      "name": "--model",
+      "syntax": "claude --model <モデル名か別名>",
+      "summary": "このセッションで使うモデルを指定します。",
+      "details": "opus・sonnet・fable のような[[モデルエイリアス]]か、モデルの正式な名前を渡します。設定ファイルの model より優先されますが、効くのはこのセッションだけで、保存はされません。モデルによって得意なことや使える effort が違うので、用途に合わせて選びます。",
+      "examples": [
+        {
+          "code": "claude --model sonnet",
+          "desc": "別名を使ってモデルを選んで始める"
+        },
+        {
+          "code": "claude -p --model opus \"この関数の問題点を挙げて\"",
+          "desc": "非対話の実行でモデルを指定する"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "CLI リファレンス",
+          "url": "https://code.claude.com/docs/ja/cli-reference"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c15-03"
+      ]
+    },
+    {
+      "id": "flag-effort",
+      "kind": "cli-flag",
+      "name": "--effort",
+      "syntax": "claude --effort <レベル>",
+      "summary": "このセッションの[[effort]]（どれだけ時間をかけて考えるか）を指定します。",
+      "details": "手元の CLI のヘルプでは low・medium・high・xhigh・max を選べます（公式では、xhigh にして ultracode をオンにする ultracode も挙がっています）。高くするほどじっくり考えますが、時間と使用量も増えます。使えるレベルはモデルによって違います。設定ファイルの値より優先されますが、このセッションだけで保存はされません。",
+      "examples": [
+        {
+          "code": "claude --effort high",
+          "desc": "じっくり考えさせるセッションを始める"
+        },
+        {
+          "code": "claude -p --effort low \"このファイルの行数を数えて\"",
+          "desc": "簡単な作業を軽めの effort で実行する"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "CLI リファレンス",
+          "url": "https://code.claude.com/docs/ja/cli-reference"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c15-03"
+      ]
+    },
+    {
+      "id": "flag-permission-mode",
+      "kind": "cli-flag",
+      "name": "--permission-mode",
+      "syntax": "claude --permission-mode <モード>",
+      "summary": "セッションを始めるときの[[権限モード]]を指定します。",
+      "details": "手元の CLI では acceptEdits・auto・bypassPermissions・manual・dontAsk・plan を選べます（manual は default と同じ意味です）。たとえば plan で始めると、まず計画だけを立てさせられます。-p の実行では、dontAsk にすると確認が必要な操作を自動で断り、決めた範囲だけを動かせます。bypassPermissions はすべての確認を省くので、インターネットにつながらない隔離環境以外では使いません。",
+      "examples": [
+        {
+          "code": "claude --permission-mode plan",
+          "desc": "プランモードで始め、先に計画を確かめる"
+        },
+        {
+          "code": "claude -p \"lint の指摘を直して\" --permission-mode acceptEdits",
+          "desc": "ファイルの編集だけ確認なしで進める"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "CLI リファレンス",
+          "url": "https://code.claude.com/docs/ja/cli-reference"
+        },
+        {
+          "title": "権限モードを選ぶ",
+          "url": "https://code.claude.com/docs/ja/permission-modes"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c14-03",
+        "c14-04"
+      ]
+    },
+    {
+      "id": "flag-dangerously-skip-permissions",
+      "kind": "cli-flag",
+      "name": "--dangerously-skip-permissions",
+      "syntax": "claude --dangerously-skip-permissions",
+      "summary": "権限の確認をすべて省いて、Claude の操作をそのまま実行させます。--permission-mode bypassPermissions と同じです。危険なので、通常は使いません。",
+      "details": "使ってよいのは、インターネットにつながらないコンテナや仮想マシンなど、壊れても困らない隔離環境で無人実行するときだけです。ファイルの削除やコマンドの実行も確認なしで進むうえ、[[プロンプトインジェクション]]や思わぬ操作から守る仕組みがありません。ふだんのパソコンや本番のリポジトリでは絶対に使わず、確認を減らしたいだけなら auto モードや許可のルールを使います。拒否（deny）のルールと一部の確認はこのモードでも残ります。Linux・macOS では root や sudo では起動できず、管理者がこのモードを使えないようにしている場合もあります。",
+      "examples": [
+        {
+          "code": "claude -p \"テストを実行して結果をまとめて\" --dangerously-skip-permissions",
+          "desc": "ネットにつながらない使い捨てのコンテナの中でだけ使う例"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "CLI リファレンス",
+          "url": "https://code.claude.com/docs/ja/cli-reference"
+        },
+        {
+          "title": "権限モードを選ぶ",
+          "url": "https://code.claude.com/docs/ja/permission-modes"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c14-03",
+        "c14-06"
+      ]
+    },
+    {
+      "id": "flag-allow-dangerously-skip-permissions",
+      "kind": "cli-flag",
+      "name": "--allow-dangerously-skip-permissions",
+      "syntax": "claude --permission-mode <モード> --allow-dangerously-skip-permissions",
+      "summary": "確認を省くモード（bypassPermissions）を、すぐには使わずに Shift+Tab の切り替えの候補に加えます。",
+      "details": "あとから Shift+Tab で確認なしのモードに切り替えられるようにします。ただし対話のターミナルでは、これを付けるとプランモードの止めも効かなくなり、計画中でも編集やコマンドが確認なしで実行されることがあるので、「計画を確かめてから切り替える」ための安全策にはなりません。切り替えたあとは --dangerously-skip-permissions と同じくすべての確認が省かれるので、インターネットにつながらない隔離環境（コンテナや仮想マシン）でだけ使います。ふだんの作業用のパソコンで付けたままにしないでください。",
+      "examples": [
+        {
+          "code": "claude --permission-mode plan --allow-dangerously-skip-permissions",
+          "desc": "隔離環境で、確認なしのモードをあとから選べるようにして始める"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "CLI リファレンス",
+          "url": "https://code.claude.com/docs/ja/cli-reference"
+        },
+        {
+          "title": "権限モードを選ぶ",
+          "url": "https://code.claude.com/docs/ja/permission-modes"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c14-03",
+        "c14-06"
+      ]
+    },
+    {
+      "id": "flag-allowed-tools",
+      "kind": "cli-flag",
+      "name": "--allowedTools（--allowed-tools）",
+      "syntax": "claude --allowedTools \"<ルール>\" [\"<ルール>\" …]",
+      "summary": "確認なしで使ってよいツールやコマンドを、このセッションだけ追加で許可します。",
+      "details": "書き方は設定ファイルの[[権限ルール]]と同じで、Bash(git diff *) のように書くと git diff で始まるコマンドだけを許可できます。* の前の空白を忘れると、意図しない似た名前のコマンドまで許可されるので注意します。-p で無人実行するときに、必要な操作だけを先に許しておくのに便利です。使えるツール自体を絞りたいときは --tools を使います。",
+      "examples": [
+        {
+          "code": "claude -p \"README.md を要約して\" --allowedTools \"Read\"",
+          "desc": "ファイルの読み取りだけを確認なしで許可する"
+        },
+        {
+          "code": "claude --allowedTools \"Bash(git log *)\" \"Bash(git diff *)\"",
+          "desc": "git の履歴と差分を見るコマンドだけを許可する"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "CLI リファレンス",
+          "url": "https://code.claude.com/docs/ja/cli-reference"
+        },
+        {
+          "title": "Claude Code をプログラムで実行する",
+          "url": "https://code.claude.com/docs/ja/headless"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c14-02",
+        "c19-01"
+      ]
+    },
+    {
+      "id": "flag-disallowed-tools",
+      "kind": "cli-flag",
+      "name": "--disallowedTools（--disallowed-tools）",
+      "syntax": "claude --disallowedTools \"<ルール>\" [\"<ルール>\" …]",
+      "summary": "使わせたくないツールやコマンドを、このセッションだけ拒否します。",
+      "details": "Edit のようにツール名だけを書くと、そのツールが Claude から見えなくなります。Bash(rm *) のように範囲を付けると、ツールは残したまま、書いたとおりの形の呼び出しだけを拒否します（パス付きの実行や sh -c の中までは止まりません）。拒否のルールはどの権限モードでも優先されるので、練習用のフォルダで編集させたくないときなどに使えます。",
+      "examples": [
+        {
+          "code": "claude --disallowedTools \"Edit\"",
+          "desc": "ファイルの編集をさせずに質問だけする"
+        },
+        {
+          "code": "claude --disallowedTools \"Bash(rm *)\"",
+          "desc": "rm で始まるコマンドだけを拒否する"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "CLI リファレンス",
+          "url": "https://code.claude.com/docs/ja/cli-reference"
+        },
+        {
+          "title": "権限モードを選ぶ",
+          "url": "https://code.claude.com/docs/ja/permission-modes"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c14-02"
+      ]
+    },
+    {
+      "id": "flag-tools",
+      "kind": "cli-flag",
+      "name": "--tools",
+      "syntax": "claude --tools \"<ツール名,ツール名>\"",
+      "summary": "このセッションで Claude が使える組み込みのツールを、指定したものだけに絞ります。",
+      "details": "\"Bash,Edit,Read\" のように名前を並べるとそれだけが使えるようになり、\"default\" で既定のセット、\"\" で組み込みのツールをすべて外せます。--allowedTools は「確認なしで許可する」、--tools は「そもそも使えるようにする」という違いがあります。MCP のツールには効かないので、それも外したいときは --disallowedTools と組み合わせます。",
+      "examples": [
+        {
+          "code": "claude --tools \"Read,Grep,Glob\"",
+          "desc": "読むだけのツールに絞って、コードの説明を頼む"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "CLI リファレンス",
+          "url": "https://code.claude.com/docs/ja/cli-reference"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c14-02"
+      ]
+    },
+    {
+      "id": "flag-add-dir",
+      "kind": "cli-flag",
+      "name": "--add-dir",
+      "syntax": "claude --add-dir <フォルダ> [<フォルダ> …]",
+      "summary": "起動したフォルダのほかに、Claude が読み書きしてよいフォルダを追加します。",
+      "details": "別のフォルダにある共通のライブラリや資料も見ながら作業したいときに使います。追加したフォルダはファイルを扱えるようになるだけで、そこにある .claude/ の設定の多くは読み込まれません。毎回同じフォルダを追加するなら、設定ファイルの permissions.additionalDirectories に書いておけます。セッションの途中では /add-dir でも追加できます。",
+      "examples": [
+        {
+          "code": "claude --add-dir ../shared-notes",
+          "desc": "隣のフォルダの資料も読めるようにして始める"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "CLI リファレンス",
+          "url": "https://code.claude.com/docs/ja/cli-reference"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c14-01"
+      ]
+    },
+    {
+      "id": "flag-output-format",
+      "kind": "cli-flag",
+      "name": "--output-format",
+      "syntax": "claude -p \"<指示>\" --output-format <形式>",
+      "summary": "-p で実行したときの出力の形を、ふつうの文章・JSON・流れてくる JSON から選びます。",
+      "details": "text は答えの文章だけ、json は答えに加えてセッション ID などの情報を1つの JSON にまとめて出します。stream-json は進み具合を1行ずつの JSON で次々に出すので、自作のツールで途中経過を表示したいときに使います（--verbose と組み合わせます）。json で受け取ったセッション ID は --resume に渡して会話を続けるのに使えます。-p を付けないときは効きません。",
+      "examples": [
+        {
+          "code": "claude -p \"このフォルダの構成を説明して\" --output-format json",
+          "desc": "答えとセッションの情報を JSON で受け取る"
+        },
+        {
+          "code": "claude -p \"再帰を説明して\" --output-format stream-json --verbose",
+          "desc": "途中経過を1行ずつの JSON で受け取る"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "CLI リファレンス",
+          "url": "https://code.claude.com/docs/ja/cli-reference"
+        },
+        {
+          "title": "Claude Code をプログラムで実行する",
+          "url": "https://code.claude.com/docs/ja/headless"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c19-01"
+      ]
+    },
+    {
+      "id": "flag-json-schema",
+      "kind": "cli-flag",
+      "name": "--json-schema",
+      "syntax": "claude -p \"<指示>\" --output-format json --json-schema '<スキーマ>'",
+      "summary": "JSON Schema を渡して、決まった形の JSON で答えを受け取ります（-p のときだけ）。",
+      "details": "作業が終わったあと、指定した形に合う JSON が structured_output という欄に入って返ってきます。結果をそのまま別のプログラムで使いたいときの[[構造化出力]]に向いています。スキーマとして正しくない値を渡すとエラーで止まります。シェルでは JSON の引用符の扱いに注意します。",
+      "examples": [
+        {
+          "code": "claude -p \"README.md の見出しを取り出して\" --output-format json --json-schema '{\"type\":\"object\",\"properties\":{\"headings\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}}},\"required\":[\"headings\"]}'",
+          "desc": "見出しの一覧を決まった形の JSON で受け取る"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "CLI リファレンス",
+          "url": "https://code.claude.com/docs/ja/cli-reference"
+        },
+        {
+          "title": "Claude Code をプログラムで実行する",
+          "url": "https://code.claude.com/docs/ja/headless"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c19-01"
+      ]
+    },
+    {
+      "id": "flag-append-system-prompt",
+      "kind": "cli-flag",
+      "name": "--append-system-prompt",
+      "syntax": "claude --append-system-prompt \"<追加の指示>\"",
+      "summary": "Claude Code の既定の[[システムプロンプト]]の最後に、自分の指示を書き足します。",
+      "details": "ツールの使い方や安全のための指示などの既定の内容は残したまま、「日本語で答える」「出力の形をそろえる」といったルールを加えられます。長い指示はファイルから読み込む --append-system-prompt-file を使います。一度始めた会話では最初のシステムプロンプトが記録されて使い回されるため、再開時に別の文を渡しても、すぐには反映されないことがあります。毎回使うルールなら CLAUDE.md に書くほうが向いています。",
+      "examples": [
+        {
+          "code": "claude -p --append-system-prompt \"答えは箇条書きで3つまでにする\" \"このフォルダの特徴を教えて\"",
+          "desc": "既定の動きはそのままに、答え方のルールを足す"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "CLI リファレンス",
+          "url": "https://code.claude.com/docs/ja/cli-reference"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c19-01",
+        "c13-01"
+      ]
+    },
+    {
+      "id": "flag-system-prompt",
+      "kind": "cli-flag",
+      "name": "--system-prompt",
+      "syntax": "claude --system-prompt \"<指示>\"",
+      "summary": "既定の[[システムプロンプト]]を丸ごと、自分の指示に置き換えます。",
+      "details": "コードを書く助手ではない、まったく別の役割で動かしたいときに使います。既定の指示はツールの使い方や安全の注意も含めて丸ごと消えるため、作業に要る決まりは自分のプロンプトに入れておきます。ふつうは既定を残せる --append-system-prompt のほうが安全です。ファイルから読み込む --system-prompt-file もあります。",
+      "examples": [
+        {
+          "code": "claude -p --system-prompt \"あなたは文章の校正係です。誤字だけを指摘してください。\" \"README.md を校正して\"",
+          "desc": "役割を置き換えて、校正だけをさせる"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "CLI リファレンス",
+          "url": "https://code.claude.com/docs/ja/cli-reference"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c19-01"
+      ]
+    },
+    {
+      "id": "flag-bare",
+      "kind": "cli-flag",
+      "name": "--bare",
+      "syntax": "claude --bare -p \"<指示>\"",
+      "summary": "フック・スキル・プラグイン・MCP サーバー・CLAUDE.md などの自動の読み込みを省いた、最小限の状態で起動します。",
+      "details": "[[bare モード]]と呼ばれ、実行するパソコンの設定に左右されたくないスクリプトや CI で使います。自分やリポジトリが用意したフック・MCP サーバーは読み込まれません。ログインの情報やキーチェーンは読まないので、Anthropic の API を使うには環境変数 ANTHROPIC_API_KEY などを用意する必要があります。必要な設定は --settings・--mcp-config・--append-system-prompt などで明示して渡します。",
+      "examples": [
+        {
+          "code": "claude --bare -p \"README.md を要約して\" --allowedTools \"Read\"",
+          "desc": "余計な設定を読まずに、読み取りだけで要約させる"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "CLI リファレンス",
+          "url": "https://code.claude.com/docs/ja/cli-reference"
+        },
+        {
+          "title": "Claude Code をプログラムで実行する",
+          "url": "https://code.claude.com/docs/ja/headless"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c19-01"
+      ]
+    },
+    {
+      "id": "flag-safe-mode",
+      "kind": "cli-flag",
+      "name": "--safe-mode",
+      "syntax": "claude --safe-mode",
+      "summary": "CLAUDE.md・スキル・プラグイン・フック・MCP サーバーなどの自分で加えたカスタマイズをすべて止めて起動します。設定が壊れたときの原因調べに使います。",
+      "details": "起動時にエラーが出る、急に動きがおかしくなった、というときに、まず --safe-mode で動くか試すと、カスタマイズが原因かどうかを切り分けられます。--bare と違い、ログインやモデルの選択、組み込みのツール、権限はふだんどおり働きます。組織の管理者が決めた設定は、このモードでも有効なままです。",
+      "examples": [
+        {
+          "code": "claude --safe-mode",
+          "desc": "カスタマイズを止めた状態で起動して、動くか確かめる"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "CLI リファレンス",
+          "url": "https://code.claude.com/docs/ja/cli-reference"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c15-02",
+        "c16-01"
+      ]
+    },
+    {
+      "id": "flag-worktree",
+      "kind": "cli-flag",
+      "name": "--worktree（-w）",
+      "syntax": "claude -w [名前]",
+      "summary": "新しい git の[[worktree]]を作り、その中でセッションを始めます。",
+      "details": "worktree はリポジトリの別の作業場所で、今の作業を崩さずに別の変更を並行して試せます。作られる場所はリポジトリの中の .claude/worktrees/ の下で、名前を省くと自動で付きます。git のリポジトリの中で使うオプションなので、練習用のリポジトリで試すと安心です。",
+      "examples": [
+        {
+          "code": "claude -w try-new-layout",
+          "desc": "名前を付けた worktree を作って、その中で作業を始める"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "CLI リファレンス",
+          "url": "https://code.claude.com/docs/ja/cli-reference"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c18-02",
+        "c18-01"
+      ]
+    },
+    {
+      "id": "flag-bg",
+      "kind": "cli-flag",
+      "name": "--bg（--background）",
+      "syntax": "claude --bg \"<指示>\"",
+      "summary": "セッションを[[バックグラウンドセッション]]として始め、すぐにターミナルへ戻ります。",
+      "details": "起動すると短い ID が表示され、claude attach でそのセッションを開く、claude logs で出力を見る、claude stop で止める、claude rm で消す、といった操作に使います。動いているセッションの一覧は claude agents で確かめられます。始める前にフォルダの信頼が確かめられます。-p とは一緒に使えません。",
+      "examples": [
+        {
+          "code": "claude --bg \"テストが不安定な原因を調べて\"",
+          "desc": "調査をバックグラウンドで任せて、ターミナルは別の作業に使う"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "preview",
+      "sources": [
+        {
+          "title": "CLI リファレンス",
+          "url": "https://code.claude.com/docs/ja/cli-reference"
+        },
+        {
+          "title": "エージェントビューで複数のエージェントを管理する",
+          "url": "https://code.claude.com/docs/ja/agent-view"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c18-03",
+        "c18-01"
+      ]
+    },
+    {
+      "id": "flag-mcp-config",
+      "kind": "cli-flag",
+      "name": "--mcp-config",
+      "syntax": "claude --mcp-config <ファイルかJSON> [<ファイルかJSON> …]",
+      "summary": "JSON のファイルや文字列から [[MCP サーバー]]を読み込み、このセッションで使えるようにします。",
+      "details": "設定に登録しなくても、そのときだけ MCP サーバーをつなげます。--strict-mcp-config と一緒に使うと、ほかの場所に登録したサーバーを無視して、渡したものだけを使います。--bare で起動したときに MCP サーバーを使いたい場合にも、このオプションで明示して渡します。中身のわからないサーバーはつながず、信頼できるものだけを使います。",
+      "examples": [
+        {
+          "code": "claude --mcp-config ./mcp.json",
+          "desc": "フォルダに置いた設定ファイルの MCP サーバーを読み込む"
+        },
+        {
+          "code": "claude --strict-mcp-config --mcp-config ./mcp.json",
+          "desc": "渡した設定のサーバーだけを使う"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "CLI リファレンス",
+          "url": "https://code.claude.com/docs/ja/cli-reference"
+        },
+        {
+          "title": "MCP で Claude Code をツールにつなぐ",
+          "url": "https://code.claude.com/docs/ja/mcp"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c17-03"
+      ]
+    },
+    {
+      "id": "flag-settings",
+      "kind": "cli-flag",
+      "name": "--settings",
+      "syntax": "claude --settings <ファイルかJSON>",
+      "summary": "設定ファイルのパスか JSON の文字列を渡して、このセッションだけ設定を追加・上書きします。",
+      "details": "渡した値は、同じ項目の settings.json の値より優先されます。書かなかった項目は、ふだんの設定ファイルの値のままです。設定ファイルを書き換えずに、いつもと違う設定を試したいときや、--bare で必要な設定だけを渡したいときに使います。",
+      "examples": [
+        {
+          "code": "claude --settings ./try-settings.json",
+          "desc": "試したい設定を書いたファイルを、このセッションだけ使う"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "CLI リファレンス",
+          "url": "https://code.claude.com/docs/ja/cli-reference"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c15-01",
+        "c15-02"
+      ]
+    },
+    {
+      "id": "flag-version",
+      "kind": "cli-flag",
+      "name": "--version（-v）",
+      "syntax": "claude -v",
+      "summary": "インストールされている Claude Code のバージョンを表示します。",
+      "details": "セッションは始まらず、バージョンを表示して終わります。新しい機能が使えるかどうか、公式の説明にある「v2.1.○○以降」といった条件を満たしているかを確かめるときに使います。新しい版にするには claude update を使います。",
+      "examples": [
+        {
+          "code": "claude -v",
+          "desc": "今のバージョンを確かめる"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "CLI リファレンス",
+          "url": "https://code.claude.com/docs/ja/cli-reference"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c11-03"
+      ]
+    },
+    {
+      "id": "flag-cmd-mcp-add",
+      "kind": "cli-flag",
+      "name": "claude mcp add",
+      "syntax": "claude mcp add [オプション] <名前> <コマンドかURL> [引数…]",
+      "summary": "Claude Code に [[MCP サーバー]]を登録します。",
+      "details": "リモートのサーバーは --transport http と URL で、手元で動かすサーバーは -- のあとに起動コマンドを書いて登録します。-- より前は Claude Code のオプション、後ろはサーバーに渡す引数として扱われます。登録先は --scope で選び、既定の local は自分だけ・このプロジェクトだけ、project は .mcp.json に書かれてリポジトリで共有、user は自分のすべてのプロジェクトで使えます。外部の内容を読むサーバーは[[プロンプトインジェクション]]の入り口にもなるので、信頼できるものだけを登録します。",
+      "examples": [
+        {
+          "code": "claude mcp add --transport http sentry https://mcp.sentry.dev/mcp",
+          "desc": "リモートの HTTP サーバーを登録する（公式の例）"
+        },
+        {
+          "code": "claude mcp add my-server -- node ./my-server.js",
+          "desc": "自分で書いた練習用のサーバーを、自分だけ・このプロジェクトだけ（local）で登録する"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "MCP で Claude Code をツールにつなぐ",
+          "url": "https://code.claude.com/docs/ja/mcp"
+        },
+        {
+          "title": "CLI リファレンス",
+          "url": "https://code.claude.com/docs/ja/cli-reference"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c17-03",
+        "c17-04"
+      ]
+    },
+    {
+      "id": "flag-cmd-mcp-list",
+      "kind": "cli-flag",
+      "name": "claude mcp list",
+      "syntax": "claude mcp list",
+      "summary": "登録されている MCP サーバーの一覧と、つながっているかどうかを表示します。",
+      "details": "サーバーを登録したあと、正しくつながるかを確かめるのに使います。リポジトリの .mcp.json にあって、まだ承認していないサーバーは「承認待ち」と表示され、接続されません。1つのサーバーの詳しい情報は claude mcp get、登録の削除は claude mcp remove で行います。",
+      "examples": [
+        {
+          "code": "claude mcp list",
+          "desc": "登録したサーバーの状態を一覧で確かめる"
+        },
+        {
+          "code": "claude mcp get sentry",
+          "desc": "1つのサーバーの詳しい情報を見る"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "MCP で Claude Code をツールにつなぐ",
+          "url": "https://code.claude.com/docs/ja/mcp"
+        },
+        {
+          "title": "CLI リファレンス",
+          "url": "https://code.claude.com/docs/ja/cli-reference"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c17-03",
+        "c17-04"
+      ]
+    },
+    {
+      "id": "flag-cmd-plugin-install",
+      "kind": "cli-flag",
+      "name": "claude plugin install",
+      "syntax": "claude plugin install <プラグイン>[@マーケットプレイス] [--scope <スコープ>]",
+      "summary": "追加してあるマーケットプレイスから[[プラグイン]]をインストールします。",
+      "details": "プラグイン名@マーケットプレイス名 の形で、どこから入れるかを指定できます。--scope の既定は user（自分のすべてのプロジェクト）で、project にするとリポジトリの設定に書かれ、同じリポジトリを使う人と共有されます。入れたあとの一覧は claude plugin list、外すときは claude plugin uninstall を使います。プラグインはコマンドやフックを含むことがあるので、出どころを確かめてから入れます。",
+      "examples": [
+        {
+          "code": "claude plugin install code-review@claude-plugins-official",
+          "desc": "公式のマーケットプレイスからプラグインを入れる（公式の例）"
+        },
+        {
+          "code": "claude plugin list",
+          "desc": "インストールしたプラグインと有効かどうかを確かめる"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "プラグインのコマンドリファレンス",
+          "url": "https://code.claude.com/docs/ja/plugins/cli-reference"
+        },
+        {
+          "title": "CLI リファレンス",
+          "url": "https://code.claude.com/docs/ja/cli-reference"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c17-05",
+        "c17-06"
+      ]
+    },
+    {
+      "id": "flag-cmd-plugin-marketplace-add",
+      "kind": "cli-flag",
+      "name": "claude plugin marketplace add",
+      "syntax": "claude plugin marketplace add <ソース> [--scope <スコープ>]",
+      "summary": "プラグインの入手先となる[[マーケットプレイス]]を追加します。",
+      "details": "ソースには GitHub のリポジトリ（owner/repo の形）、git の URL、marketplace.json の URL、手元のフォルダなどを指定できます。--scope の既定は user で、project にするとリポジトリの設定に書かれて共有されます。追加しただけではプラグインは入らないので、続けて claude plugin install で入れます。知らない人のマーケットプレイスは中身を確かめてから追加します。",
+      "examples": [
+        {
+          "code": "claude plugin marketplace add ./my-marketplace",
+          "desc": "手元のフォルダに作った練習用のマーケットプレイスを追加する"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "プラグインのコマンドリファレンス",
+          "url": "https://code.claude.com/docs/ja/plugins/cli-reference"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c17-05",
+        "c17-06"
+      ]
+    },
+    {
+      "id": "flag-cmd-agents",
+      "kind": "cli-flag",
+      "name": "claude agents",
+      "syntax": "claude agents [オプション]",
+      "summary": "[[エージェントビュー]]を開いて、並行して動かしているバックグラウンドのセッションを見渡したり、新しく任せたりします。",
+      "details": "エージェントビューは対話の画面なので、ターミナルから開きます。--json を付けると画面を開かずに、動いているセッションの一覧を JSON で出して終わるので、スクリプトで使えます。--permission-mode や --model などで、ここから任せるセッションの既定を決められます。--dangerously-skip-permissions も付けられますが、確認がすべて省かれるので、インターネットにつながらない隔離環境以外では使いません。",
+      "examples": [
+        {
+          "code": "claude agents --json",
+          "desc": "画面を開かずに、動いているセッションの一覧を JSON で見る"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "preview",
+      "sources": [
+        {
+          "title": "CLI リファレンス",
+          "url": "https://code.claude.com/docs/ja/cli-reference"
+        },
+        {
+          "title": "エージェントビューで複数のエージェントを管理する",
+          "url": "https://code.claude.com/docs/ja/agent-view"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c18-03"
+      ]
+    },
+    {
+      "id": "flag-cmd-update",
+      "kind": "cli-flag",
+      "name": "claude update",
+      "syntax": "claude update",
+      "summary": "新しいバージョンがあるか確かめ、あればインストールします。",
+      "details": "claude upgrade でも同じです。新しい機能を使いたいときや、不具合が直った版に上げたいときに実行します。今のバージョンは claude -v で確かめられます。特定の版を入れ直したいときは claude install を使います。",
+      "examples": [
+        {
+          "code": "claude update",
+          "desc": "最新の版に更新する"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "CLI リファレンス",
+          "url": "https://code.claude.com/docs/ja/cli-reference"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c11-03"
+      ]
+    },
+    {
+      "id": "flag-cmd-doctor",
+      "kind": "cli-flag",
+      "name": "claude doctor",
+      "syntax": "claude doctor",
+      "summary": "セッションを始めずに、インストールの状態や設定ファイルの誤りを調べて表示します。",
+      "details": "Claude Code がうまく起動しない、設定が効いていない気がする、というときに最初に試すコマンドです。表示するだけで何も直さないので、気軽に実行できます。今いるフォルダの設定ファイルは、信頼の確認なしに読まれます。直す作業まで行いたいときは、セッションの中で /doctor を使います。",
+      "examples": [
+        {
+          "code": "claude doctor",
+          "desc": "インストールと設定の状態を確かめる"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "CLI リファレンス",
+          "url": "https://code.claude.com/docs/ja/cli-reference"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c11-03",
+        "c15-02"
+      ]
+    }
+  ]
+}

@@ -161,7 +161,9 @@
       ],
       "dictIds": [
         "slash-tasks",
-        "key-ctrl-b"
+        "key-ctrl-b",
+        "flag-worktree",
+        "flag-bg"
       ]
     },
     {
@@ -293,7 +295,11 @@
       "tryIds": [
         "try-18-01"
       ],
-      "dictIds": []
+      "dictIds": [
+        "flag-worktree",
+        "path-worktreeinclude",
+        "path-claude-worktrees"
+      ]
     },
     {
       "id": "c18-03",
@@ -419,7 +425,10 @@
         "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
       },
       "tryIds": [],
-      "dictIds": []
+      "dictIds": [
+        "flag-bg",
+        "flag-cmd-agents"
+      ]
     },
     {
       "id": "c18-04",

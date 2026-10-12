@@ -131,7 +131,9 @@
       ],
       "dictIds": [
         "slash-init",
-        "slash-memory"
+        "slash-memory",
+        "flag-append-system-prompt",
+        "path-claude-md"
       ]
     },
     {
@@ -297,7 +299,13 @@
         "try-13-01"
       ],
       "dictIds": [
-        "slash-memory"
+        "slash-memory",
+        "set-automemoryenabled",
+        "path-claude-md",
+        "path-claude-local-md",
+        "path-home-claude-claude-md",
+        "path-claude-rules",
+        "path-home-claude-projects-memory"
       ]
     },
     {
@@ -495,7 +503,13 @@
         "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
       },
       "tryIds": [],
-      "dictIds": []
+      "dictIds": [
+        "path-claude-settings-json",
+        "path-claude-rules",
+        "path-claude-skills",
+        "path-claude-agents",
+        "path-home-claude-projects-memory"
+      ]
     },
     {
       "id": "c13-04",
@@ -655,7 +669,9 @@
       ],
       "dictIds": [
         "slash-compact",
-        "slash-context"
+        "slash-context",
+        "set-automemoryenabled",
+        "set-autocompactenabled"
       ]
     },
     {
@@ -814,7 +830,8 @@
         "slash-compact",
         "slash-context",
         "slash-btw",
-        "slash-usage"
+        "slash-usage",
+        "set-autocompactenabled"
       ]
     },
     {

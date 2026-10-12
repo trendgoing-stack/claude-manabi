@@ -127,7 +127,10 @@
       "tryIds": [],
       "dictIds": [
         "slash-permissions",
-        "slash-add-dir"
+        "slash-add-dir",
+        "flag-add-dir",
+        "set-permissions-allow",
+        "set-permissions-additionaldirectories"
       ]
     },
     {
@@ -222,7 +225,15 @@
         "try-15-01"
       ],
       "dictIds": [
-        "slash-permissions"
+        "slash-permissions",
+        "flag-allowed-tools",
+        "flag-disallowed-tools",
+        "flag-tools",
+        "set-permissions-allow",
+        "set-permissions-ask",
+        "set-permissions-deny",
+        "path-claude-settings-json",
+        "path-claude-settings-local-json"
       ]
     },
     {
@@ -415,7 +426,11 @@
       ],
       "dictIds": [
         "slash-plan",
-        "key-shift-tab"
+        "key-shift-tab",
+        "flag-permission-mode",
+        "flag-dangerously-skip-permissions",
+        "flag-allow-dangerously-skip-permissions",
+        "set-permissions-defaultmode"
       ]
     },
     {
@@ -557,7 +572,9 @@
       ],
       "dictIds": [
         "slash-plan",
-        "key-shift-tab"
+        "key-shift-tab",
+        "flag-permission-mode",
+        "set-permissions-defaultmode"
       ]
     },
     {
@@ -819,7 +836,12 @@
         "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
       },
       "tryIds": [],
-      "dictIds": []
+      "dictIds": [
+        "flag-dangerously-skip-permissions",
+        "flag-allow-dangerously-skip-permissions",
+        "set-permissions-deny",
+        "set-sandbox-enabled"
+      ]
     }
   ]
 }

@@ -461,7 +461,9 @@
       ],
       "dictIds": [
         "key-alt-p",
-        "key-alt-t"
+        "key-alt-t",
+        "set-effortlevel",
+        "set-alwaysthinkingenabled"
       ]
     },
     {

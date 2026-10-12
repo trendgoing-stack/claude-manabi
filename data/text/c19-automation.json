@@ -155,7 +155,16 @@
       "tryIds": [
         "try-19-01"
       ],
-      "dictIds": []
+      "dictIds": [
+        "flag-print",
+        "flag-continue",
+        "flag-allowed-tools",
+        "flag-output-format",
+        "flag-json-schema",
+        "flag-append-system-prompt",
+        "flag-system-prompt",
+        "flag-bare"
+      ]
     },
     {
       "id": "c19-02",

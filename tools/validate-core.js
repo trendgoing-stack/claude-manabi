@@ -153,6 +153,7 @@ export function validateAll({ meta, texts, quizzes, dicts, glossary, tryJson, sw
       names.set(k, t.id);
     }
     if (HTML_RE.test(t.definition ?? '')) err(where, 'HTML を使わない');
+    if (/\[\[|\]\]/.test(t.definition ?? '')) err(where, '定義では [[ ]] を使わない（related でつなぐ）');
   }
   for (const t of terms) for (const r of t.related ?? []) if (!termIds.has(r)) err(`glossary:${t.id}`, `related「${r}」が用語集にない`);
   const tIndex = termIndex(terms);
@@ -215,6 +216,8 @@ export function validateAll({ meta, texts, quizzes, dicts, glossary, tryJson, sw
       for (const id of s.dictIds ?? []) pendingLinks.push([sw, 'dict', id]);
       if (!Array.isArray(s.tryIds) || !Array.isArray(s.dictIds)) err(sw, 'tryIds と dictIds は配列（空でよい）');
       checkStrings({ title: s.title, points: s.points, digest: s.digest, blocks: s.blocks }, sw);
+      // 節の題名と要点は用語リンクなしで描くので [[ ]] を使わない
+      for (const t of [s.title, ...(s.points ?? [])]) if (/\[\[|\]\]/.test(t ?? '')) err(sw, '題名・points では [[ ]] を使わない');
       for (const b of s.blocks ?? []) for (const [, v] of strings(b.type === 'figure' ? {} : b)) chars += v.length;
     });
   }
@@ -288,6 +291,7 @@ export function validateAll({ meta, texts, quizzes, dicts, glossary, tryJson, sw
       else answerPos[q.answer]++;
       if (!Array.isArray(q.sources) || !q.sources.length || !q.sources.every((s) => isStr(s?.title) && /^https:\/\//.test(s?.url ?? ''))) err(where, 'sources が空か不正');
       checkStrings({ question: q.question, choices: q.choices, explanation: q.explanation }, where);
+      if ([q.question, ...(q.choices ?? [])].some((t) => /\[\[|\]\]/.test(t ?? ''))) err(where, '問題文・選択肢では [[ ]] を使わない（解説では使える）');
     }
   }
   if (quizCount >= 8 && Math.max(...answerPos) > quizCount * 0.4) warn('quiz', `正解の位置が偏っている：${answerPos.join('／')}`);

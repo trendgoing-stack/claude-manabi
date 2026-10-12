@@ -173,7 +173,9 @@
         "try-17-01"
       ],
       "dictIds": [
-        "slash-hooks"
+        "slash-hooks",
+        "set-hooks",
+        "set-disableallhooks"
       ]
     },
     {
@@ -352,7 +354,8 @@
       ],
       "dictIds": [
         "slash-hooks",
-        "slash-update-config"
+        "slash-update-config",
+        "set-hooks"
       ]
     },
     {
@@ -517,7 +520,11 @@
       },
       "tryIds": [],
       "dictIds": [
-        "slash-mcp"
+        "slash-mcp",
+        "flag-mcp-config",
+        "flag-cmd-mcp-add",
+        "flag-cmd-mcp-list",
+        "path-mcp-json"
       ]
     },
     {
@@ -672,7 +679,12 @@
       },
       "tryIds": [],
       "dictIds": [
-        "slash-mcp"
+        "slash-mcp",
+        "flag-cmd-mcp-add",
+        "flag-cmd-mcp-list",
+        "set-enableallprojectmcpservers",
+        "path-mcp-json",
+        "path-home-claude-json"
       ]
     },
     {
@@ -819,7 +831,10 @@
         "try-17-02"
       ],
       "dictIds": [
-        "slash-plugin"
+        "slash-plugin",
+        "flag-cmd-plugin-install",
+        "flag-cmd-plugin-marketplace-add",
+        "set-enabledplugins"
       ]
     },
     {
@@ -968,7 +983,10 @@
         "try-17-02"
       ],
       "dictIds": [
-        "slash-plugin"
+        "slash-plugin",
+        "flag-cmd-plugin-install",
+        "flag-cmd-plugin-marketplace-add",
+        "set-enableallprojectmcpservers"
       ]
     }
   ]
