@@ -568,7 +568,9 @@ function drawLayers(c, fig) {
  * col・row は省略すると「同じ列で並び順に下へ」。next を省略すると次の要素へつなぐ（terminal は終端）。
  */
 function drawFlow(c, fig) {
-  const COL_W = 200;
+  // 列の間隔は、いちばん幅の広い箱に合わせて詰める（スマホの画面に収まりやすくする）
+  const widest = Math.max(...fig.steps.map((st) => (st.kind === 'decision' ? Math.max(110, textWidth(st.label) + 62) : Math.max(90, textWidth(st.label) + 28))));
+  const COL_W = Math.min(200, Math.max(130, widest + 20));
   const ROW_H = 76;
   const nodes = new Map();
   let autoRow = 0;

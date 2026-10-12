@@ -18,6 +18,8 @@
     "text/a02-chat.json",
     "text/a03-research.json",
     "text/a04-projects.json",
+    "text/a05-artifacts.json",
+    "text/a06-memory.json",
     "text/c11-start.json",
     "text/c12-basics.json",
     "text/c13-context.json",
@@ -29,6 +31,8 @@
     "quiz/a02-chat.json",
     "quiz/a03-research.json",
     "quiz/a04-projects.json",
+    "quiz/a05-artifacts.json",
+    "quiz/a06-memory.json",
     "quiz/c11-start.json",
     "quiz/c12-basics.json",
     "quiz/c13-context.json",
@@ -37,10 +41,10 @@
   "glossaryFile": "glossary.json",
   "tryFile": "try.json",
   "counts": {
-    "sections": 48,
-    "quiz": 120,
+    "sections": 59,
+    "quiz": 149,
     "dict": 0,
-    "glossary": 62,
+    "glossary": 82,
     "try": 0
   }
 }

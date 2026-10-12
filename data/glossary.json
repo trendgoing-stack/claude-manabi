@@ -2,6 +2,75 @@
   "schemaVersion": 1,
   "terms": [
     {
+      "id": "g-artifacts-tab",
+      "term": "Artifacts タブ",
+      "reading": "あーてぃふぁくつたぶ",
+      "aliases": [
+        "Artifacts tab"
+      ],
+      "definition": "Claude のサイドバーにある、作ったアーティファクトがまとめて保存される場所。開き直し、新しい作成、整理ができ、テンプレートを選んで作り始めることもできる。",
+      "related": [
+        "g-artifact",
+        "g-artifact-template"
+      ]
+    },
+    {
+      "id": "g-artifact",
+      "term": "アーティファクト",
+      "reading": "あーてぃふぁくと",
+      "aliases": [
+        "artifacts",
+        "artifact"
+      ],
+      "definition": "Claude が会話の中で作る、見返したり人に見せたりできる成果物。文書・スライド・図・小さなツールなどが、会話の横の専用の窓に開き、編集や共有ができる。",
+      "related": [
+        "g-artifacts-tab",
+        "g-artifact-template",
+        "g-custom-visuals"
+      ]
+    },
+    {
+      "id": "g-artifact-template",
+      "term": "アーティファクトのテンプレート",
+      "reading": "あーてぃふぁくとのてんぷれーと",
+      "aliases": [],
+      "definition": "Docs・Slides・Design・Dashboards など、決まった種類の成果物を作るためのアーティファクトの型。入力欄の「Output」か Artifacts タブから選び、編集できるページやキャンバスとして開く。",
+      "related": [
+        "g-artifact",
+        "g-claude-docs",
+        "g-claude-design",
+        "g-claude-dashboards",
+        "g-claude-slides"
+      ]
+    },
+    {
+      "id": "g-network-egress",
+      "term": "Allow network egress",
+      "reading": "あらうねっとわーくいーぐれす",
+      "aliases": [
+        "network egress"
+      ],
+      "definition": "ファイル作成などで Claude がコードを動かす作業環境から、インターネットへ接続できるようにする設定。接続できると、認められた配布元からプログラムの部品を入れたり、外部のデータを使ったりできる。",
+      "related": [
+        "g-code-execution",
+        "g-prompt-injection"
+      ]
+    },
+    {
+      "id": "g-legacy-memory",
+      "term": "以前からの方式のメモリ",
+      "reading": "いぜんからのほうしきのめもり",
+      "aliases": [
+        "legacy memory",
+        "以前からの方式"
+      ],
+      "definition": "新しいメモリの仕組みに移る前の方式。Settings > Capabilities の中に Memory の項目があるアカウントが該当し、設定の場所や取り込みの手順が新しい方式と異なる。",
+      "related": [
+        "g-memory",
+        "g-memory-import"
+      ]
+    },
+    {
       "id": "g-instructions-for-claude",
       "term": "Instructions for Claude",
       "reading": "いんすとらくしょんずふぉーくろーど",
@@ -116,6 +185,44 @@
       ]
     },
     {
+      "id": "g-custom-visuals",
+      "term": "カスタムビジュアル",
+      "reading": "かすたむびじゅある",
+      "aliases": [
+        "custom visuals"
+      ],
+      "definition": "Claude が質問に合わせて会話の中に作る図・グラフ・対話的な表示（ベータ版）。その場で考えるためのもので、残したいときは保存するかアーティファクトにする。",
+      "related": [
+        "g-artifact"
+      ]
+    },
+    {
+      "id": "g-sensitive-topics",
+      "term": "機密トピック",
+      "reading": "きみつとぴっく",
+      "aliases": [
+        "sensitive topics",
+        "Include sensitive topics in memory"
+      ],
+      "definition": "健康、宗教、政治など、個人的で配慮の必要な話題。初期状態ではメモリに保存されず、Settings > Memory で自分でオンにしたときだけ保存される。",
+      "related": [
+        "g-memory",
+        "g-memory-topic"
+      ]
+    },
+    {
+      "id": "g-shared-storage",
+      "term": "共有ストレージ",
+      "reading": "きょうゆうすとれーじ",
+      "aliases": [
+        "shared storage"
+      ],
+      "definition": "データを保存するアーティファクトで、使う人全員に見える保存先。使う人ごとに分かれた保存先とは違い、入れた内容はそのアーティファクトを開く人全員に見える。",
+      "related": [
+        "g-artifact"
+      ]
+    },
+    {
       "id": "g-claude-md",
       "term": "CLAUDE.md",
       "reading": "くろーどえむでぃー",
@@ -157,6 +264,51 @@
       "definition": "API を従量課金で使うためのアカウントと管理画面。Claude Code にもこのアカウントでログインでき、その場合は API の利用として請求される。",
       "related": [
         "g-api-key"
+      ]
+    },
+    {
+      "id": "g-claude-slides",
+      "term": "Claude Slides",
+      "reading": "くろーどすらいず",
+      "aliases": [],
+      "definition": "メモや報告、チャットの内容から発表用のスライドを作るアーティファクトのテンプレート。Claude の中で発表でき、PowerPoint や PDF に書き出せる。",
+      "related": [
+        "g-artifact-template",
+        "g-claude-docs"
+      ]
+    },
+    {
+      "id": "g-claude-dashboards",
+      "term": "Claude Dashboards",
+      "reading": "くろーどだっしゅぼーず",
+      "aliases": [
+        "Dashboards"
+      ],
+      "definition": "データについての質問を、グラフの並んだ画面にするアーティファクトのテンプレート（ベータ版）。Claude がグラフごとに SQL の問い合わせを書いて実行し、その中身を確かめられる。",
+      "related": [
+        "g-artifact-template"
+      ]
+    },
+    {
+      "id": "g-claude-design",
+      "term": "Claude Design",
+      "reading": "くろーどでざいん",
+      "aliases": [],
+      "definition": "デザイン、試作品、1枚ものの資料などを Claude と話しながら作るアーティファクトのテンプレート。キャンバスの上で直接編集でき、デザインシステムに沿って作られる。",
+      "related": [
+        "g-artifact-template",
+        "g-design-system"
+      ]
+    },
+    {
+      "id": "g-claude-docs",
+      "term": "Claude Docs",
+      "reading": "くろーどどっくす",
+      "aliases": [],
+      "definition": "Claude や一緒に働く人と書き進める文書を作るアーティファクトのテンプレート。直接の書き込みは自動で保存され、コメントで @Claude に直しを頼める。",
+      "related": [
+        "g-artifact-template",
+        "g-claude-slides"
       ]
     },
     {
@@ -309,6 +461,19 @@
         "g-claude-code",
         "g-surface",
         "g-native-install"
+      ]
+    },
+    {
+      "id": "g-incognito-chat",
+      "term": "シークレットチャット",
+      "reading": "しーくれっとちゃっと",
+      "aliases": [
+        "incognito chat"
+      ],
+      "definition": "チャット履歴にもメモリにも保存されない、一時的な会話。プロジェクトの外の新しいチャットで、右上のゴーストアイコンから始める。閉じると開き直せない。",
+      "related": [
+        "g-memory",
+        "g-chat-search"
       ]
     },
     {
@@ -479,6 +644,21 @@
       ]
     },
     {
+      "id": "g-chat-search",
+      "term": "チャット検索",
+      "reading": "ちゃっとけんさく",
+      "aliases": [
+        "chat search",
+        "Search and reference chats"
+      ],
+      "definition": "会話の途中で頼まれたときに、Claude が過去のチャットを探して内容を参照する機能。検索はツール呼び出しとして表示され、答えには元のチャットへの引用が付く。",
+      "related": [
+        "g-memory",
+        "g-rag",
+        "g-incognito-chat"
+      ]
+    },
+    {
       "id": "g-chat-version",
       "term": "チャットの別の版",
       "reading": "ちゃっとのべつのはん",
@@ -486,6 +666,18 @@
       "definition": "前に送ったメッセージを編集して送り直したときにできる、チャットのもう一つの流れ。元のやり取りは残り、版ごとにアーティファクトも分かれる。",
       "related": [
         "g-prompt"
+      ]
+    },
+    {
+      "id": "g-design-system",
+      "term": "デザインシステム",
+      "reading": "でざいんしすてむ",
+      "aliases": [
+        "design system"
+      ],
+      "definition": "色・書体・部品など、見た目の決まりごとをまとめたもの。Claude Design やスライドで使うと、新しく作るものがその決まりに沿ってそろう。",
+      "related": [
+        "g-claude-design"
       ]
     },
     {
@@ -703,6 +895,19 @@
       ]
     },
     {
+      "id": "g-pause-memory",
+      "term": "Pause memory",
+      "reading": "ぽーずめもり",
+      "aliases": [
+        "メモリの一時停止"
+      ],
+      "definition": "メモリを一時的に止める操作。覚えた内容は残るが、使うことも新しく覚えることもしない。止めている間の会話は、再開してもあとから追加されない。",
+      "related": [
+        "g-reset-memory",
+        "g-memory"
+      ]
+    },
+    {
       "id": "g-rewind-menu",
       "term": "巻き戻しメニュー",
       "reading": "まきもどしめにゅー",
@@ -721,11 +926,37 @@
       "aliases": [
         "Memory"
       ],
-      "definition": "Claude が過去のチャットの内容を覚えておき、あとの会話に生かす機能。プロジェクトごとに分かれていて、プロジェクト外のチャットとは混ざらない。",
+      "definition": "Claude が会話の中で役に立つことをトピックごとに保存し、新しいチャットで自動的に生かす機能。プロジェクトごとに分かれていて、プロジェクト外のチャットとは混ざらない。",
       "related": [
         "g-project"
       ],
       "noAutoLink": true
+    },
+    {
+      "id": "g-memory-topic",
+      "term": "メモリのトピック",
+      "reading": "めもりのとぴっく",
+      "aliases": [
+        "Topics"
+      ],
+      "definition": "Claude がメモリとして保存した内容の、話題ごとのまとまり。Settings > Memory の Topics に並び、読む・編集する・削除することができる。",
+      "related": [
+        "g-memory",
+        "g-sensitive-topics"
+      ]
+    },
+    {
+      "id": "g-memory-import",
+      "term": "メモリの取り込み",
+      "reading": "めもりのとりこみ",
+      "aliases": [
+        "memory import",
+        "Start import"
+      ],
+      "definition": "ほかの AI サービスが保存している記憶を書き出して貼り付け、Claude のメモリに移す機能。Settings > Memory の「Start import」から始める。実験的な機能で、すべてが反映されるとは限らない。",
+      "related": [
+        "g-memory"
+      ]
     },
     {
       "id": "g-rag",
@@ -765,6 +996,31 @@
       "definition": "開発中の機能を早めに試してもらう提供段階。ベータより前の段階で、正式に提供されるまでに大きく変わる可能性がある。",
       "related": [
         "g-beta"
+      ]
+    },
+    {
+      "id": "g-reset-memory",
+      "term": "Reset memory",
+      "reading": "りせっとめもり",
+      "aliases": [
+        "メモリのリセット"
+      ],
+      "definition": "プロジェクトのメモリも含めて、すべてのメモリを完全に削除する操作。元に戻すことはできない。",
+      "related": [
+        "g-pause-memory",
+        "g-memory"
+      ]
+    },
+    {
+      "id": "g-legacy-artifact",
+      "term": "legacy artifacts",
+      "reading": "れがしーあーてぃふぁくつ",
+      "aliases": [
+        "legacy artifact"
+      ],
+      "definition": "アーティファクトの仕組みが新しくなる前に、チャットで作られたアーティファクト。今も使え、公開や共有もできるが、同じ形式のものを新しく作ることはできない。",
+      "related": [
+        "g-artifact"
       ]
     },
     {
