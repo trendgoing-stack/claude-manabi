@@ -83,6 +83,18 @@
       ]
     },
     {
+      "id": "g-vim-mode",
+      "term": "Vim モード",
+      "reading": "ゔぃむもーど",
+      "aliases": [
+        "vim mode"
+      ],
+      "definition": "Claude Code の入力欄を、テキストエディター Vim と同じようなキー操作で編集できるモード。`/config` の Editor mode などで切り替える。",
+      "related": [
+        "g-keybindings"
+      ]
+    },
+    {
       "id": "g-web-search",
       "term": "ウェブ検索",
       "reading": "うぇぶけんさく",
@@ -172,6 +184,33 @@
       ]
     },
     {
+      "id": "g-mcp",
+      "term": "MCP",
+      "reading": "えむしーぴー",
+      "aliases": [
+        "Model Context Protocol"
+      ],
+      "definition": "AI とツールやデータをつなぐ方法を決めた公開の規格。Anthropic が作った。コネクタの土台になっている。",
+      "related": [
+        "g-connector",
+        "g-mcp-server"
+      ]
+    },
+    {
+      "id": "g-mcp-server",
+      "term": "MCP サーバー",
+      "reading": "えむしーぴーさーばー",
+      "aliases": [
+        "MCPサーバー",
+        "MCP server"
+      ],
+      "definition": "MCP に従って、Claude に道具（ツール）やデータを提供するプログラム。インターネット上で動くリモートのものと、パソコンの中で動くローカルのものがある。",
+      "related": [
+        "g-mcp",
+        "g-desktop-extension"
+      ]
+    },
+    {
       "id": "g-auto-mode",
       "term": "auto mode",
       "reading": "おーともーど",
@@ -185,6 +224,20 @@
       ]
     },
     {
+      "id": "g-custom-connector",
+      "term": "カスタムコネクタ",
+      "reading": "かすたむこねくた",
+      "aliases": [
+        "custom connector",
+        "custom connectors"
+      ],
+      "definition": "Connectors Directory にないリモートの MCP サーバーを、URL を指定して自分で追加するコネクタ。Anthropic の確認を経ていないため、信頼できる提供元のものだけを使う。",
+      "related": [
+        "g-connector",
+        "g-mcp-server"
+      ]
+    },
+    {
       "id": "g-custom-visuals",
       "term": "カスタムビジュアル",
       "reading": "かすたむびじゅある",
@@ -194,6 +247,46 @@
       "definition": "Claude が質問に合わせて会話の中に作る図・グラフ・対話的な表示（ベータ版）。その場で考えるためのもので、残したいときは保存するかアーティファクトにする。",
       "related": [
         "g-artifact"
+      ]
+    },
+    {
+      "id": "g-managed-settings",
+      "term": "管理設定",
+      "reading": "かんりせってい",
+      "aliases": [
+        "managed settings",
+        "managed-settings.json"
+      ],
+      "definition": "組織の管理者が配る Claude Code の設定。`managed-settings.json` や管理コンソールなどから届き、原則として、利用者の設定ファイルや `--settings` より優先される。",
+      "related": [
+        "g-settings-scope",
+        "g-settings-json"
+      ]
+    },
+    {
+      "id": "g-keybindings",
+      "term": "キーバインディング",
+      "reading": "きーばいんでぃんぐ",
+      "aliases": [
+        "keybindings",
+        "キー割り当て"
+      ],
+      "definition": "どのキーでどの操作をするかの割り当て。Claude Code では `~/.claude/keybindings.json` に、場面（コンテキスト）ごとにキーとアクションの組を書いて変えられる。",
+      "related": [
+        "g-vim-mode"
+      ]
+    },
+    {
+      "id": "g-github-integration",
+      "term": "GitHub の連携",
+      "reading": "ぎっとはぶのれんけい",
+      "aliases": [
+        "GitHub integration"
+      ],
+      "definition": "GitHub のリポジトリから選んだファイルやフォルダを、チャットやプロジェクトナレッジに取り込む機能。Sync で最新の内容に更新する。",
+      "related": [
+        "g-project-knowledge",
+        "g-connector"
       ]
     },
     {
@@ -387,6 +480,33 @@
       "related": []
     },
     {
+      "id": "g-connector",
+      "term": "コネクタ",
+      "reading": "こねくた",
+      "aliases": [
+        "Connectors",
+        "connector"
+      ],
+      "definition": "Claude を外部のアプリやサービスにつなぎ、情報の取得やそのサービスでの操作をできるようにする仕組み。Claude は、ふだんはつないだアカウントの権限の範囲で動く（共有の資格情報を使うコネクタは、その資格情報が届く範囲で動く）。",
+      "related": [
+        "g-mcp",
+        "g-connectors-directory",
+        "g-custom-connector"
+      ]
+    },
+    {
+      "id": "g-connectors-directory",
+      "term": "Connectors Directory",
+      "reading": "こねくたずでぃれくとり",
+      "aliases": [
+        "コネクタのディレクトリ"
+      ],
+      "definition": "Claude につなげるコネクタを探して追加するための一覧。各コネクタの用途や、読み取り・書き込みのどちらができるかを確かめられる。",
+      "related": [
+        "g-connector"
+      ]
+    },
+    {
       "id": "g-context-window",
       "term": "コンテキストウィンドウ",
       "reading": "こんてきすとういんどう",
@@ -517,6 +637,19 @@
       ]
     },
     {
+      "id": "g-output-style",
+      "term": "出力スタイル",
+      "reading": "しゅつりょくすたいる",
+      "aliases": [
+        "output styles",
+        "output style"
+      ],
+      "definition": "Claude Code で、セッション中のすべての応答の役割・口調・形式を決める指示。Concise や Explanatory などの組み込みのほか、Markdown ファイルで自作もできる。",
+      "related": [
+        "g-frontmatter"
+      ]
+    },
+    {
       "id": "g-usage-limit",
       "term": "使用量の制限",
       "reading": "しようりょうのせいげん",
@@ -556,6 +689,18 @@
       "related": [
         "g-instructions-for-claude",
         "g-context-window"
+      ]
+    },
+    {
+      "id": "g-status-line",
+      "term": "ステータスライン",
+      "reading": "すてーたすらいん",
+      "aliases": [
+        "status line"
+      ],
+      "definition": "Claude Code の画面の下に、モデル名やコンテキストの使用率など自分で決めた情報を表示し続ける行。セッションの情報を JSON で受け取るスクリプトが表示を作る。",
+      "related": [
+        "g-settings-json"
       ]
     },
     {
@@ -609,6 +754,30 @@
       ]
     },
     {
+      "id": "g-settings-scope",
+      "term": "設定のスコープ",
+      "reading": "せっていのすこーぷ",
+      "aliases": [
+        "settings scope"
+      ],
+      "definition": "Claude Code の設定が効く範囲。自分の全リポジトリに効くユーザー、チームで共有するプロジェクト、自分だけのプロジェクトローカル、組織が配る管理の4つがあり、同じキーは優先順位の高いほうが使われる。",
+      "related": [
+        "g-settings-json",
+        "g-managed-settings"
+      ]
+    },
+    {
+      "id": "g-settings-json",
+      "term": "settings.json",
+      "reading": "せってぃんぐすじぇいそん",
+      "aliases": [],
+      "definition": "Claude Code の設定を JSON 形式で書くファイル。使うモデルや権限ルールなどをキーと値の組で書き、置き場所（ユーザー・リポジトリ・管理）によって効く範囲が変わる。",
+      "related": [
+        "g-settings-scope",
+        "g-managed-settings"
+      ]
+    },
+    {
       "id": "g-llm",
       "term": "大規模言語モデル",
       "reading": "だいきぼげんごもでる",
@@ -618,6 +787,19 @@
       "definition": "大量の文章から学習し、人の言葉で書いた依頼を読み取って文章で答える AI のモデル。Claude は Anthropic が開発した大規模言語モデル。",
       "related": [
         "g-prompt"
+      ]
+    },
+    {
+      "id": "g-interactive-connector",
+      "term": "対話的なコネクタ",
+      "reading": "たいわてきなこねくた",
+      "aliases": [
+        "interactive connectors",
+        "interactive connector"
+      ],
+      "definition": "結果を文章で返すだけでなく、ボードや表などの操作できる画面を会話の中に表示するコネクタ。Connectors Directory で「Interactive」の印が付いている。",
+      "related": [
+        "g-connector"
       ]
     },
     {
@@ -669,6 +851,19 @@
       ]
     },
     {
+      "id": "g-tool-access",
+      "term": "Tool access",
+      "reading": "つーるあくせす",
+      "aliases": [
+        "ツールアクセス"
+      ],
+      "definition": "会話の中でコネクタをいつ読み込むかを選ぶ設定。Auto、Always available、On demand から会話ごとに選ぶ。",
+      "related": [
+        "g-connector",
+        "g-context-window"
+      ]
+    },
+    {
       "id": "g-design-system",
       "term": "デザインシステム",
       "reading": "でざいんしすてむ",
@@ -678,6 +873,20 @@
       "definition": "色・書体・部品など、見た目の決まりごとをまとめたもの。Claude Design やスライドで使うと、新しく作るものがその決まりに沿ってそろう。",
       "related": [
         "g-claude-design"
+      ]
+    },
+    {
+      "id": "g-desktop-extension",
+      "term": "デスクトップ拡張機能",
+      "reading": "ですくとっぷかくちょうきのう",
+      "aliases": [
+        "Desktop extensions",
+        "desktop extension"
+      ],
+      "definition": "パソコンの中で動く MCP サーバーを、Claude Desktop にクリックで入れられるようにまとめたもの。手元のフォルダやアプリを扱うときに使う。",
+      "related": [
+        "g-mcp-server",
+        "g-connector"
       ]
     },
     {
@@ -752,6 +961,19 @@
       ],
       "definition": "Claude の画面のメニューやボタンに使われる言語。変わるのは画面の文字だけで、Claude は話しかけた言語で答える。",
       "related": []
+    },
+    {
+      "id": "g-fast-mode",
+      "term": "fast mode",
+      "reading": "ふぁすともーど",
+      "aliases": [
+        "高速モード"
+      ],
+      "definition": "Claude Code で Opus の応答を速くする設定。同じモデルを速さ優先の構成で動かすもので、`/fast` で切り替える。通常より費用がかかる設定で、扱いはプランによって異なる。research preview の機能。",
+      "related": [
+        "g-model-alias",
+        "g-research-preview"
+      ]
     },
     {
       "id": "g-hook",
@@ -843,6 +1065,18 @@
       "related": [
         "g-rag",
         "g-project-knowledge"
+      ]
+    },
+    {
+      "id": "g-frontmatter",
+      "term": "frontmatter",
+      "reading": "ふろんとまたー",
+      "aliases": [
+        "フロントマター"
+      ],
+      "definition": "Markdown ファイルの先頭で `---` に挟んで書く設定欄。名前や説明などの項目を YAML 形式で書き、出力スタイルなどのファイルで使う。",
+      "related": [
+        "g-output-style"
       ]
     },
     {
@@ -956,6 +1190,18 @@
       "definition": "ほかの AI サービスが保存している記憶を書き出して貼り付け、Claude のメモリに移す機能。Settings > Memory の「Start import」から始める。実験的な機能で、すべてが反映されるとは限らない。",
       "related": [
         "g-memory"
+      ]
+    },
+    {
+      "id": "g-model-alias",
+      "term": "モデルエイリアス",
+      "reading": "もでるえいりあす",
+      "aliases": [
+        "model alias"
+      ],
+      "definition": "Claude Code でモデルを指定するときの短い別名。`opus`・`sonnet`・`haiku` などがあり、その系統の推奨のモデル（Anthropic API では最新）を指すので、正確なバージョン名を覚えなくてよい。",
+      "related": [
+        "g-fast-mode"
       ]
     },
     {

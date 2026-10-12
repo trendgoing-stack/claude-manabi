@@ -1,0 +1,310 @@
+{
+  "schemaVersion": 1,
+  "chapterId": "c15",
+  "questions": [
+    {
+      "id": "c15-01-q1",
+      "sectionId": "c15-01",
+      "question": "練習用の todo-app リポジトリで、チームメイトには影響させず、自分のセッションだけに効く設定を書くファイルはどれか。",
+      "choices": [
+        "`~/.claude/settings.json`",
+        "`todo-app/.claude/settings.json`",
+        "`todo-app/.claude/settings.local.json`",
+        "`~/.claude.json`"
+      ],
+      "answer": 2,
+      "explanation": "`.claude/settings.local.json` はプロジェクトローカル設定で、自分だけ、そのリポジトリだけに効きます。`.claude/settings.json` はコミットしてチームで共有する設定で、`~/.claude/settings.json` は自分の全リポジトリに効くユーザー設定です。`~/.claude.json` は Claude Code が自分で書き込むファイルで、編集する必要はありません。",
+      "sources": [
+        {
+          "title": "設定ファイルと優先順位",
+          "url": "https://code.claude.com/docs/ja/settings"
+        }
+      ]
+    },
+    {
+      "id": "c15-01-q2",
+      "sectionId": "c15-01",
+      "question": "同じキーが、ユーザー設定・共有プロジェクト設定・プロジェクトローカル設定の3つに書かれている。管理設定と `--settings` がないとき、使われるのはどれの値か。",
+      "choices": [
+        "プロジェクトローカル設定の値",
+        "ユーザー設定の値",
+        "共有プロジェクト設定の値",
+        "いちばん最後に保存したファイルの値"
+      ],
+      "answer": 0,
+      "explanation": "優先順位は、管理設定、`--settings`、プロジェクトローカル、共有プロジェクト、ユーザーの順です。この3つの中ではプロジェクトローカル設定がいちばん強く、その値が使われます。保存した順番は関係ありません。",
+      "sources": [
+        {
+          "title": "設定ファイルと優先順位",
+          "url": "https://code.claude.com/docs/ja/settings"
+        }
+      ]
+    },
+    {
+      "id": "c15-01-q3",
+      "sectionId": "c15-01",
+      "question": "`permissions.allow` のルールを、ユーザー設定とリポジトリの共有設定の両方に書いた。どうなるか。",
+      "choices": [
+        "優先順位の高いリポジトリの設定のルールだけが有効になる",
+        "ユーザー設定のルールだけが有効になる",
+        "キーが重複しているため、両方とも無視される",
+        "両方のファイルのルールが合わさって有効になる"
+      ],
+      "answer": 3,
+      "explanation": "`permissions.allow` のような配列で書くリストは、複数のファイルにあると上書きではなく合わさります。そのため、どちらのファイルのルールも有効です。優先順位で1つだけが選ばれるのは、配列でない通常のキーの場合です。",
+      "sources": [
+        {
+          "title": "設定ファイルと優先順位",
+          "url": "https://code.claude.com/docs/ja/settings"
+        }
+      ]
+    },
+    {
+      "id": "c15-02-q1",
+      "sectionId": "c15-02",
+      "question": "設定ファイルを書き換えずに、ある設定値をそのセッションだけで試したい。適した方法はどれか。",
+      "choices": [
+        "`/config` でその項目を変える",
+        "起動時に `--settings` で JSON を渡す",
+        "ユーザー設定を編集し、終わったら元に戻す",
+        "`/status` の画面で値を書き換える"
+      ],
+      "answer": 1,
+      "explanation": "`claude --settings '…'` で渡した値は、そのセッションだけに効き、ファイルは書き換わりません。`/config` で変えた項目は設定ファイルに保存されるため、次のセッションにも残ります。`/status` は読み込まれた設定を確かめる画面です。",
+      "sources": [
+        {
+          "title": "設定ファイルと優先順位",
+          "url": "https://code.claude.com/docs/ja/settings"
+        }
+      ]
+    },
+    {
+      "id": "c15-02-q2",
+      "sectionId": "c15-02",
+      "question": "今のセッションで、どの設定ファイルが読み込まれているかを確かめるにはどうするか。",
+      "choices": [
+        "`/config` の Config タブを開く",
+        "`/model` でピッカーを開く",
+        "`/keybindings` でファイルを開く",
+        "`/status` を開き、Setting sources の行を見る"
+      ],
+      "answer": 3,
+      "explanation": "`/status` の Setting sources の行に、そのセッションで読み込んだ設定ファイルが並びます。Config タブはよく使う項目を変える画面で、settings.json の中身を表示するものではありません。`/model` と `/keybindings` は、それぞれモデルとキー割り当て用です。",
+      "sources": [
+        {
+          "title": "設定ファイルと優先順位",
+          "url": "https://code.claude.com/docs/ja/settings"
+        }
+      ]
+    },
+    {
+      "id": "c15-02-q3",
+      "sectionId": "c15-02",
+      "question": "ユーザー設定の settings.json に、説明のつもりで `//` のコメントを書いた。どうなるか。",
+      "choices": [
+        "コメントの行だけが無視され、残りは有効になる",
+        "次の起動時に、Settings Error として知らされる",
+        "Claude Code が自動でコメントを削除して保存し直す",
+        "コメントは CLAUDE.md の指示として読み込まれる"
+      ],
+      "answer": 1,
+      "explanation": "設定ファイルは厳密な JSON なので、`//` のコメントや末尾のカンマは構文エラーです。次に対話モードで起動したときに Settings Error として知らされ、直すか、その設定を使わずに続けるかを選べます。コメントだけが無視されるわけではありません。",
+      "sources": [
+        {
+          "title": "設定ファイルと優先順位",
+          "url": "https://code.claude.com/docs/ja/settings"
+        }
+      ]
+    },
+    {
+      "id": "c15-03-q1",
+      "sectionId": "c15-03",
+      "question": "`/model` のピッカーで、既定のモデルは変えずに、このセッションだけ別のモデルに切り替えたい。どうするか。",
+      "choices": [
+        "選びたいモデルの行で `s` を押す",
+        "選びたいモデルの行で Enter を押す",
+        "`/model` のあとにモデル名を続けて打つ",
+        "ユーザー設定の `model` を書き換える"
+      ],
+      "answer": 0,
+      "explanation": "ピッカーで `s` を押すと、このセッションだけ切り替わり、既定は変わりません。Enter で選ぶと、ユーザー設定の `model` に保存されて次のセッションからの既定になります。`/model` に名前を続けて打つのも Enter と同じ扱いです。",
+      "sources": [
+        {
+          "title": "モデル設定",
+          "url": "https://code.claude.com/docs/ja/model-config"
+        }
+      ]
+    },
+    {
+      "id": "c15-03-q2",
+      "sectionId": "c15-03",
+      "question": "モデルエイリアス `opusplan` を選んだときの動きはどれか。",
+      "choices": [
+        "どの場面でも、常に最新の Opus を使う",
+        "プランモードでは Sonnet、実装に移ると Opus を使う",
+        "プランモードでは Opus、実装に移ると Sonnet を使う",
+        "Opus を速さ優先の構成で動かす"
+      ],
+      "answer": 2,
+      "explanation": "`opusplan` は、プランモードの間は Opus で計画を立て、実装に移ると Sonnet に切り替える特別なエイリアスです。向きが逆の選択肢は誤りです。Opus を速さ優先で動かすのは fast mode で、エイリアスとは別の仕組みです。",
+      "sources": [
+        {
+          "title": "モデル設定",
+          "url": "https://code.claude.com/docs/ja/model-config"
+        }
+      ]
+    },
+    {
+      "id": "c15-03-q3",
+      "sectionId": "c15-03",
+      "question": "fast mode の説明として正しいものはどれか。",
+      "choices": [
+        "より軽い別のモデルに切り替えて、応答を速くする",
+        "同じ Opus を速さ優先の構成で動かし、答えの質は変わらない",
+        "考える深さ（effort レベル）を自動で下げて、応答を速くする",
+        "応答を短くする出力スタイルに切り替える"
+      ],
+      "answer": 1,
+      "explanation": "fast mode は別のモデルではなく、同じ Opus を速さ優先の構成で動かすため、答えの質は変わりません。effort レベルを下げると考える時間が短くなりますが、これは `/effort` で行う別の調整です。応答を短くするのは Concise などの出力スタイルの役目です。",
+      "sources": [
+        {
+          "title": "高速モードでレスポンスを高速化",
+          "url": "https://code.claude.com/docs/ja/fast-mode"
+        }
+      ]
+    },
+    {
+      "id": "c15-04-q1",
+      "sectionId": "c15-04",
+      "question": "組み込みの出力スタイル Concise の説明はどれか。",
+      "choices": [
+        "書いたコードの理由を `Insight` という短い説明で添える",
+        "設計の判断が要る数行を、ユーザーに書いてもらう",
+        "細かな判断で質問せず、妥当な前提を置いて作業を進める",
+        "結論から書き、前置きや途中経過の説明、まとめを省く"
+      ],
+      "answer": 3,
+      "explanation": "Concise は、応答の最初に結果を書き、前置き・途中経過の説明・最後のまとめを省くスタイルです。`Insight` を添えるのは Explanatory、ユーザーにコードを書いてもらうのは Learning、前提を置いて進めるのは Proactive です。",
+      "sources": [
+        {
+          "title": "出力スタイル",
+          "url": "https://code.claude.com/docs/ja/output-styles"
+        }
+      ]
+    },
+    {
+      "id": "c15-04-q2",
+      "sectionId": "c15-04",
+      "question": "設定ファイルに `\"outputStyle\": \"explanatory\"` と小文字で書いた。どうなるか。",
+      "choices": [
+        "Explanatory スタイルが適用される",
+        "名前が一致しないため、Default のままになる",
+        "Settings Error になり、Claude Code が起動しない",
+        "似た名前の Learning スタイルが適用される"
+      ],
+      "answer": 1,
+      "explanation": "設定ファイルの `outputStyle` は大文字と小文字を区別するので、`Explanatory` と書く必要があります。一致しない値を書くと Default のスタイルになります。大文字と小文字を区別しないのは `/output-style` コマンドで選ぶときです。",
+      "sources": [
+        {
+          "title": "出力スタイル",
+          "url": "https://code.claude.com/docs/ja/output-styles"
+        }
+      ]
+    },
+    {
+      "id": "c15-04-q3",
+      "sectionId": "c15-04",
+      "question": "自作の出力スタイルの frontmatter に `keep-coding-instructions: true` を書く目的はどれか。",
+      "choices": [
+        "作ったスタイルを、すべてのリポジトリで既定にする",
+        "ファイルを編集したとき、再起動なしで読み込ませる",
+        "Claude Code に組み込まれたソフトウェア開発向けの指示を残す",
+        "権限の確認を出さずに作業させる"
+      ],
+      "answer": 2,
+      "explanation": "`keep-coding-instructions: true` は、組み込みのソフトウェア開発向けの指示を、自作スタイルと一緒に残すための項目です。書かないとその指示は外れます。全リポジトリで使うにはユーザー設定の `outputStyle` を使い、ターミナルではスタイルのファイルを直したあとに再起動が必要です。",
+      "sources": [
+        {
+          "title": "出力スタイル",
+          "url": "https://code.claude.com/docs/ja/output-styles"
+        }
+      ]
+    },
+    {
+      "id": "c15-05-q1",
+      "sectionId": "c15-05",
+      "question": "`/statusline モデル名とコンテキストの使用率を表示して` と入力した。何が起こるか。",
+      "choices": [
+        "ステータスラインの JSON を手で書くための画面が開く",
+        "今のステータスラインが、このセッションの間だけ隠れる",
+        "Claude Code がスクリプトを作り、設定も書き換えて表示を用意する",
+        "入力した文字列が、そのまま固定の文字として表示される"
+      ],
+      "answer": 2,
+      "explanation": "`/statusline` は、表示したい内容を言葉で受け取り、`~/.claude/` にスクリプトを作って設定を更新します。途中でファイル編集の許可を求められることがあります。入力した文字がそのまま表示されるわけではなく、スクリプトの出力が表示されます。",
+      "sources": [
+        {
+          "title": "ステータスラインをカスタマイズする",
+          "url": "https://code.claude.com/docs/ja/statusline"
+        }
+      ]
+    },
+    {
+      "id": "c15-05-q2",
+      "sectionId": "c15-05",
+      "question": "ステータスラインのスクリプトは、モデル名などのセッションの情報をどのように受け取るか。",
+      "choices": [
+        "JSON にまとめられて、標準入力に渡される",
+        "コマンドライン引数として、1つずつ渡される",
+        "環境変数 `ANTHROPIC_MODEL` だけから読み取る",
+        "会話の全文がファイルに書き出され、それを読む"
+      ],
+      "answer": 0,
+      "explanation": "Claude Code はスクリプトを動かすたびに、モデルの表示名や作業フォルダ、コンテキストの使用率などを JSON にして標準入力に渡します。スクリプトはそれを読んで、表示したい文字を標準出力に書きます。引数や特定の環境変数だけで受け取る仕組みではありません。",
+      "sources": [
+        {
+          "title": "ステータスラインをカスタマイズする",
+          "url": "https://code.claude.com/docs/ja/statusline"
+        }
+      ]
+    },
+    {
+      "id": "c15-06-q1",
+      "sectionId": "c15-06",
+      "question": "`keybindings.json` で、あるキーの既定の割り当てを外すにはどう書くか。",
+      "choices": [
+        "キーの名前を空文字 `\"\"` にする",
+        "そのキーのアクションに `null` を書く",
+        "`bindings` の配列ごと削除する",
+        "`context` を `Global` に変える"
+      ],
+      "answer": 1,
+      "explanation": "アクションに `null` を書くと、そのキーの既定の割り当てが外れます。`bindings` ごと削除すると、自分で加えた割り当てがなくなるだけで、既定の割り当ては残ります。`context` はキーが効く場面を決める項目です。",
+      "sources": [
+        {
+          "title": "キーボードショートカットのカスタマイズ",
+          "url": "https://code.claude.com/docs/ja/keybindings"
+        }
+      ]
+    },
+    {
+      "id": "c15-06-q2",
+      "sectionId": "c15-06",
+      "question": "入力欄で、送信せずに改行したい。設定なしでどのターミナルでも使える方法はどれか。",
+      "choices": [
+        "Shift+Enter を押す",
+        "Ctrl+D を押す",
+        "Tab を押してから Enter を押す",
+        "Ctrl+J を押す"
+      ],
+      "answer": 3,
+      "explanation": "Ctrl+J（または `\\` を打ってから Enter）は、設定なしでどのターミナルでも改行を入れられます。Shift+Enter はターミナルによって、そのまま使える、`/terminal-setup` が必要、使えない、に分かれます。Ctrl+D は Claude Code の終了に使うキーです。",
+      "sources": [
+        {
+          "title": "Claude Code 用にターミナルを設定する",
+          "url": "https://code.claude.com/docs/ja/terminal-config"
+        }
+      ]
+    }
+  ]
+}

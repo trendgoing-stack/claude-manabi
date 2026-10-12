@@ -1,0 +1,291 @@
+{
+  "schemaVersion": 1,
+  "chapterId": "a07",
+  "questions": [
+    {
+      "id": "a07-01-q1",
+      "sectionId": "a07-01",
+      "question": "コネクタを通じて Claude が見られる情報の範囲として正しいものはどれか。",
+      "choices": [
+        "サービスに保存されているすべての利用者の情報",
+        "あなたがそのサービスで見られる情報",
+        "Anthropic が事前に選んで公開した情報だけ",
+        "最後に開いた1つのファイルの情報だけ"
+      ],
+      "answer": 1,
+      "explanation": "コネクタでは、Claude はあなたがそのサービスで持っている権限の範囲で動きます。あなたが開けないファイルやチャンネルは Claude にも見えません。Anthropic が選んだ情報に限られるわけではなく、ふだんはあなたの権限が基準です（組織で共有の資格情報を使うコネクタは、その資格情報が届く範囲で動くという例外があります）。",
+      "sources": [
+        {
+          "title": "コネクタを使用してClaudeの機能を拡張する",
+          "url": "https://support.claude.com/ja/articles/11176164"
+        }
+      ]
+    },
+    {
+      "id": "a07-01-q2",
+      "sectionId": "a07-01",
+      "question": "MCP（Model Context Protocol）の説明として正しいものはどれか。",
+      "choices": [
+        "Claude のモデルを切り替えるための設定画面",
+        "チャットの履歴を書き出すためのファイル形式",
+        "AI とツールやデータをつなぐための公開の規格",
+        "Google のサービス専用のログイン方式"
+      ],
+      "answer": 2,
+      "explanation": "MCP は Anthropic が作った公開の規格で、AI とツールやデータをつなぐ方法を決めています。コネクタの土台になっており、MCP に対応したサービスなら Claude につなげます。特定の会社のサービス専用の仕組みではありません。",
+      "sources": [
+        {
+          "title": "リモートMCPを使用したカスタムコネクタを始める",
+          "url": "https://support.claude.com/ja/articles/11175166"
+        }
+      ]
+    },
+    {
+      "id": "a07-02-q1",
+      "sectionId": "a07-02",
+      "question": "つないだコネクタを、ある会話でだけ使うようにしたい。どうするのがよいか。",
+      "choices": [
+        "チャットの「+」から「Connectors」を開き、その会話で使うものをオンにする",
+        "コネクタをいったん切断し、会話が終わったらつなぎ直す",
+        "Instructions for Claude にコネクタの名前を書いておく",
+        "新しいプロジェクトを作り、そこにコネクタを登録する"
+      ],
+      "answer": 0,
+      "explanation": "コネクタは、チャットの「+」→「Connectors」で会話ごとにオン・オフを切り替えられます。切断とつなぎ直しを繰り返す必要はありません。Instructions for Claude は答え方の好みを伝える設定で、コネクタのオン・オフを決めるものではありません。",
+      "sources": [
+        {
+          "title": "コネクタを使用してClaudeの機能を拡張する",
+          "url": "https://support.claude.com/ja/articles/11176164"
+        }
+      ]
+    },
+    {
+      "id": "a07-02-q2",
+      "sectionId": "a07-02",
+      "question": "Team・Enterprise プランで、メンバーがコネクタを使い始めるまでの流れとして正しいものはどれか。",
+      "choices": [
+        "メンバーが追加すれば、組織の全員がすぐに使える",
+        "Owner が組織に追加し、そのあと各メンバーが自分で認証する",
+        "Owner が追加すると、メンバーはコネクタの一覧を見ることもできなくなる",
+        "Anthropic に申請し、承認されたメンバーだけが使える"
+      ],
+      "answer": 1,
+      "explanation": "組織では、まず Owner（または Primary Owner）が Organization settings > Connectors でコネクタを追加します。追加しただけではだれにも中身は見えず、各メンバーが自分のアカウントで認証して使い始めます。共有の資格情報を使うコネクタを除き、Owner が追加しただけではメンバーの認証は省けません。",
+      "sources": [
+        {
+          "title": "コネクタを使用してClaudeの機能を拡張する",
+          "url": "https://support.claude.com/ja/articles/11176164"
+        }
+      ]
+    },
+    {
+      "id": "a07-02-q3",
+      "sectionId": "a07-02",
+      "question": "たくさんのコネクタをつないでいるとき、Tool access の選び方として公式に勧められているものはどれか。",
+      "choices": [
+        "Always available にして、最初から全部を読み込む",
+        "すべてのコネクタを切断して、使うたびにつなぎ直す",
+        "On demand にして、必要になったときに探して読み込ませる",
+        "Tool access を毎回オフにしてから会話を始める"
+      ],
+      "answer": 2,
+      "explanation": "コネクタはそれぞれ会話の容量を使うため、たくさんつないでいるときは、必要なときに探して読み込む On demand が勧められています。Always available は、少数のよく使うコネクタ向けです。ふだんは既定の Auto で十分です。",
+      "sources": [
+        {
+          "title": "Claudeのツールアクセスを管理する",
+          "url": "https://support.claude.com/ja/articles/13730515"
+        }
+      ]
+    },
+    {
+      "id": "a07-03-q1",
+      "sectionId": "a07-03",
+      "question": "Gmail のコネクタでメールの返信を頼んだとき、既定ではどうなるか。",
+      "choices": [
+        "Claude がすぐに返信を送り、あとで報告する",
+        "返信の下書きだけが作られ、送信の機能は使えない",
+        "組織の管理者に承認の依頼が届く",
+        "送信の前に、あなたの承認が求められる"
+      ],
+      "answer": 3,
+      "explanation": "送信・返信・転送や、共有・移動・ゴミ箱への移動などは、既定では実行前にあなたの承認を求めます。承認の前に、宛先や内容を自分で確かめるのが大切です。承認するのはあなた自身で、管理者に依頼が届くわけではありません。",
+      "sources": [
+        {
+          "title": "Google Workspace コネクタを使用する",
+          "url": "https://support.claude.com/ja/articles/10166901"
+        }
+      ]
+    },
+    {
+      "id": "a07-03-q2",
+      "sectionId": "a07-03",
+      "question": "GitHub の連携でプロジェクトに取り込んだコードを、リポジトリの最新の状態にそろえるにはどうするか。",
+      "choices": [
+        "プロジェクトを作り直して、最初から取り込む",
+        "「Sync」で取り込み直す",
+        "チャットで「最新にして」と頼むだけで自動で更新される",
+        "GitHub 側でリポジトリの名前を変える"
+      ],
+      "answer": 1,
+      "explanation": "GitHub の連携で取り込んだ内容は、「Sync」で最新の状態に更新します。読む範囲を変えたいときは「Configure files」を使います。プロジェクトを作り直す必要はありません。",
+      "sources": [
+        {
+          "title": "GitHubインテグレーションを使用する",
+          "url": "https://support.claude.com/ja/articles/10167454"
+        }
+      ]
+    },
+    {
+      "id": "a07-03-q3",
+      "sectionId": "a07-03",
+      "question": "GitHub の連携でリポジトリを取り込むときのコツとして適切なものはどれか。",
+      "choices": [
+        "まず必要なファイルやフォルダだけを選んで取り込む",
+        "関係のないリポジトリもまとめて取り込んでおく",
+        "取り込んだあとは同期をしないで使い続ける",
+        "すべてのブランチを一度に取り込む"
+      ],
+      "answer": 0,
+      "explanation": "取り込んだ内容はコンテキストウィンドウに収まる必要があるため、最初は必要なファイルやフォルダに絞るのがコツです。取り込まれるのは選んだブランチのファイル名と中身です。コードを更新したら Sync で取り込み直します。",
+      "sources": [
+        {
+          "title": "GitHubインテグレーションを使用する",
+          "url": "https://support.claude.com/ja/articles/10167454"
+        }
+      ]
+    },
+    {
+      "id": "a07-04-q1",
+      "sectionId": "a07-04",
+      "question": "自分のパソコンの中にあるフォルダを Claude に扱わせたい。向いているものはどれか。",
+      "choices": [
+        "Web のコネクタ（リモート）",
+        "ウェブ検索",
+        "Claude Desktop のデスクトップ拡張機能",
+        "公開リンクでの共有"
+      ],
+      "answer": 2,
+      "explanation": "パソコンの中のフォルダやローカルのアプリを扱うには、Claude Desktop のデスクトップ拡張機能が向いています。Web のコネクタは、ログインして使うクラウドのサービス向けです。ウェブ検索は、インターネット上の公開の情報を調べる機能です。",
+      "sources": [
+        {
+          "title": "デスクトップコネクタとウェブコネクタの使い分け",
+          "url": "https://support.claude.com/ja/articles/11725091"
+        }
+      ]
+    },
+    {
+      "id": "a07-04-q2",
+      "sectionId": "a07-04",
+      "question": "カスタムコネクタのサーバーが、インターネットから届く場所にある必要があるのはなぜか。",
+      "choices": [
+        "接続が Anthropic のクラウドから行われるため",
+        "モバイルアプリからしか追加できないため",
+        "サーバーが Claude の会話の履歴を保存するため",
+        "接続にはあなたのパソコンを毎回経由するため"
+      ],
+      "answer": 0,
+      "explanation": "カスタムコネクタの接続は、あなたの端末ではなく Anthropic のクラウドから行われます。そのため、社内のネットワークの中だけにあるサーバーには、そのままでは届きません。あなたのパソコンを経由する仕組みではありません。",
+      "sources": [
+        {
+          "title": "リモートMCPを使用したカスタムコネクタを始める",
+          "url": "https://support.claude.com/ja/articles/11175166"
+        }
+      ]
+    },
+    {
+      "id": "a07-05-q1",
+      "sectionId": "a07-05",
+      "question": "対話的なコネクタで表示された画面の表示を変えたいとき、できることとして正しいものはどれか。",
+      "choices": [
+        "画面を閉じて、コネクタをつなぎ直す必要がある",
+        "表示はあとから変えられないため、新しい会話を始める",
+        "サービスの公式サイトを開いて操作し直す必要がある",
+        "画面を直接操作するか、チャットに書いて頼む"
+      ],
+      "answer": 3,
+      "explanation": "対話的なコネクタの画面では、絞り込みや並べ替えなどを直接操作できます。チャットに頼みごとを書けば、Claude が画面を更新することもできます。つなぎ直しや新しい会話は必要ありません。",
+      "sources": [
+        {
+          "title": "Claudeでインタラクティブコネクタを使用する",
+          "url": "https://support.claude.com/ja/articles/13454812"
+        }
+      ]
+    },
+    {
+      "id": "a07-05-q2",
+      "sectionId": "a07-05",
+      "question": "依頼に使えるつないだアプリが複数あるとき、Claude はどうするか。",
+      "choices": [
+        "いちばんよく使うアプリを黙って選ぶ",
+        "選択肢を見せて、あなたに選ばせる",
+        "すべてのアプリで同時に予約を進める",
+        "アプリを使わずに、文章だけで答える"
+      ],
+      "answer": 1,
+      "explanation": "候補になるアプリが複数あるときは、Claude は勝手に決めず、選択肢を見せてあなたに選ばせます。また、予約や購入の前には必ず確認を求めます。黙って既定のアプリを選ぶことはありません。",
+      "sources": [
+        {
+          "title": "Claudeが接続されたアプリを提案する方法",
+          "url": "https://support.claude.com/ja/articles/14730684"
+        }
+      ]
+    },
+    {
+      "id": "a07-06-q1",
+      "sectionId": "a07-06",
+      "question": "ツールの承認を求められたとき、「Allow always」を選ぶ前にすべきことはどれか。",
+      "choices": [
+        "何をするツールか、何が渡されるかを確かめる",
+        "コネクタをいったん切断してからつなぎ直す",
+        "会話の名前を変えておく",
+        "Tool access を On demand に切り替える"
+      ],
+      "answer": 0,
+      "explanation": "「Allow always」を選ぶと、以後はそのツールを確認なしで使わせることになります。そのため、何をするツールか、何が渡されるかを読んでから選びます。Tool access は読み込み方の設定で、承認の判断とは別のものです。",
+      "sources": [
+        {
+          "title": "リモートMCPを使用したカスタムコネクタを始める",
+          "url": "https://support.claude.com/ja/articles/11175166"
+        }
+      ]
+    },
+    {
+      "id": "a07-06-q2",
+      "sectionId": "a07-06",
+      "question": "Team・Enterprise プランで、Owner がコネクタのツールに設定できる扱いの組み合わせはどれか。",
+      "choices": [
+        "Public・Private・Shared",
+        "Auto・Always available・On demand",
+        "Always allow・Needs approval・Blocked",
+        "Read・Write・Admin"
+      ],
+      "answer": 2,
+      "explanation": "Owner は、ツールの種類ごと、またはツールごとに Always allow・Needs approval・Blocked を選べ、この設定は組織の全員に効きます。Auto・Always available・On demand は、コネクタの読み込み方を選ぶ Tool access の選択肢です。",
+      "sources": [
+        {
+          "title": "コネクタを使用してClaudeの機能を拡張する",
+          "url": "https://support.claude.com/ja/articles/11176164"
+        }
+      ]
+    },
+    {
+      "id": "a07-06-q3",
+      "sectionId": "a07-06",
+      "question": "コネクタで読み込んだ文書に、Claude への指示が紛れ込んでいる危険を何と呼ぶか。",
+      "choices": [
+        "知識のカットオフ",
+        "プロンプトインジェクション",
+        "自動圧縮",
+        "few-shot プロンプティング"
+      ],
+      "answer": 1,
+      "explanation": "外から読み込んだ内容に紛れた指示で Claude の動きをねじ曲げようとすることを、プロンプトインジェクションと呼びます。悪意のあるサーバーが隠している場合もあるため、ツールに渡す内容と結果に目を配ります。知識のカットオフは、学習データの区切りのことです。",
+      "sources": [
+        {
+          "title": "リモートMCPを使用したカスタムコネクタを始める",
+          "url": "https://support.claude.com/ja/articles/11175166"
+        }
+      ]
+    }
+  ]
+}

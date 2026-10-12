@@ -20,10 +20,12 @@
     "text/a04-projects.json",
     "text/a05-artifacts.json",
     "text/a06-memory.json",
+    "text/a07-connectors.json",
     "text/c11-start.json",
     "text/c12-basics.json",
     "text/c13-context.json",
-    "text/c14-safety.json"
+    "text/c14-safety.json",
+    "text/c15-settings.json"
   ],
   "dictFiles": [],
   "quizFiles": [
@@ -33,18 +35,20 @@
     "quiz/a04-projects.json",
     "quiz/a05-artifacts.json",
     "quiz/a06-memory.json",
+    "quiz/a07-connectors.json",
     "quiz/c11-start.json",
     "quiz/c12-basics.json",
     "quiz/c13-context.json",
-    "quiz/c14-safety.json"
+    "quiz/c14-safety.json",
+    "quiz/c15-settings.json"
   ],
   "glossaryFile": "glossary.json",
   "tryFile": "try.json",
   "counts": {
-    "sections": 59,
-    "quiz": 149,
+    "sections": 71,
+    "quiz": 180,
     "dict": 0,
-    "glossary": 82,
+    "glossary": 101,
     "try": 0
   }
 }

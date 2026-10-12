@@ -1,0 +1,773 @@
+{
+  "schemaVersion": 1,
+  "id": "c15",
+  "part": "c",
+  "order": 15,
+  "title": "第15章 設定とカスタマイズ",
+  "summary": "Claude Code の動きを、自分やチームの使い方に合わせて整える方法を学びます。設定ファイルの置き場所と優先順位、設定の変え方と確かめ方、モデルの選び方、出力スタイル、ステータスライン、キー割り当てとターミナルの設定を順に押さえます。",
+  "minutes": 15,
+  "sections": [
+    {
+      "id": "c15-01",
+      "title": "15.1 設定ファイルの階層と優先順位",
+      "points": [
+        "Claude Code の設定は、JSON 形式の settings.json に「キーと値」で書く",
+        "ファイルの置き場所で、設定のスコープ（効く範囲）が決まる",
+        "同じキーが複数の場所にあれば、優先順位の高いほうの値が使われる",
+        "配列で書くリスト（権限ルールなど）は、上書きではなく合わさる"
+      ],
+      "digest": {
+        "text": "Claude Code の設定は settings.json にキーと値で書き、起動のたびに読み込まれます。置き場所は、自分の全リポジトリに効くユーザー設定、チームで共有するリポジトリの `.claude/settings.json`、自分だけの上書きに使う `.claude/settings.local.json`、組織が配る管理設定の4種類です。同じキーがあれば、管理設定、起動時の `--settings`、プロジェクトローカル、共有プロジェクト、ユーザーの順に優先されます。権限ルールのようなリストは合わさります。",
+        "keys": [
+          "ユーザー設定：`~/.claude/settings.json`",
+          "共有の設定：`.claude/settings.json`（コミットする）",
+          "自分だけの設定：`.claude/settings.local.json`（git に入れない）",
+          "優先順位：管理 → `--settings` → ローカル → 共有 → ユーザー",
+          "リストの値は合わさる"
+        ]
+      },
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Claude Code では、使うモデル、確認なしで許すコマンド、画面の見た目などを設定として保存できます。設定は JSON 形式の settings.json に、「キー」と「値」の組で書きます。起動のたびに読み込まれるので、毎回指定し直す必要がありません。ターミナルの Claude Code、VS Code と JetBrains の拡張機能、デスクトップアプリは、同じ設定ファイルを読み込みます。"
+        },
+        {
+          "type": "p",
+          "text": "settings.json は、置く場所によって効く範囲が変わります。これを設定のスコープと呼びます。練習用の「todo-app」リポジトリで作業する場合を例に、置き場所を見てみましょう。"
+        },
+        {
+          "type": "figure",
+          "figure": {
+            "type": "dir",
+            "tree": [
+              {
+                "name": "~/.claude/",
+                "children": [
+                  {
+                    "name": "settings.json",
+                    "note": "ユーザー：自分の全リポジトリ"
+                  }
+                ]
+              },
+              {
+                "name": "todo-app/",
+                "children": [
+                  {
+                    "name": ".claude/",
+                    "children": [
+                      {
+                        "name": "settings.json",
+                        "note": "共有：コミットして全員に",
+                        "hl": true
+                      },
+                      {
+                        "name": "settings.local.json",
+                        "note": "自分だけ：git に入れない"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "caption": "~ はホームフォルダ。Windows では %USERPROFILE% にあたります"
+        },
+        {
+          "type": "list",
+          "items": [
+            "ユーザー設定（`~/.claude/settings.json`）：自分の PC の全リポジトリに効きます。好みのテーマや普段のモデルを書きます。",
+            "共有プロジェクト設定（`todo-app/.claude/settings.json`）：コミットすると、チームメイト全員に効きます。揃えたい権限ルールやフックを書きます。",
+            "プロジェクトローカル設定（`todo-app/.claude/settings.local.json`）：自分だけ、このリポジトリだけに効きます。自分だけの上書きや、共有前の試しに使います。",
+            "管理設定：組織の管理者が配るものです。自分で作ったり書き換えたりはしません。"
+          ]
+        },
+        {
+          "type": "h",
+          "text": "どの値が使われるか"
+        },
+        {
+          "type": "p",
+          "text": "同じキーが複数のファイルにあるときは、優先順位の高いほうの値が使われます。いちばん強いのは管理設定で、次に起動時に `--settings` で渡した値、プロジェクトローカル、共有プロジェクト、ユーザーの順に続きます。"
+        },
+        {
+          "type": "figure",
+          "figure": {
+            "type": "layers",
+            "arrow": [
+              "優先",
+              "後回し"
+            ],
+            "levels": [
+              {
+                "label": "管理設定",
+                "note": "組織が配る。上書き不可"
+              },
+              {
+                "label": "コマンドライン",
+                "note": "--settings。そのセッションだけ"
+              },
+              {
+                "label": "プロジェクトローカル",
+                "note": "settings.local.json",
+                "hl": true
+              },
+              {
+                "label": "共有プロジェクト",
+                "note": ".claude/settings.json"
+              },
+              {
+                "label": "ユーザー",
+                "note": "~/.claude/settings.json"
+              }
+            ]
+          },
+          "caption": "上にあるものほど優先されます"
+        },
+        {
+          "type": "p",
+          "text": "たとえば、ユーザー設定で `\"language\": \"japanese\"`（日本語で答える）としていても、todo-app の共有設定が英語を指定していれば、todo-app の中では英語で答えます。自分だけ日本語に戻すなら、todo-app の settings.local.json に書きます。チームのファイルは変わりません。"
+        },
+        {
+          "type": "p",
+          "text": "ただし、配列で書くリストは例外です。権限ルールの `permissions.allow` などは、複数のファイルに書くと上書きではなく合わさり、どのファイルのルールも有効になります。権限ルールの書き方は第14章で扱います。"
+        },
+        {
+          "type": "note",
+          "kind": "tip",
+          "text": "settings.local.json は、Claude Code が初めてこのファイルに書き込むときに、git の除外設定へ自動で加えます。そのためコミットに混ざりません。自分の手で作った場合は、`.gitignore` に自分で加えます。"
+        },
+        {
+          "type": "note",
+          "kind": "pitfall",
+          "text": "管理設定は、原則として自分のどのファイルからも上書きできません（制限をより厳しくする一部のキーを除く）。効いている管理設定は `/status` で確かめられます。また、クラウドで動くセッションでは、ユーザー設定とプロジェクトローカル設定は読まれません。"
+        }
+      ],
+      "surfaces": [
+        "cli",
+        "desktop",
+        "ide"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "設定ファイルと優先順位",
+          "url": "https://code.claude.com/docs/ja/settings"
+        }
+      ],
+      "checkedAt": "2026-10-12",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "tryIds": [],
+      "dictIds": []
+    },
+    {
+      "id": "c15-02",
+      "title": "15.2 設定を変える・確かめる",
+      "points": [
+        "よく使う項目は `/config`、それ以外は設定ファイルを直接編集して変える",
+        "保存すると、多くの設定は再起動なしで今のセッションに反映される",
+        "一度だけ試すなら、起動時に `--settings` で渡す",
+        "読み込まれたファイルは `/status` の Setting sources で確かめる"
+      ],
+      "digest": {
+        "text": "設定を変える方法は、ターミナルの `/config`、設定ファイルの直接編集、起動時の一時的な指定の3つです。ファイルは厳密な JSON で、コメントや末尾のカンマはエラーになります。保存すると多くの設定はすぐ反映されますが、`model` のように起動時にだけ読むキーもあります。読み込まれたファイルは `/status` で確認します。共有の設定ファイルに書いても、信頼の手順を待つキーや、リポジトリからは効かない指定があります。",
+        "keys": [
+          "`/config`：よく使う個人向けの項目を変える",
+          "設定ファイルは厳密な JSON（コメント不可）",
+          "`$schema` を書くとエディターで補完が効く",
+          "`claude --settings '…'`：そのセッションだけ",
+          "`/status` の Setting sources で読み込みを確認"
+        ]
+      },
+      "blocks": [
+        {
+          "type": "p",
+          "text": "設定は、`/config`、設定ファイルの編集、起動時の一時的な指定の3つの方法で変えられます。"
+        },
+        {
+          "type": "h",
+          "text": "/config で変える"
+        },
+        {
+          "type": "p",
+          "text": "`/config` の Config タブには、テーマやエディターモードなど、よく使う個人向けの項目が並びます。選んで変えると、多くはユーザー設定に保存されます。`/config` はターミナル向けの画面で、VS Code のチャットパネルやデスクトップアプリでは開きません。そちらでは設定ファイルを編集するか、アプリの設定を使います。"
+        },
+        {
+          "type": "h",
+          "text": "設定ファイルを編集する"
+        },
+        {
+          "type": "p",
+          "text": "ほかのキーは設定ファイルを直接編集します。キーの一覧は公式の「すべての設定」にあります。次は、todo-app のチームで「答えは日本語」「コードの整形コマンドは確認なしで実行」「`private/` フォルダは読ませない」と決めた例です。"
+        },
+        {
+          "type": "code",
+          "lang": "json",
+          "caption": "例：練習用の todo-app の .claude/settings.json",
+          "code": "{\n  \"$schema\": \"https://json.schemastore.org/claude-code-settings.json\",\n  \"language\": \"japanese\",\n  \"permissions\": {\n    \"allow\": [\"Bash(npm run format)\"],\n    \"deny\": [\"Read(./private/**)\"]\n  }\n}"
+        },
+        {
+          "type": "list",
+          "items": [
+            "`$schema`：対応するエディターで補完や入力チェックが効きます。",
+            "`permissions`：確認なしで許す操作（`allow`）と禁止する操作（`deny`）です。"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "保存すると Claude Code が読み込み直し、権限ルールやフックなど多くの項目は再起動なしで反映されます。ただし `model` は起動時にだけ読むので、途中で変えるなら `/model` を使います（15.3）。"
+        },
+        {
+          "type": "h",
+          "text": "一度だけ試す"
+        },
+        {
+          "type": "p",
+          "text": "起動時に `--settings` で JSON を渡すと、そのセッションだけに効き、ファイルは書き換わりません。"
+        },
+        {
+          "type": "code",
+          "lang": "shell",
+          "caption": "このセッションだけ英語で答えさせる",
+          "code": "claude --settings '{\"language\": \"english\"}'"
+        },
+        {
+          "type": "h",
+          "text": "効いているか確かめる"
+        },
+        {
+          "type": "figure",
+          "figure": {
+            "type": "terminal",
+            "title": "Claude Code",
+            "lines": [
+              {
+                "kind": "prompt",
+                "text": "/status"
+              },
+              {
+                "kind": "dim",
+                "text": "（Status タブが開く）"
+              },
+              {
+                "kind": "hl",
+                "text": "Setting sources: 読み込んだ設定ファイルの一覧"
+              }
+            ]
+          },
+          "caption": "表示は簡略化しています"
+        },
+        {
+          "type": "p",
+          "text": "`/status` の Setting sources の行には、今のセッションで読み込んだ設定ファイルが並びます。効かないときは、優先順位の高いファイルに同じキーがないか見直します。"
+        },
+        {
+          "type": "note",
+          "kind": "pitfall",
+          "text": "設定ファイルは厳密な JSON です。`//` のコメントや、最後の要素の後ろのカンマは書けません。壊れたファイルは、次の起動時に Settings Error として知らされます。"
+        },
+        {
+          "type": "note",
+          "kind": "caution",
+          "text": "共有の settings.json にコミットしても、すぐには効かない指定があります。`permissions.allow` のルールは、チームメイトがフォルダを信頼するまで適用されません。また権限モードを `auto` や `bypassPermissions` で始める指定は、リポジトリの設定ファイルからは効きません。権限モードは第14章で扱います。"
+        }
+      ],
+      "surfaces": [
+        "cli",
+        "desktop",
+        "ide"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "設定ファイルと優先順位",
+          "url": "https://code.claude.com/docs/ja/settings"
+        },
+        {
+          "title": "すべての設定",
+          "url": "https://code.claude.com/docs/ja/settings-reference"
+        }
+      ],
+      "checkedAt": "2026-10-12",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "tryIds": [],
+      "dictIds": []
+    },
+    {
+      "id": "c15-03",
+      "title": "15.3 モデルを選ぶ",
+      "points": [
+        "`/model` のピッカーで、Enter は「既定として保存」、`s` は「このセッションだけ」",
+        "モデルエイリアス（`opus`・`sonnet` など）を使うと、正確なバージョン名を覚えなくてよい",
+        "考える深さは `/effort` で、モデルとは別に変えられる",
+        "fast mode は Opus の応答を速くする research preview の機能。通常より費用がかかる"
+      ],
+      "digest": {
+        "text": "モデルは `/model` で切り替えます。ピッカーで Enter を押すと次のセッションからの既定になり、`s` を押すとこのセッションだけ変わります。モデルエイリアスはその系統の推奨のモデル（Anthropic API では最新）を指し、`opusplan` はプランモードと実装でモデルを使い分けます。指定はセッション中の `/model`、起動時の `--model`、環境変数、設定ファイルの順に優先されます。`/effort` で考える深さを、`/fast` で fast mode を切り替えられます。",
+        "keys": [
+          "`/model`：Enter で保存、`s` でこのセッションだけ",
+          "`opus`・`sonnet`・`haiku`：各系統の最新モデル",
+          "`opusplan`：計画は Opus、実装は Sonnet",
+          "`claude --model <名前>`：起動時に指定",
+          "`/effort`：考える深さを変える",
+          "`/fast`：fast mode（research preview）"
+        ]
+      },
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Claude Code では、作業に合わせてモデルを切り替えられます。設計の相談と小さな修正とでは、向いているモデルが違うためです。モデルの種類と選び方は第1章で扱います。"
+        },
+        {
+          "type": "h",
+          "text": "/model で切り替える"
+        },
+        {
+          "type": "p",
+          "text": "`/model` を引数なしで実行すると、モデルを選ぶ画面（ピッカー）が開きます。"
+        },
+        {
+          "type": "figure",
+          "figure": {
+            "type": "terminal",
+            "title": "Claude Code",
+            "lines": [
+              {
+                "kind": "prompt",
+                "text": "/model"
+              },
+              {
+                "kind": "dim",
+                "text": "（モデルの一覧が開く）"
+              },
+              {
+                "kind": "out",
+                "text": "Enter：切り替えて、次回からの既定にする"
+              },
+              {
+                "kind": "hl",
+                "text": "s：このセッションだけ切り替える"
+              }
+            ]
+          },
+          "caption": "ピッカーでの2つの選び方（簡略図）"
+        },
+        {
+          "type": "p",
+          "text": "Enter で選ぶと、ユーザー設定の `model` に書き込まれ、次のセッションもそのモデルで始まります。今だけ試したいときは、選びたい行で `s` を押します。`/model sonnet` のように名前を続けて打つのは、Enter と同じ扱いです。"
+        },
+        {
+          "type": "h",
+          "text": "モデルエイリアスで指定する"
+        },
+        {
+          "type": "p",
+          "text": "モデルは正式なモデル名でも指定できますが、モデルエイリアス（短い別名）を使うと、バージョン番号を覚えずに済みます。Amazon Bedrock などでは、エイリアスが最新より前のバージョンを指すことがあります。主なものは次のとおりです。"
+        },
+        {
+          "type": "list",
+          "items": [
+            "`opus`：最新の Opus。込み入った推論に。",
+            "`sonnet`：最新の Sonnet。日々のコーディングに。",
+            "`haiku`：Haiku。簡単な作業に。",
+            "`opusplan`：プランモードの間は Opus で計画し、実装に移ると Sonnet に切り替わります。",
+            "`default`（エイリアスではない特別な値）：モデルの指定を消して、アカウントの既定に戻します。"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "起動時なら `claude --model opusplan`、ずっと使うなら設定ファイルに `\"model\": \"sonnet\"` と書きます。指定が重なれば、セッション中の `/model`、起動時の `--model`、環境変数 `ANTHROPIC_MODEL`、設定ファイルの `model` の順に優先されます。"
+        },
+        {
+          "type": "h",
+          "text": "考える深さを変える"
+        },
+        {
+          "type": "p",
+          "text": "同じモデルでも、`/effort` で考える深さ（effort レベル）を変えられます。`low`・`medium`・`high` などの段階はモデルによって違います。引数なしで開くスライダーでも、`/model` と同じく Enter で既定として保存、`s` でこのセッションだけになります。"
+        },
+        {
+          "type": "h",
+          "text": "fast mode で速くする"
+        },
+        {
+          "type": "p",
+          "text": "fast mode は、Opus の応答を速くする設定です。別のモデルに替わるのではなく、同じ Opus を速さ優先の構成で動かすので、答えの質は変わりませんが、費用は通常より多くかかります。CLI では `/fast` で切り替え、オンの間は入力欄の横に `↯` の印が出ます。VS Code 拡張機能にも切り替えのコマンドがあります。"
+        },
+        {
+          "type": "note",
+          "kind": "caution",
+          "text": "fast mode は [[research preview（リサーチプレビュー）|g-research-preview]] の機能で、内容が変わることがあります。対応するモデルは一部の Opus に限られます。通常の使い方より費用がかかる設定で、料金の扱いはプランによって異なります。使える条件もプランで違うので、使う前に公式ページで確かめてください。"
+        },
+        {
+          "type": "note",
+          "kind": "pitfall",
+          "text": "`/model` で選んだのに、新しいセッションが別のモデルで始まることがあります。リポジトリの設定ファイル、管理設定、環境変数のどこかが `model` を指定していないかを確かめます。"
+        }
+      ],
+      "surfaces": [
+        "cli",
+        "ide"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "モデル設定",
+          "url": "https://code.claude.com/docs/ja/model-config"
+        },
+        {
+          "title": "高速モードでレスポンスを高速化",
+          "url": "https://code.claude.com/docs/ja/fast-mode"
+        },
+        {
+          "title": "VS Code で Claude Code を使う",
+          "url": "https://code.claude.com/docs/ja/vs-code"
+        }
+      ],
+      "checkedAt": "2026-10-12",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "tryIds": [],
+      "dictIds": []
+    },
+    {
+      "id": "c15-04",
+      "title": "15.4 出力スタイル",
+      "points": [
+        "出力スタイルは、セッション中のすべての応答の役割・口調・形式を決める指示",
+        "組み込みは Default のほか、Proactive・Concise・Explanatory・Learning の4つ",
+        "`/output-style` で切り替え、選んだスタイルは `.claude/settings.local.json` に保存される",
+        "自分のスタイルは frontmatter 付きの Markdown ファイルで作る"
+      ],
+      "digest": {
+        "text": "出力スタイルは、応答のしかたをセッション全体に効かせる指示です。結論から短く答える Concise、理由を `Insight` で添える Explanatory、一部のコードを自分で書かせる Learning などがあります。`/output-style` や `/config` で選ぶと、そのリポジトリの自分の設定に保存されます。設定ファイルに書くときは大文字と小文字を区別します。自作のスタイルは `output-styles` フォルダに Markdown で置き、作ったあとは再起動します。",
+        "keys": [
+          "`/output-style <名前>`：スタイルを切り替える",
+          "保存先：`.claude/settings.local.json`",
+          "設定キー `outputStyle` は大文字小文字を区別",
+          "自作：`~/.claude/output-styles/` か `.claude/output-styles/`",
+          "`keep-coding-instructions: true`：開発向けの指示を残す"
+        ]
+      },
+      "blocks": [
+        {
+          "type": "p",
+          "text": "「答えは短く」「理由も説明して」と毎回頼むのは手間です。出力スタイル（output styles）は、Claude の役割・口調・答えの形を、セッション中のすべての応答に効かせる仕組みです。"
+        },
+        {
+          "type": "p",
+          "text": "何も選んでいない状態が Default（標準の開発向けの振る舞い）で、組み込みのスタイルはこれに指示を足します。"
+        },
+        {
+          "type": "list",
+          "items": [
+            "Proactive：細かな判断で質問せず、妥当な前提を置いて進めます。",
+            "Concise：結論から書き、前置きや途中経過の説明、最後のまとめを省きます。",
+            "Explanatory：書いたコードの理由を、`Insight` という短い説明で添えます。",
+            "Learning：説明に加え、設計の判断が要る数行をあなたに書いてもらいます。"
+          ]
+        },
+        {
+          "type": "h",
+          "text": "スタイルを切り替える"
+        },
+        {
+          "type": "code",
+          "lang": "text",
+          "caption": "短い答えに切り替える",
+          "code": "/output-style concise"
+        },
+        {
+          "type": "p",
+          "text": "引数なしなら一覧が出ます。ターミナルでは `/config` の Output style からも選べます。選んだスタイルは `.claude/settings.local.json` に保存され、そのリポジトリの自分のセッションだけに効きます。全リポジトリで使うなら、ユーザー設定に `outputStyle` を書きます。ただし、そのリポジトリの設定ファイル（`/output-style` で保存した settings.local.json を含む）に値があれば、そちらが優先されます。VS Code 拡張機能では `/` のメニューの Output styles から選び、デスクトップアプリでは設定ファイルに書きます。"
+        },
+        {
+          "type": "note",
+          "kind": "pitfall",
+          "text": "設定ファイルの `outputStyle` は大文字と小文字を区別します。`\"explanatory\"` と小文字で書くと一致せず、Default のままです。`/output-style` コマンドは区別しません。"
+        },
+        {
+          "type": "h",
+          "text": "自分のスタイルを作る"
+        },
+        {
+          "type": "p",
+          "text": "自作のスタイルは Markdown ファイルです。自分用なら `~/.claude/output-styles/`、リポジトリ用なら `.claude/output-styles/` に置きます。先頭の frontmatter（`---` で囲んだ欄）に名前と説明、その下に指示を書きます。"
+        },
+        {
+          "type": "code",
+          "lang": "markdown",
+          "caption": "例：~/.claude/output-styles/kind-review.md",
+          "code": "---\nname: やさしい解説係\ndescription: 変更のたびに初心者向けの解説を添える\nkeep-coding-instructions: true\n---\n\nコードを変更したら、最後に「何を・なぜ変えたか」を3行以内の日本語でまとめてください。\n専門用語を初めて使うときは、短い説明を括弧で添えてください。"
+        },
+        {
+          "type": "p",
+          "text": "`keep-coding-instructions: true` は、組み込みの開発向けの指示を残す項目です。書かないとその指示は外れるので、コードを書かない用途向けです。ターミナルではスタイルのファイルを起動時に読むため、作成・編集のあとは再起動します。"
+        },
+        {
+          "type": "note",
+          "kind": "tip",
+          "text": "出力スタイルは Claude が従う「指示」で、必ず守られる保証はありません。リポジトリの決まりごとは CLAUDE.md（第13章）、毎回確実に動かす処理はフック（第17章）が向いています。Proactive にしても権限モードは変わりません。"
+        }
+      ],
+      "surfaces": [
+        "cli",
+        "ide",
+        "desktop"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "出力スタイル",
+          "url": "https://code.claude.com/docs/ja/output-styles"
+        }
+      ],
+      "checkedAt": "2026-10-12",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "tryIds": [],
+      "dictIds": []
+    },
+    {
+      "id": "c15-05",
+      "title": "15.5 ステータスライン",
+      "points": [
+        "ステータスラインは、画面の下に自分で決めた情報を出し続ける行",
+        "`/statusline` に表示したい内容を言葉で頼むと、スクリプトと設定を作ってくれる",
+        "仕組みは「JSON を受け取り、出力した文字を表示するスクリプト」。設定キーは `statusLine`",
+        "フォルダを信頼するまでは表示されない"
+      ],
+      "digest": {
+        "text": "ステータスラインは、モデル名やコンテキストの使用率などを画面の下に表示し続ける行です。いちばん手軽なのは、`/statusline` に表示したい内容を言葉で伝える方法です。中身は、Claude Code から JSON でセッションの情報を受け取り、表示したい文字を出力するスクリプトで、設定の `statusLine` から呼び出します。Windows ではパスをスラッシュで書きます。コマンドを動かす設定なので、フォルダを信頼するまでは表示されません。",
+        "keys": [
+          "`/statusline 〜を表示して`：自動で作る",
+          "設定：`statusLine` の `type` と `command`",
+          "情報は JSON で標準入力に渡される",
+          "Windows のパスは `/` で書く",
+          "フォルダの信頼が必要"
+        ]
+      },
+      "blocks": [
+        {
+          "type": "p",
+          "text": "作業中に、今のモデルやコンテキストの使用率、作業中のフォルダを、いつも目に入る場所に出しておきたいことがあります。ステータスライン（status line）は、Claude Code の画面の下に、自分で決めた情報を表示し続ける行です。手元で動くスクリプトが表示を作るので、表示のために API のトークンは使いません。"
+        },
+        {
+          "type": "figure",
+          "figure": {
+            "type": "terminal",
+            "title": "Claude Code",
+            "lines": [
+              {
+                "kind": "dim",
+                "text": "…会話の表示…"
+              },
+              {
+                "kind": "prompt",
+                "text": "テストを追加して"
+              },
+              {
+                "kind": "hl",
+                "text": "[Sonnet] todo-app | context 32%"
+              }
+            ]
+          },
+          "caption": "いちばん下の強調した行がステータスラインの例です"
+        },
+        {
+          "type": "h",
+          "text": "/statusline で作る"
+        },
+        {
+          "type": "code",
+          "lang": "text",
+          "caption": "表示したい内容を言葉で伝える",
+          "code": "/statusline モデル名、フォルダ名、コンテキストの使用率を1行で表示して"
+        },
+        {
+          "type": "p",
+          "text": "Claude Code が `~/.claude/` にスクリプトを作り、設定も書き換えます。途中でファイル編集の許可を求められたら、内容を見てから許可します。やめたいときは `/statusline` に「消して」と頼むか、設定から `statusLine` を削除します。"
+        },
+        {
+          "type": "h",
+          "text": "しくみ"
+        },
+        {
+          "type": "figure",
+          "figure": {
+            "type": "flow",
+            "steps": [
+              {
+                "id": "a",
+                "label": "新しい応答が届く",
+                "kind": "terminal"
+              },
+              {
+                "id": "b",
+                "label": "情報を JSON で渡す"
+              },
+              {
+                "id": "c",
+                "label": "スクリプトが動く"
+              },
+              {
+                "id": "d",
+                "label": "出力を画面下に表示",
+                "kind": "terminal"
+              }
+            ]
+          },
+          "caption": "応答のほか、権限モードの切り替えなどでも動きます"
+        },
+        {
+          "type": "p",
+          "text": "Claude Code は、新しい応答が届いたときや権限モードが変わったときなどにスクリプトを動かし、セッションの情報を JSON にして標準入力に渡します。JSON には、モデルの表示名（`model.display_name`）、作業フォルダ（`workspace.current_dir`）、コンテキストの使用率（`context_window.used_percentage`）などが入っています。スクリプトが標準出力に書いた文字が、そのまま表示されます。手で設定するときは、ユーザー設定に次のように書きます。"
+        },
+        {
+          "type": "code",
+          "lang": "json",
+          "caption": "~/.claude/settings.json に追加する例",
+          "code": "{\n  \"statusLine\": {\n    \"type\": \"command\",\n    \"command\": \"~/.claude/my-status.sh\"\n  }\n}"
+        },
+        {
+          "type": "p",
+          "text": "`type` の `command` は「このコマンドを実行する」という意味です。スクリプトは頻繁に動くので、時間のかかる処理は避け、短い出力にします。"
+        },
+        {
+          "type": "note",
+          "kind": "pitfall",
+          "text": "Windows では、Git Bash があれば Git Bash で、なければ PowerShell でコマンドが動きます。`command` のパスは `C:/Users/…` のようにスラッシュで書きます。バックスラッシュで書くと区切りが消えてしまい、何も表示されない原因になります。"
+        },
+        {
+          "type": "note",
+          "kind": "caution",
+          "text": "ステータスラインは、シェルのコマンドを実行する設定です。そのためフックと同じく、フォルダを信頼するまでは表示されません。表示が出ないときは、信頼の確認に答えたか、スクリプトがエラーで終わっていないかを確かめます。"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "ステータスラインをカスタマイズする",
+          "url": "https://code.claude.com/docs/ja/statusline"
+        }
+      ],
+      "checkedAt": "2026-10-12",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "tryIds": [],
+      "dictIds": []
+    },
+    {
+      "id": "c15-06",
+      "title": "15.6 キー割り当てとターミナルの設定",
+      "points": [
+        "キー割り当ては、`/keybindings` で開く `~/.claude/keybindings.json` で変える",
+        "コンテキストごとに「キー → アクション」を書き、`null` で既定の割り当てを外す",
+        "Ctrl+C と Ctrl+D は割り当て直せない",
+        "改行の入力、通知、テーマ、Vim モードは、ターミナル側の事情とあわせて整える"
+      ],
+      "digest": {
+        "text": "キー割り当ては `/keybindings` で開くファイルに、場面（コンテキスト）ごとの「キーとアクション」の組として書きます。保存すればすぐ反映され、`null` を書くと既定の割り当てを外せます。中断と終了の Ctrl+C・Ctrl+D は変えられません。キーがそもそも届かないときはターミナル側を整えます。改行は Ctrl+J か `\\` と Enter で入れられ、Shift+Enter は `/terminal-setup` が必要なターミナルもあります。",
+        "keys": [
+          "`/keybindings`：`~/.claude/keybindings.json` を開く",
+          "`context`（`Chat` など）ごとにキーとアクションを書く",
+          "`null` で既定の割り当てを外す",
+          "改行：Ctrl+J、または `\\` のあと Enter",
+          "`/terminal-setup`・`/theme`・`editorMode`"
+        ]
+      },
+      "blocks": [
+        {
+          "type": "p",
+          "text": "よく使う操作を押しやすいキーにしたり、ほかのソフトとぶつかるキーを外したりするために、キーボードショートカットの割り当てを変えられます。"
+        },
+        {
+          "type": "h",
+          "text": "キー割り当てを変える"
+        },
+        {
+          "type": "p",
+          "text": "`/keybindings` を実行すると、`~/.claude/keybindings.json` が作られるか、開きます。ファイルの `bindings` に、どの場面（コンテキスト）で、どのキーに、どの操作（アクション）を割り当てるかを書きます。保存すると、再起動しなくても反映されます。"
+        },
+        {
+          "type": "code",
+          "lang": "json",
+          "caption": "例：入力欄で Alt+E に外部エディターを割り当て、Ctrl+S の割り当てを外す",
+          "code": "{\n  \"bindings\": [\n    {\n      \"context\": \"Chat\",\n      \"bindings\": {\n        \"meta+e\": \"chat:externalEditor\",\n        \"ctrl+s\": null\n      }\n    }\n  ]\n}"
+        },
+        {
+          "type": "list",
+          "items": [
+            "`context`：`Chat`（入力欄）、`Global`（どこでも）など、キーが効く場面。",
+            "アクション：`chat:submit`（送信）のように「分類:操作」の形で書きます。",
+            "`null`：既定の割り当てを外します。",
+            "`meta` は Alt（macOS は Option）。`ctrl+x ctrl+e` のように空白で区切ると、続けて押す組み合わせになります。"
+          ]
+        },
+        {
+          "type": "note",
+          "kind": "pitfall",
+          "text": "Ctrl+C（中断）と Ctrl+D（終了）は固定で、割り当て直せません。また Ctrl+B は tmux、Ctrl+A は GNU screen が先に受け取ることがあります。書き間違いは `claude --debug` で起動すると確かめられます。"
+        },
+        {
+          "type": "h",
+          "text": "ターミナルの設定を整える"
+        },
+        {
+          "type": "p",
+          "text": "キー割り当ては、受け取ったキーの扱いを決めるものです。ターミナルがキーを正しく送っていないときは、ターミナル側の設定が要ります。"
+        },
+        {
+          "type": "list",
+          "items": [
+            "改行：Enter は送信です。送信せずに改行するには、Ctrl+J を押すか、`\\` のあと Enter。どのターミナルでも使えます。",
+            "Shift+Enter の改行：多くはそのまま使えます。VS Code の統合ターミナルなどは `/terminal-setup` を一度実行すると使え、使えないものもあります。",
+            "通知：作業の完了などをベルで知らせるには、設定に `\"preferredNotifChannel\": \"terminal_bell\"` と書きます。",
+            "テーマ：`/theme` で、ターミナルの背景に合う色を選びます。",
+            "Vim モード：`/config` の Editor mode か、設定の `\"editorMode\": \"vim\"` で、入力欄を Vim のキーで編集できます。"
+          ]
+        },
+        {
+          "type": "note",
+          "kind": "tip",
+          "text": "macOS で Option キーを使うショートカット（Option+P でモデルを選ぶ、など）が効かないときは、ターミナルの「Use Option as Meta Key」にあたる設定をオンにします。"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "キーボードショートカットのカスタマイズ",
+          "url": "https://code.claude.com/docs/ja/keybindings"
+        },
+        {
+          "title": "Claude Code 用にターミナルを設定する",
+          "url": "https://code.claude.com/docs/ja/terminal-config"
+        }
+      ],
+      "checkedAt": "2026-10-12",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "tryIds": [],
+      "dictIds": []
+    }
+  ]
+}
