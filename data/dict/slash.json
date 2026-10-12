@@ -1,0 +1,1281 @@
+{
+  "schemaVersion": 1,
+  "kind": "slash",
+  "items": [
+    {
+      "id": "slash-clear",
+      "kind": "slash",
+      "name": "/clear",
+      "syntax": "/clear [名前]",
+      "summary": "コンテキストを空にして、新しい会話を始めます。別の作業に移るときに使います。",
+      "details": "それまでの会話は消えるわけではなく、あとから /resume で選んで戻れます。名前を付けておくと、/resume の一覧で前の会話を見分けやすくなります。プロジェクトの [[CLAUDE.md]] などのメモリはそのまま使われます。同じ会話を続けたまま空きを作りたいときは /compact を使います。別名は /reset と /new です。",
+      "examples": [
+        {
+          "code": "/clear",
+          "desc": "今の会話を区切って、空の状態から始める"
+        },
+        {
+          "code": "/clear ログイン画面の修正",
+          "desc": "前の会話に名前を付けてから新しい会話を始める"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "コマンド",
+          "url": "https://code.claude.com/docs/ja/commands"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c13-05",
+        "c12-05"
+      ]
+    },
+    {
+      "id": "slash-compact",
+      "kind": "slash",
+      "name": "/compact",
+      "syntax": "/compact [指示]",
+      "summary": "ここまでの会話を要約して、[[コンテキストウィンドウ]]の空きを増やします。",
+      "details": "会話が長くなって残りが少なくなったときに使います。会話そのものは続くので、作業の流れを保ったまま空きを作れます。要約で特に残してほしい点があれば、後ろに指示を書けます。要約なので細かいやり取りは省かれることがあり、大事な決めごとは CLAUDE.md に書いておくと安心です。",
+      "examples": [
+        {
+          "code": "/compact",
+          "desc": "会話を要約して空きを作る"
+        },
+        {
+          "code": "/compact 決めたファイル構成とまだ終わっていない作業を残して",
+          "desc": "要約で残してほしい点を指定する"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "コマンド",
+          "url": "https://code.claude.com/docs/ja/commands"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c13-05",
+        "c13-04"
+      ]
+    },
+    {
+      "id": "slash-context",
+      "kind": "slash",
+      "name": "/context",
+      "syntax": "/context [all]",
+      "summary": "いまのコンテキストの使われ方を、色分けしたマス目で表示します。",
+      "details": "何が[[コンテキストウィンドウ]]を埋めているのかを確かめたいときに使います。ツールやメモリが多くを占めている場合は、減らし方の提案も出ます。上限を超えているときは、どれだけ超えているかと、空きを作るコマンドが示されます。フルスクリーン表示では項目ごとの内訳がたたまれるので、all を付けると広げて見られます。",
+      "examples": [
+        {
+          "code": "/context",
+          "desc": "コンテキストの使用状況を見る"
+        },
+        {
+          "code": "/context all",
+          "desc": "項目ごとの内訳をすべて広げて表示する"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "コマンド",
+          "url": "https://code.claude.com/docs/ja/commands"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c13-05",
+        "c13-04"
+      ]
+    },
+    {
+      "id": "slash-resume",
+      "kind": "slash",
+      "name": "/resume",
+      "syntax": "/resume [セッション]",
+      "summary": "前の会話に戻って続きをします。ID か名前を指定するか、一覧から選びます。",
+      "details": "引数なしで実行すると[[セッションピッカー]]が開き、前の会話を選べます。/rename で名前を付けておくと、名前で直接指定できて便利です。バックグラウンドで動いているセッションも一覧に bg の印付きで出ます。別名は /continue です。",
+      "examples": [
+        {
+          "code": "/resume",
+          "desc": "一覧から戻りたい会話を選ぶ"
+        },
+        {
+          "code": "/resume ログイン画面の修正",
+          "desc": "名前を指定してその会話に戻る"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "コマンド",
+          "url": "https://code.claude.com/docs/ja/commands"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c12-05"
+      ]
+    },
+    {
+      "id": "slash-rename",
+      "kind": "slash",
+      "name": "/rename",
+      "syntax": "/rename [名前]",
+      "summary": "いまのセッションに名前を付け、プロンプトの欄に表示します。",
+      "details": "あとで /resume から探しやすくするために使います。名前を書かずに実行すると、会話の内容から名前が自動で付きます。目に見えない文字だけの名前は受け付けられません。",
+      "examples": [
+        {
+          "code": "/rename 練習用アプリの設定",
+          "desc": "セッションに分かりやすい名前を付ける"
+        },
+        {
+          "code": "/rename",
+          "desc": "会話の内容から名前を自動で付ける"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "コマンド",
+          "url": "https://code.claude.com/docs/ja/commands"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c12-05"
+      ]
+    },
+    {
+      "id": "slash-rewind",
+      "kind": "slash",
+      "name": "/rewind",
+      "summary": "会話やコードを、前の時点まで巻き戻します。選んだメッセージから先を要約することもできます。",
+      "details": "Claude の変更がうまくいかなかったときや、別のやり方で試し直したいときに使います。[[巻き戻しメニュー]]で戻る時点を選び、会話だけ・コードだけ・両方のどれを戻すかを決めます。戻せる時点は[[チェックポイント]]として記録されています。別名は /checkpoint と /undo です。Bash コマンド（rm や mv など）で変えたファイルや、Claude Code の外で編集した内容は記録されないので戻せません。Git の代わりにはならないため、残したい変更はコミットしておきましょう。",
+      "examples": [
+        {
+          "code": "/rewind",
+          "desc": "巻き戻しメニューを開いて戻る時点を選ぶ"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "コマンド",
+          "url": "https://code.claude.com/docs/ja/commands"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c14-05",
+        "c12-04"
+      ]
+    },
+    {
+      "id": "slash-btw",
+      "kind": "slash",
+      "name": "/btw",
+      "syntax": "/btw [質問]",
+      "summary": "会話の履歴に残さずに、いまの作業についてちょっとした質問をします。",
+      "details": "Claude が作業している最中でも使え、本来の作業を止めません。それまでの会話の内容は踏まえて答えますが、ツールは使わず、答えは1回きりです。続けて聞きたいときは、もう一度 /btw で質問します。質問を書かずに実行すると、直前のやり取りをもう一度表示します。",
+      "examples": [
+        {
+          "code": "/btw さっき話していた設定ファイルの名前は何だっけ？",
+          "desc": "作業を邪魔せずに確認だけする"
+        },
+        {
+          "code": "/btw",
+          "desc": "直前の /btw のやり取りをもう一度開く"
+        }
+      ],
+      "surfaces": [
+        "cli",
+        "ide"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "コマンド",
+          "url": "https://code.claude.com/docs/ja/commands"
+        },
+        {
+          "title": "インタラクティブモード",
+          "url": "https://code.claude.com/docs/ja/interactive-mode"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c12-06",
+        "c13-05"
+      ]
+    },
+    {
+      "id": "slash-init",
+      "kind": "slash",
+      "name": "/init",
+      "summary": "プロジェクトを調べて、最初の CLAUDE.md を作ります。",
+      "details": "あるリポジトリで初めて Claude Code を使うときに実行すると、プロジェクトの説明や作業のきまりを書いた [[CLAUDE.md]] のたたき台ができます。できたものは /memory などで自分の言葉に直していきます。ほかの AI ツールの設定が見つかった場合は、/import で引き継ぐことを提案されます。",
+      "examples": [
+        {
+          "code": "/init",
+          "desc": "練習用のフォルダで CLAUDE.md のたたき台を作る"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "コマンド",
+          "url": "https://code.claude.com/docs/ja/commands"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c13-01",
+        "c11-05"
+      ]
+    },
+    {
+      "id": "slash-memory",
+      "kind": "slash",
+      "name": "/memory",
+      "summary": "CLAUDE.md を編集したり、自動メモリのオン／オフや中身を確かめたりします。",
+      "details": "Claude に毎回伝えたいことを CLAUDE.md に書き足すときに使います。Claude が自分で書き留める[[自動メモリ]]を有効・無効にしたり、記録された内容を見たりすることもできます。",
+      "examples": [
+        {
+          "code": "/memory",
+          "desc": "CLAUDE.md や自動メモリの画面を開く"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "コマンド",
+          "url": "https://code.claude.com/docs/ja/commands"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c13-01",
+        "c13-02"
+      ]
+    },
+    {
+      "id": "slash-help",
+      "kind": "slash",
+      "name": "/help",
+      "summary": "ヘルプと、いま使えるコマンドを表示します。",
+      "details": "どんなコマンドがあるか分からないときに最初に試します。入力欄で / と打つだけでもコマンドの一覧が出て、続けて文字を打つと絞り込めます。使えるコマンドは環境やプランによって変わります。",
+      "examples": [
+        {
+          "code": "/help",
+          "desc": "ヘルプを表示する"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "コマンド",
+          "url": "https://code.claude.com/docs/ja/commands"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c12-06"
+      ]
+    },
+    {
+      "id": "slash-model",
+      "kind": "slash",
+      "name": "/model",
+      "syntax": "/model [モデル]",
+      "summary": "使う AI モデルを切り替え、新しいセッションの既定としても保存します。",
+      "details": "引数なしで実行すると選択の画面が開き、行の上で s を押すとそのセッションだけ切り替えられます。対応するモデルでは、左右の矢印キーで [[effort]] も調整できます。モデル名の代わりに sonnet のような[[モデルエイリアス]]も使えます。切り替えの際に確認を求められることがあります。",
+      "examples": [
+        {
+          "code": "/model",
+          "desc": "選択の画面からモデルを選ぶ"
+        },
+        {
+          "code": "/model sonnet",
+          "desc": "エイリアスを指定して切り替える"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "コマンド",
+          "url": "https://code.claude.com/docs/ja/commands"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c15-03",
+        "c15-02"
+      ]
+    },
+    {
+      "id": "slash-effort",
+      "kind": "slash",
+      "name": "/effort",
+      "syntax": "/effort [レベル|auto|status]",
+      "summary": "Claude がどれだけ深く考えて取り組むか（[[effort]]）のレベルを設定します。",
+      "details": "low から xhigh、max、または auto を指定します。status を付けると、いまのレベルを表示します。max はそのセッションだけの設定です。難しい作業では上げ、簡単な作業では下げるといった使い分けができます。",
+      "examples": [
+        {
+          "code": "/effort status",
+          "desc": "いまの effort レベルを確かめる"
+        },
+        {
+          "code": "/effort high",
+          "desc": "レベルを high にする"
+        },
+        {
+          "code": "/effort auto",
+          "desc": "自動に戻す"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "コマンド",
+          "url": "https://code.claude.com/docs/ja/commands"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c15-03"
+      ]
+    },
+    {
+      "id": "slash-config",
+      "kind": "slash",
+      "name": "/config",
+      "syntax": "/config [キー=値 ...]",
+      "summary": "設定の画面を開き、テーマ・モデル・出力スタイルなどを変えます。",
+      "details": "引数なしで実行すると設定の画面が開きます。キー=値 の形で書くと、画面を開かずにその場で設定を変えられます。受け付けるキーは /config --help で一覧できます。確認が必要な一部の設定は、この形ではオンにできません。別名は /settings です。",
+      "examples": [
+        {
+          "code": "/config",
+          "desc": "設定の画面を開く"
+        },
+        {
+          "code": "/config theme=dark",
+          "desc": "テーマを暗い色にする"
+        },
+        {
+          "code": "/config --help",
+          "desc": "指定できるキーの一覧を見る"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "コマンド",
+          "url": "https://code.claude.com/docs/ja/commands"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c15-02"
+      ]
+    },
+    {
+      "id": "slash-permissions",
+      "kind": "slash",
+      "name": "/permissions",
+      "summary": "ツールの許可・確認・拒否のルールを見たり、追加・削除したりします。",
+      "details": "開いた画面では、[[権限ルール]]を設定のスコープごとに確認できます。作業ディレクトリの管理や、[[auto mode]] で拒否された操作の確認もここで行えます。Claude が応答している最中に開くと、変更は次のツール呼び出しから効きます。別名は /allowed-tools です。",
+      "examples": [
+        {
+          "code": "/permissions",
+          "desc": "権限ルールの画面を開く"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "コマンド",
+          "url": "https://code.claude.com/docs/ja/commands"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c14-02",
+        "c14-01"
+      ]
+    },
+    {
+      "id": "slash-plan",
+      "kind": "slash",
+      "name": "/plan",
+      "syntax": "/plan [説明]",
+      "summary": "入力欄からそのまま[[プランモード]]に入ります。",
+      "details": "大きな変更の前に、まず進め方を考えさせたいときに使います。後ろに作業の説明を書くと、プランモードに入ってすぐその作業に取りかかります。",
+      "examples": [
+        {
+          "code": "/plan",
+          "desc": "プランモードに入る"
+        },
+        {
+          "code": "/plan 練習用アプリにログイン画面を追加したい",
+          "desc": "作業内容を伝えて計画から始める"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "コマンド",
+          "url": "https://code.claude.com/docs/ja/commands"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c14-04",
+        "c14-03"
+      ]
+    },
+    {
+      "id": "slash-status",
+      "kind": "slash",
+      "name": "/status",
+      "summary": "設定の画面を Status のタブで開き、バージョン・モデル・アカウント・接続の状態を表示します。",
+      "details": "いまどのモデルやアカウントで動いているかを確かめたいときに使います。Claude が応答している最中でも、作業を止めずに開けます。",
+      "examples": [
+        {
+          "code": "/status",
+          "desc": "バージョンやアカウントの状態を見る"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "コマンド",
+          "url": "https://code.claude.com/docs/ja/commands"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c15-02",
+        "c11-04"
+      ]
+    },
+    {
+      "id": "slash-usage",
+      "kind": "slash",
+      "name": "/usage",
+      "summary": "セッションのコスト、プランの使用量の制限、利用の統計を表示します。",
+      "details": "どれくらい使ったかを確かめたいときに使います。プランによっては、何が[[使用量の制限]]に数えられているかの内訳も出ます。Claude が応答している最中でも実行できます。/cost と /stats は別名です。",
+      "examples": [
+        {
+          "code": "/usage",
+          "desc": "使用状況を見る"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "コマンド",
+          "url": "https://code.claude.com/docs/ja/commands"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "a01-04",
+        "c13-05"
+      ]
+    },
+    {
+      "id": "slash-statusline",
+      "kind": "slash",
+      "name": "/statusline",
+      "summary": "画面の下に出る[[ステータスライン]]の表示内容を設定します。",
+      "details": "表示したい内容をことばで説明すると、Claude がそれに合わせて設定します。引数なしで実行すると、使っているシェルのプロンプトをもとに自動で設定します。",
+      "examples": [
+        {
+          "code": "/statusline",
+          "desc": "シェルのプロンプトをもとに自動で設定する"
+        },
+        {
+          "code": "/statusline 今のモデル名とフォルダ名を表示して",
+          "desc": "表示したい内容を伝えて設定する"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "コマンド",
+          "url": "https://code.claude.com/docs/ja/commands"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c15-05"
+      ]
+    },
+    {
+      "id": "slash-theme",
+      "kind": "slash",
+      "name": "/theme",
+      "summary": "画面の色のテーマを変えます。",
+      "details": "ターミナルの背景の明るさに合わせる auto のほか、明るい・暗いテーマ、色覚の多様性に配慮したテーマ、ターミナルの配色を使うテーマから選べます。自分でカスタムテーマを作ることもできます。",
+      "examples": [
+        {
+          "code": "/theme",
+          "desc": "テーマの選択画面を開く"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "コマンド",
+          "url": "https://code.claude.com/docs/ja/commands"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c15-06",
+        "c15-02"
+      ]
+    },
+    {
+      "id": "slash-output-style",
+      "kind": "slash",
+      "name": "/output-style",
+      "syntax": "/output-style [スタイル]",
+      "summary": "[[出力スタイル]]を一覧したり、切り替えたりします。",
+      "details": "Claude の答え方の調子を変えたいときに使います。引数なしで使えるスタイルを確かめ、スタイル名を付けるとそれに切り替わります。比較的新しいバージョンで加わったコマンドなので、古い Claude Code では使えません。",
+      "examples": [
+        {
+          "code": "/output-style",
+          "desc": "使える出力スタイルを一覧する"
+        },
+        {
+          "code": "/output-style concise",
+          "desc": "concise というスタイルに切り替える"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "コマンド",
+          "url": "https://code.claude.com/docs/ja/commands"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c15-04"
+      ]
+    },
+    {
+      "id": "slash-keybindings",
+      "kind": "slash",
+      "name": "/keybindings",
+      "summary": "キー割り当ての設定ファイルを開きます。",
+      "details": "よく使う操作のキーを自分好みに変えたいときに使います。[[キーバインディング]]の書き方は公式のキーボードショートカットのページで確かめてから編集します。",
+      "examples": [
+        {
+          "code": "/keybindings",
+          "desc": "キー割り当ての設定ファイルを開く"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "コマンド",
+          "url": "https://code.claude.com/docs/ja/commands"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c15-06"
+      ]
+    },
+    {
+      "id": "slash-agents",
+      "kind": "slash",
+      "name": "/agents",
+      "summary": "[[サブエージェント]]の作り方・管理のしかたを案内する表示を出します。",
+      "details": "いまのバージョンでは専用の管理画面は開かず、Claude にサブエージェントを作るよう頼むか、.claude/agents/ や ~/.claude/agents/ のファイルを直接編集するよう案内が出ます。古いバージョンでは、ここからサブエージェントを作る画面が開いていました。",
+      "examples": [
+        {
+          "code": "/agents",
+          "desc": "サブエージェントの扱い方の案内を見る"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "コマンド",
+          "url": "https://code.claude.com/docs/ja/commands"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c16-05",
+        "c16-04"
+      ]
+    },
+    {
+      "id": "slash-skills",
+      "kind": "slash",
+      "name": "/skills",
+      "summary": "使える[[スキル]]を一覧します。",
+      "details": "どんなスキルが入っていて、どれがコンテキストを多く使っているかを確かめたいときに使います。文字を打つと一覧を絞り込め、t で使うトークンの多い順に並べ替えられます。Space か Enter で、そのスキルを Claude や / のメニューに見せるかどうかを切り替え、Esc で保存して閉じます。プラグインのスキルなど、切り替えられないものもあります。",
+      "examples": [
+        {
+          "code": "/skills",
+          "desc": "スキルの一覧を開く"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "コマンド",
+          "url": "https://code.claude.com/docs/ja/commands"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c16-02",
+        "c16-03"
+      ]
+    },
+    {
+      "id": "slash-hooks",
+      "kind": "slash",
+      "name": "/hooks",
+      "summary": "設定されている[[フック]]を確認します。",
+      "details": "どのイベントでどんなフックが動くようになっているかを見たいときに使います。フックを書いたあと、意図どおりに登録されているかを確かめるのに役立ちます。",
+      "examples": [
+        {
+          "code": "/hooks",
+          "desc": "フックの設定を確認する"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "コマンド",
+          "url": "https://code.claude.com/docs/ja/commands"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c17-01",
+        "c17-02"
+      ]
+    },
+    {
+      "id": "slash-mcp",
+      "kind": "slash",
+      "name": "/mcp",
+      "syntax": "/mcp [reconnect|enable|disable] [サーバー名|all]",
+      "summary": "[[MCP サーバー]]との接続と、OAuth による認証を管理します。",
+      "details": "引数なしで実行すると、サーバーの一覧が開きます。reconnect・enable・disable にサーバー名か all を続けると、一覧を開かずに接続の状態を変えられます。reconnect all は、つながらなかったサーバーや認証が必要なサーバーをまとめてつなぎ直します。",
+      "examples": [
+        {
+          "code": "/mcp",
+          "desc": "MCP サーバーの一覧を開く"
+        },
+        {
+          "code": "/mcp reconnect all",
+          "desc": "失敗したサーバーをまとめてつなぎ直す"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "コマンド",
+          "url": "https://code.claude.com/docs/ja/commands"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c17-03",
+        "c17-04"
+      ]
+    },
+    {
+      "id": "slash-plugin",
+      "kind": "slash",
+      "name": "/plugin",
+      "syntax": "/plugin [サブコマンド]",
+      "summary": "Claude Code の[[プラグイン]]を管理します。",
+      "details": "引数なしで実行するとプラグインのメニューが開きます。list・install・enable・disable などのサブコマンドを付けると、その操作を直接行えます。入れたあとすぐに有効にならなかった場合は、表示に従って /reload-plugins を実行します。入れる前に、入手元が信頼できるかを確かめましょう。",
+      "examples": [
+        {
+          "code": "/plugin",
+          "desc": "プラグインのメニューを開く"
+        },
+        {
+          "code": "/plugin list",
+          "desc": "入っているプラグインを一覧する"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "コマンド",
+          "url": "https://code.claude.com/docs/ja/commands"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c17-05",
+        "c17-06"
+      ]
+    },
+    {
+      "id": "slash-doctor",
+      "kind": "slash",
+      "name": "/doctor",
+      "summary": "インストール・設定・拡張・CLAUDE.md の問題を調べ、直し方を提案します。",
+      "details": "Claude Code の様子がおかしいときに最初に試すコマンドです。[[bundled skills]] の1つとして動き、見つけた問題の直し方を示します。直す作業は、あなたが確認してから Claude が行います。別名は /checkup です。セッションを始めずに診断だけを見たいときは、ターミナルで claude doctor を使います。",
+      "examples": [
+        {
+          "code": "/doctor",
+          "desc": "セットアップの点検をする"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "コマンド",
+          "url": "https://code.claude.com/docs/ja/commands"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c11-06",
+        "c11-03"
+      ]
+    },
+    {
+      "id": "slash-diff",
+      "kind": "slash",
+      "name": "/diff",
+      "summary": "作業ツリーの変更を、Claude が加えた編集も含めて確認します。",
+      "details": "Claude にファイルを直してもらったあと、何が変わったかを見るのに使います。コミットしていない変更がファイルごとに表示されます。表示のしかたは画面の描き方によって、横に出るパネルか、ダイアログになります。パネルは、もう一度 /diff を実行すると閉じます。",
+      "examples": [
+        {
+          "code": "/diff",
+          "desc": "変更の内容を確認する"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "コマンド",
+          "url": "https://code.claude.com/docs/ja/commands"
+        },
+        {
+          "title": "インタラクティブモード",
+          "url": "https://code.claude.com/docs/ja/interactive-mode"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c12-06",
+        "c19-06"
+      ]
+    },
+    {
+      "id": "slash-add-dir",
+      "kind": "slash",
+      "name": "/add-dir",
+      "syntax": "/add-dir <パス>",
+      "summary": "このセッションの間だけ、Claude が読み書きできる[[作業ディレクトリ]]を追加します。",
+      "details": "別のフォルダにあるファイルも一緒に扱いたいときに使います。追加で広がるのはファイルを読み書きできる範囲だけで、そのフォルダの .claude/ にある設定の多くは使われません。パスは途中まで打てば候補から Tab で選べます。",
+      "examples": [
+        {
+          "code": "/add-dir ../practice-docs",
+          "desc": "隣の練習用フォルダを作業対象に加える"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "コマンド",
+          "url": "https://code.claude.com/docs/ja/commands"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c14-01"
+      ]
+    },
+    {
+      "id": "slash-export",
+      "kind": "slash",
+      "name": "/export",
+      "syntax": "/export [ファイル名]",
+      "summary": "いまの会話をテキストとして書き出します。",
+      "details": "会話の記録を残したり、ほかの人に見せたりしたいときに使います。ファイル名を付けるとそのファイルに直接書き出します。付けないと、クリップボードにコピーするかファイルに保存するかを選ぶ画面が開きます。",
+      "examples": [
+        {
+          "code": "/export",
+          "desc": "コピーか保存かを選んで書き出す"
+        },
+        {
+          "code": "/export session-log.txt",
+          "desc": "ファイルに直接書き出す"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "コマンド",
+          "url": "https://code.claude.com/docs/ja/commands"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c12-05"
+      ]
+    },
+    {
+      "id": "slash-copy",
+      "kind": "slash",
+      "name": "/copy",
+      "syntax": "/copy [N]",
+      "summary": "Claude の最後の答えをクリップボードにコピーします。",
+      "details": "数字を付けると、何番目に新しい答えをコピーするかを選べます。答えにコードブロックなどがあるときは、どのブロックをコピーするか選ぶ画面が出ます。その画面で w を押すと、クリップボードの代わりにファイルへ書き出せます。",
+      "examples": [
+        {
+          "code": "/copy",
+          "desc": "最後の答えをコピーする"
+        },
+        {
+          "code": "/copy 2",
+          "desc": "1つ前の答えをコピーする"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "コマンド",
+          "url": "https://code.claude.com/docs/ja/commands"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c12-06"
+      ]
+    },
+    {
+      "id": "slash-exit",
+      "kind": "slash",
+      "name": "/exit",
+      "summary": "Claude Code を終了します。",
+      "details": "作業を終えるときに使います。終了した会話は、あとから /resume で選んで続きができます。バックグラウンドのセッションにつないでいるときは、終了ではなく切り離しになり、セッションは動き続けます。別名は /quit です。",
+      "examples": [
+        {
+          "code": "/exit",
+          "desc": "Claude Code を終える"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "コマンド",
+          "url": "https://code.claude.com/docs/ja/commands"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c12-06",
+        "c12-05"
+      ]
+    },
+    {
+      "id": "slash-tasks",
+      "kind": "slash",
+      "name": "/tasks",
+      "summary": "このセッションで裏で動いている作業を確認・管理します。",
+      "details": "バックグラウンドで動かしているコマンドや[[サブエージェント]]の様子を見たいときに使います。終わったサブエージェントも一覧に出ます。Claude の応答中でも、作業を止めずに開けます。/bashes でも同じものが開きます。",
+      "examples": [
+        {
+          "code": "/tasks",
+          "desc": "裏で動いている作業を一覧する"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "コマンド",
+          "url": "https://code.claude.com/docs/ja/commands"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c18-01",
+        "c16-04"
+      ]
+    },
+    {
+      "id": "slash-loop",
+      "kind": "slash",
+      "name": "/loop",
+      "syntax": "/loop [間隔] [プロンプト]",
+      "summary": "セッションを開いている間、同じプロンプトをくり返し実行します。",
+      "details": "[[bundled skills]] の1つです。間隔を省くと、Claude が様子を見ながら次に実行するまでの間を自分で決めます。プロンプトを省くと、組み込みの見回り用のプロンプトか、自分で用意した loop.md の内容を実行します。間隔を任せた場合は、次の実行を待っている間に Esc を押すと止まります。セッションを閉じても止まります。別名は /proactive です。",
+      "examples": [
+        {
+          "code": "/loop 5m テストを実行して、失敗があれば教えて",
+          "desc": "5分ごとにテストの結果を確かめる"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "コマンド",
+          "url": "https://code.claude.com/docs/ja/commands"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c19-03"
+      ]
+    },
+    {
+      "id": "slash-code-review",
+      "kind": "slash",
+      "name": "/code-review",
+      "syntax": "/code-review [レベル] [--fix] [PR番号|ブランチ|パス]",
+      "summary": "いまの差分などを、正しく動かない不具合がないかレビューします。",
+      "details": "[[bundled skills]] の1つです。引数なしでは、いまの差分を見ます。PR の番号・ブランチ・パスを渡すと、それを対象にします。low から max のレベルで、どこまで細かく見るかを選べます。--fix を付けると見つかった点を直し、ultra ではクラウドで詳しいレビューを行います（費用がかかる場合があるので、使う前に公式ページで確かめましょう）。別名は /review です。",
+      "examples": [
+        {
+          "code": "/code-review",
+          "desc": "いまの差分をレビューする"
+        },
+        {
+          "code": "/code-review high --fix",
+          "desc": "細かめにレビューして見つかった点を直す"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "コマンド",
+          "url": "https://code.claude.com/docs/ja/commands"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c19-06",
+        "c16-02"
+      ]
+    },
+    {
+      "id": "slash-terminal-setup",
+      "kind": "slash",
+      "name": "/terminal-setup",
+      "summary": "Shift+Enter で改行できるように、ターミナルのキー設定を入れます。",
+      "details": "VS Code・Cursor・Alacritty・Zed などで、プロンプトに複数行を入力しやすくするために使います。Apple のターミナルでは代わりに Option+Enter での改行を有効にし、iTerm2 では /copy が使えるようにクリップボードへのアクセスをオンにします。",
+      "examples": [
+        {
+          "code": "/terminal-setup",
+          "desc": "ターミナルのキー設定を入れる"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "コマンド",
+          "url": "https://code.claude.com/docs/ja/commands"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c15-06"
+      ]
+    },
+    {
+      "id": "slash-update-config",
+      "kind": "slash",
+      "name": "/update-config",
+      "syntax": "/update-config [依頼]",
+      "summary": "したい設定の変更をことばで伝えると、Claude が該当する settings.json を書き換えます。",
+      "details": "[[bundled skills]] の1つです。コマンドの許可、環境変数の設定、フックの追加などに向いています。テーマやモデルのような項目は /config で変えます。書き換えたあとは、内容を自分の目でも確かめましょう。",
+      "examples": [
+        {
+          "code": "/update-config npm test を確認なしで実行できるようにして",
+          "desc": "コマンドを許可する設定を足してもらう"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "コマンド",
+          "url": "https://code.claude.com/docs/ja/commands"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c15-02",
+        "c17-02"
+      ]
+    }
+  ]
+}

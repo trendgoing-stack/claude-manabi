@@ -125,7 +125,10 @@
         "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
       },
       "tryIds": [],
-      "dictIds": []
+      "dictIds": [
+        "slash-permissions",
+        "slash-add-dir"
+      ]
     },
     {
       "id": "c14-02",
@@ -216,7 +219,9 @@
         "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
       },
       "tryIds": [],
-      "dictIds": []
+      "dictIds": [
+        "slash-permissions"
+      ]
     },
     {
       "id": "c14-03",
@@ -404,7 +409,10 @@
         "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
       },
       "tryIds": [],
-      "dictIds": []
+      "dictIds": [
+        "slash-plan",
+        "key-shift-tab"
+      ]
     },
     {
       "id": "c14-04",
@@ -541,7 +549,10 @@
         "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
       },
       "tryIds": [],
-      "dictIds": []
+      "dictIds": [
+        "slash-plan",
+        "key-shift-tab"
+      ]
     },
     {
       "id": "c14-05",
@@ -667,7 +678,10 @@
         "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
       },
       "tryIds": [],
-      "dictIds": []
+      "dictIds": [
+        "slash-rewind",
+        "key-esc-esc"
+      ]
     },
     {
       "id": "c14-06",

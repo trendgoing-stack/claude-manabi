@@ -157,7 +157,10 @@
         "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
       },
       "tryIds": [],
-      "dictIds": []
+      "dictIds": [
+        "slash-tasks",
+        "key-ctrl-b"
+      ]
     },
     {
       "id": "c18-02",

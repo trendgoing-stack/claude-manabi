@@ -1,0 +1,911 @@
+{
+  "schemaVersion": 1,
+  "kind": "key",
+  "items": [
+    {
+      "id": "key-esc",
+      "kind": "key",
+      "name": "Esc",
+      "summary": "Claude の応答やツールの実行を途中で止めます。開いているダイアログを閉じるときにも使います。",
+      "details": "Claude が思っていたのと違う方向に進み始めたら、Esc で止めて指示を出し直せます。止めるまでに済んだ作業は残るので、続けて「そこは〇〇にして」と伝えれば向きを変えられます。送信待ちのメッセージがあれば、止めたあとにそれが送られます。[[権限プロンプト]]で Esc を押すと、その操作を断ったことになります。",
+      "examples": [
+        {
+          "code": "（Claude が作業中に）Esc",
+          "desc": "応答を止めて、追加の指示を入力できる状態にする"
+        },
+        {
+          "code": "（権限の確認が出ているときに）Esc",
+          "desc": "その操作を許可せずに断る"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "インタラクティブモード",
+          "url": "https://code.claude.com/docs/ja/interactive-mode"
+        },
+        {
+          "title": "キーボードショートカットのカスタマイズ",
+          "url": "https://code.claude.com/docs/ja/keybindings"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c12-04",
+        "c12-01"
+      ]
+    },
+    {
+      "id": "key-esc-esc",
+      "kind": "key",
+      "name": "Esc + Esc",
+      "summary": "Esc を2回続けて押します。入力欄が空なら巻き戻しメニューを開き、文字があればその下書きを消します。",
+      "details": "入力欄が空のときに2回押すと[[巻き戻しメニュー]]が開き、前の時点を選んでコードや会話を戻したり、そこから先を要約したりできます。入力欄に文字があるときは、その文字を消して履歴に残すので、あとから上矢印で呼び戻せます。Claude の変更を試しに受け入れてみて、合わなければ戻す、という使い方ができます。",
+      "examples": [
+        {
+          "code": "（入力欄が空のときに）Esc Esc",
+          "desc": "巻き戻しメニューを開いて、戻したい時点を選ぶ"
+        },
+        {
+          "code": "（書きかけの文があるときに）Esc Esc → ↑",
+          "desc": "下書きを消してから、上矢印で呼び戻す"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "インタラクティブモード",
+          "url": "https://code.claude.com/docs/ja/interactive-mode"
+        },
+        {
+          "title": "チェックポイント",
+          "url": "https://code.claude.com/docs/ja/checkpointing"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c14-05",
+        "c12-04"
+      ]
+    },
+    {
+      "id": "key-shift-tab",
+      "kind": "key",
+      "name": "Shift+Tab",
+      "summary": "権限モードを順に切り替えます。編集を自動で受け入れるモードやプランモードに移るときに使います。",
+      "details": "押すたびに、通常（Manual）、編集を自動で受け入れる acceptEdits、[[プランモード]]の順に切り替わり、使える環境では bypassPermissions や auto も続きます。いまのモードは入力欄の近くに表示されます。Windows で実行環境が VT 入力モードを使えない古い版のときは、Alt+M が代わりのキーになります。ファイルの権限の確認が出ているときは、別の働き（そのセッションのあいだ許可する選択肢を選ぶなど）になります。",
+      "examples": [
+        {
+          "code": "Shift+Tab（plan と表示されるまで押す）",
+          "desc": "プランモードにして、まず計画だけを立ててもらう"
+        },
+        {
+          "code": "Shift+Tab（Manual に戻るまで押す）",
+          "desc": "編集やコマンドの前に確認する通常のモードに戻す"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "インタラクティブモード",
+          "url": "https://code.claude.com/docs/ja/interactive-mode"
+        },
+        {
+          "title": "権限モード",
+          "url": "https://code.claude.com/docs/ja/permission-modes"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c14-03",
+        "c14-04"
+      ]
+    },
+    {
+      "id": "key-ctrl-c",
+      "kind": "key",
+      "name": "Ctrl+C",
+      "summary": "実行中の操作を中断します。何も動いていなければ入力を消し、続けてもう一度押すと Claude Code を終了します。",
+      "details": "動いている処理を止めるときの基本のキーです。何も実行していないときの1回目は入力欄を消し、2回目で終了します。消した入力は、入力欄が空のうちに上矢印を押すと呼び戻せます。このキーはキー割り当てで変えられない予約キーです。",
+      "examples": [
+        {
+          "code": "Ctrl+C",
+          "desc": "実行中の処理を止める"
+        },
+        {
+          "code": "Ctrl+C Ctrl+C",
+          "desc": "何も動いていないときに2回押して終了する"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "インタラクティブモード",
+          "url": "https://code.claude.com/docs/ja/interactive-mode"
+        },
+        {
+          "title": "キーボードショートカットのカスタマイズ",
+          "url": "https://code.claude.com/docs/ja/keybindings"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c12-04",
+        "c12-06"
+      ]
+    },
+    {
+      "id": "key-ctrl-d",
+      "kind": "key",
+      "name": "Ctrl+D",
+      "summary": "Claude Code のセッションを終了します。",
+      "details": "1回目で確認の案内が出て、すぐにもう一度押すと終了します。入力欄に文字があるときは終了せず、カーソルの後ろの1文字を消します。終了した会話はあとから再開できます。Ctrl+C と同じく、キー割り当てで変えられない予約キーです。",
+      "examples": [
+        {
+          "code": "Ctrl+D Ctrl+D",
+          "desc": "入力欄が空のときに続けて押して終了する"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "インタラクティブモード",
+          "url": "https://code.claude.com/docs/ja/interactive-mode"
+        },
+        {
+          "title": "キーボードショートカットのカスタマイズ",
+          "url": "https://code.claude.com/docs/ja/keybindings"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c12-06",
+        "c12-05"
+      ]
+    },
+    {
+      "id": "key-shift-enter",
+      "kind": "key",
+      "name": "Shift+Enter",
+      "summary": "送信せずに改行します。複数行の指示を書くときに使います。",
+      "details": "Enter は送信なので、改行したいときはこのキーを使います。Windows Terminal や iTerm2 などではそのまま使えますが、VS Code の統合ターミナルなどでは一度 `/terminal-setup` を実行する必要があり、使えないターミナルもあります。tmux の中で使うときは、tmux 側の設定も要ります。どのターミナルでも使える方法として、Ctrl+J と「\\ のあとに Enter」があります。",
+      "examples": [
+        {
+          "code": "次の2点を直してください Shift+Enter 1. 見出し Shift+Enter 2. 誤字",
+          "desc": "箇条書きの指示を1回で送る"
+        },
+        {
+          "code": "/terminal-setup",
+          "desc": "VS Code などで Shift+Enter が送信になってしまうときに設定する"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "ターミナルの設定",
+          "url": "https://code.claude.com/docs/ja/terminal-config"
+        },
+        {
+          "title": "インタラクティブモード",
+          "url": "https://code.claude.com/docs/ja/interactive-mode"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c12-06",
+        "c15-06"
+      ]
+    },
+    {
+      "id": "key-ctrl-j",
+      "kind": "key",
+      "name": "Ctrl+J",
+      "summary": "設定なしでどのターミナルでも使える改行のキーです。",
+      "details": "Shift+Enter が効かないターミナルでも、Ctrl+J なら送信せずに改行できます。行の最後に `\\` を打ってから Enter を押す方法も、同じくどこでも使えます。[[Vim モード]]の INSERT モードでも Enter は送信なので、改行には Ctrl+J が便利です。",
+      "examples": [
+        {
+          "code": "1行目 Ctrl+J 2行目",
+          "desc": "2行に分けた指示を書いてから Enter で送る"
+        },
+        {
+          "code": "1行目\\ Enter 2行目",
+          "desc": "バックスラッシュのあとに Enter で改行する"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "ターミナルの設定",
+          "url": "https://code.claude.com/docs/ja/terminal-config"
+        },
+        {
+          "title": "インタラクティブモード",
+          "url": "https://code.claude.com/docs/ja/interactive-mode"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c12-06",
+        "c15-06"
+      ]
+    },
+    {
+      "id": "key-up",
+      "kind": "key",
+      "name": "↑／↓",
+      "summary": "前に送った指示を呼び出します。入力が複数行のときは、まず行のあいだでカーソルを動かします。",
+      "details": "入力の履歴は作業フォルダごとに残り、同じプロジェクトの以前のセッションで送った指示も呼び出せます。同じ指示を続けて送った場合は1件にまとまります。Ctrl+P／Ctrl+N でも同じように動きます。Claude の作業中に送信待ちのメッセージがあるときは、1行目で ↑ を押すとそれを入力欄に取り戻せます。",
+      "examples": [
+        {
+          "code": "↑",
+          "desc": "直前に送った指示を呼び出し、少し直して送り直す"
+        },
+        {
+          "code": "↑ ↑ ↓",
+          "desc": "履歴をさかのぼってから1つ戻る"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "インタラクティブモード",
+          "url": "https://code.claude.com/docs/ja/interactive-mode"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c12-06",
+        "c12-05"
+      ]
+    },
+    {
+      "id": "key-ctrl-r",
+      "kind": "key",
+      "name": "Ctrl+R",
+      "summary": "過去に送った指示を、文字を打って検索します。",
+      "details": "Ctrl+R を押してから言葉を打つと、それを含む過去の指示が新しい順に出てきます。もう一度 Ctrl+R を押すと、さらに古い候補に進みます。Tab か Esc で候補を入力欄に入れて編集を続け、Enter ならそのまま送信、Ctrl+C で取り消します。全画面表示（fullscreen）のときは検索用のダイアログが開き、Ctrl+S で探す範囲を切り替えられます。",
+      "examples": [
+        {
+          "code": "Ctrl+R → テスト",
+          "desc": "「テスト」を含む以前の指示を探す"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "インタラクティブモード",
+          "url": "https://code.claude.com/docs/ja/interactive-mode"
+        },
+        {
+          "title": "キーボードショートカットのカスタマイズ",
+          "url": "https://code.claude.com/docs/ja/keybindings"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c12-06"
+      ]
+    },
+    {
+      "id": "key-at",
+      "kind": "key",
+      "name": "@",
+      "syntax": "@<ファイルのパス>",
+      "summary": "入力の中でファイルを指定します。打つとファイル名の候補が出ます。",
+      "details": "「@」に続けてファイル名の一部を打つとパスの候補が出るので、Tab で選んで入れます。どのファイルの話かをはっきり伝えられるので、Claude が探し回る手間が減ります。",
+      "examples": [
+        {
+          "code": "@README.md の手順を短くまとめて",
+          "desc": "特定のファイルを指して要約を頼む"
+        },
+        {
+          "code": "@REA → Tab",
+          "desc": "途中まで打って候補からファイル名を補う"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "インタラクティブモード",
+          "url": "https://code.claude.com/docs/ja/interactive-mode"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c12-02"
+      ]
+    },
+    {
+      "id": "key-exclamation",
+      "kind": "key",
+      "name": "!",
+      "syntax": "! <コマンド>",
+      "summary": "入力の先頭に付けると、Claude を通さずに自分でシェルのコマンドを実行します。",
+      "details": "[[シェルモード]]では、コマンドとその出力が会話に加わり、Claude がその結果に続けて答えます。テストを流して「失敗の理由を説明して」と頼む手間が省けます。Claude の承認は不要ですが、自分で打ったコマンドはサンドボックスの外で動くことがあるので、内容をよく確かめてから実行します。空の入力欄で Esc か Backspace を押すと通常の入力に戻ります。",
+      "examples": [
+        {
+          "code": "! git status",
+          "desc": "変更の状況を確かめ、その結果を会話に入れる"
+        },
+        {
+          "code": "! npm test",
+          "desc": "テストを実行し、失敗の説明をそのまま受け取る"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "インタラクティブモード",
+          "url": "https://code.claude.com/docs/ja/interactive-mode"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c12-03"
+      ]
+    },
+    {
+      "id": "key-slash",
+      "kind": "key",
+      "name": "/",
+      "syntax": "/<コマンド名> [引数]",
+      "summary": "入力の先頭に付けると、スラッシュコマンドやスキルを呼び出します。",
+      "details": "「/」を打つと使えるコマンドの一覧が出て、続けて文字を打つと絞り込めます。一覧には組み込みのコマンドのほか、[[スキル]]やプラグインが加えたコマンドも並びます。コマンドとして実行されるのは、メッセージの先頭に書いたときだけです。",
+      "examples": [
+        {
+          "code": "/",
+          "desc": "入力欄の先頭で打って、使えるコマンドとスキルの一覧を出す"
+        },
+        {
+          "code": "/co",
+          "desc": "「co」で始まるコマンドに絞り込む"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "インタラクティブモード",
+          "url": "https://code.claude.com/docs/ja/interactive-mode"
+        },
+        {
+          "title": "コマンド",
+          "url": "https://code.claude.com/docs/ja/commands"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c12-06"
+      ]
+    },
+    {
+      "id": "key-question",
+      "kind": "key",
+      "name": "?",
+      "summary": "入力欄が空のときに押すと、キー操作の一覧（ヘルプ）を表示します。",
+      "details": "キーを忘れたときにすぐ確かめられます。もう一度押すと閉じます。入力欄に文字があるときは、ただの「?」として入力されます。",
+      "examples": [
+        {
+          "code": "?（入力欄が空のとき）",
+          "desc": "ショートカットの一覧を開く"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "インタラクティブモード",
+          "url": "https://code.claude.com/docs/ja/interactive-mode"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c12-06"
+      ]
+    },
+    {
+      "id": "key-alt-v",
+      "kind": "key",
+      "name": "Alt+V",
+      "summary": "クリップボードの画像を入力欄に貼り付けます。",
+      "details": "貼り付けた画像はカーソルの位置に `[Image #N]` として入り、「この画像のエラーを読んで」のように文の中で指せます。Windows（WSL を含む）では Alt+V、Mac と Linux では Ctrl+V です（Mac の iTerm2 では Cmd+V も使えます）。WSL では Ctrl+V と Alt+V の両方が使えます。ターミナルが Ctrl+V を横取りするときは Alt+V を使います。",
+      "examples": [
+        {
+          "code": "（画面の画像をコピーしてから）Alt+V",
+          "desc": "エラー画面の画像を貼り付けて質問する"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "インタラクティブモード",
+          "url": "https://code.claude.com/docs/ja/interactive-mode"
+        },
+        {
+          "title": "キーボードショートカットのカスタマイズ",
+          "url": "https://code.claude.com/docs/ja/keybindings"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "os": {
+        "win": "Alt+V",
+        "mac": "Ctrl+V"
+      },
+      "sectionIds": [
+        "c12-02"
+      ]
+    },
+    {
+      "id": "key-alt-p",
+      "kind": "key",
+      "name": "Alt+P",
+      "summary": "入力中の文を消さずに、使うモデルを切り替えます。",
+      "details": "モデルの選択画面が開き、指示を書きかけのまま別のモデルに替えられます。選択画面では左右の矢印で [[effort]] も調整できます。Mac では Option+P で、ターミナルで Option を Meta キーとして使う設定が必要です。",
+      "examples": [
+        {
+          "code": "Alt+P",
+          "desc": "モデルの選択画面を開いて切り替える"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "インタラクティブモード",
+          "url": "https://code.claude.com/docs/ja/interactive-mode"
+        },
+        {
+          "title": "キーボードショートカットのカスタマイズ",
+          "url": "https://code.claude.com/docs/ja/keybindings"
+        },
+        {
+          "title": "ターミナルの設定",
+          "url": "https://code.claude.com/docs/ja/terminal-config"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "os": {
+        "win": "Alt+P",
+        "mac": "Option+P"
+      },
+      "sectionIds": [
+        "c15-03",
+        "a01-03"
+      ]
+    },
+    {
+      "id": "key-alt-t",
+      "kind": "key",
+      "name": "Alt+T",
+      "summary": "拡張思考（extended thinking）のオン・オフを切り替えます。",
+      "details": "[[thinking]] を使うと、Claude が答える前にじっくり考えます。常に拡張思考を使うモデルでは、このキーは効きません。Mac では Option+P などと違い、Option を Meta にする設定をしなくても Option+T で使えます。",
+      "examples": [
+        {
+          "code": "Alt+T",
+          "desc": "拡張思考を切り替える"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "インタラクティブモード",
+          "url": "https://code.claude.com/docs/ja/interactive-mode"
+        },
+        {
+          "title": "キーボードショートカットのカスタマイズ",
+          "url": "https://code.claude.com/docs/ja/keybindings"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "os": {
+        "win": "Alt+T",
+        "mac": "Option+T"
+      },
+      "sectionIds": [
+        "a01-03",
+        "c15-03"
+      ]
+    },
+    {
+      "id": "key-alt-o",
+      "kind": "key",
+      "name": "Alt+O",
+      "summary": "[[fast mode]] のオン・オフを切り替えます。",
+      "details": "応答を速くしたいときに使います。research preview の機能で、通常より費用がかかります。使えるモデルや条件は公式ページで確かめてください。`/fast` コマンドでも切り替えられます。Mac では Option+O で、効かないときはターミナルで Option を Meta キーとして使う設定をします。",
+      "examples": [
+        {
+          "code": "Alt+O",
+          "desc": "fast mode を切り替える"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "preview",
+      "sources": [
+        {
+          "title": "インタラクティブモード",
+          "url": "https://code.claude.com/docs/ja/interactive-mode"
+        },
+        {
+          "title": "キーボードショートカットのカスタマイズ",
+          "url": "https://code.claude.com/docs/ja/keybindings"
+        },
+        {
+          "title": "fast mode",
+          "url": "https://code.claude.com/docs/ja/fast-mode"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "os": {
+        "win": "Alt+O",
+        "mac": "Option+O"
+      },
+      "sectionIds": [
+        "c15-03"
+      ]
+    },
+    {
+      "id": "key-ctrl-o",
+      "kind": "key",
+      "name": "Ctrl+O",
+      "summary": "トランスクリプト（詳しい作業の記録）の表示を切り替えます。",
+      "details": "ふだんは折りたたまれているツールの使い方や実行結果を、詳しく見られます。Claude が何をしたのかを確かめたいときに便利です。q か Esc で元の画面に戻ります。",
+      "examples": [
+        {
+          "code": "Ctrl+O",
+          "desc": "ツールの実行内容を詳しく表示する"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "インタラクティブモード",
+          "url": "https://code.claude.com/docs/ja/interactive-mode"
+        },
+        {
+          "title": "キーボードショートカットのカスタマイズ",
+          "url": "https://code.claude.com/docs/ja/keybindings"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c12-01",
+        "c12-06"
+      ]
+    },
+    {
+      "id": "key-ctrl-b",
+      "kind": "key",
+      "name": "Ctrl+B",
+      "summary": "実行中のコマンドやエージェントをバックグラウンドに回します。",
+      "details": "開発サーバーやビルドなど時間のかかるコマンドを裏で動かしたまま、次の指示を出せます。出力はファイルに残り、Claude があとから読めます。tmux の中では Ctrl+B が tmux のキーと重なるので、2回押します。",
+      "examples": [
+        {
+          "code": "（長いテストが動いているときに）Ctrl+B",
+          "desc": "テストを裏で動かしたまま別の作業を頼む"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "インタラクティブモード",
+          "url": "https://code.claude.com/docs/ja/interactive-mode"
+        },
+        {
+          "title": "キーボードショートカットのカスタマイズ",
+          "url": "https://code.claude.com/docs/ja/keybindings"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c12-06",
+        "c18-01"
+      ]
+    },
+    {
+      "id": "key-ctrl-t",
+      "kind": "key",
+      "name": "Ctrl+T",
+      "summary": "Claude のタスクの一覧（やることのチェックリスト）の表示を切り替えます。",
+      "details": "複数の手順がある作業で、Claude がいまどこまで進んだかを確かめられます。ただし、一覧に項目が入るのはタスク管理の道具を使うセッションだけです。新しいモデルでは既定で使わないため、押しても何も表示されないことがあります。裏で動いているコマンドやサブエージェントの一覧ではありません。それは `/tasks` で見ます。",
+      "examples": [
+        {
+          "code": "Ctrl+T",
+          "desc": "タスクの一覧を表示する・隠す"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "インタラクティブモード",
+          "url": "https://code.claude.com/docs/ja/interactive-mode"
+        },
+        {
+          "title": "キーボードショートカットのカスタマイズ",
+          "url": "https://code.claude.com/docs/ja/keybindings"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c12-01"
+      ]
+    },
+    {
+      "id": "key-ctrl-g",
+      "kind": "key",
+      "name": "Ctrl+G",
+      "summary": "書きかけの指示を、ふだん使っているテキストエディタで開いて編集します。",
+      "details": "長い指示や、何段落にもなる説明をじっくり書きたいときに便利です。エディタで保存して閉じると、その内容が入力欄に戻ります。Ctrl+X Ctrl+E でも同じように開けます。",
+      "examples": [
+        {
+          "code": "Ctrl+G",
+          "desc": "入力中の文をエディタで開き、整えてから戻す"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "インタラクティブモード",
+          "url": "https://code.claude.com/docs/ja/interactive-mode"
+        },
+        {
+          "title": "キーボードショートカットのカスタマイズ",
+          "url": "https://code.claude.com/docs/ja/keybindings"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c12-06",
+        "c15-06"
+      ]
+    },
+    {
+      "id": "key-ctrl-s",
+      "kind": "key",
+      "name": "Ctrl+S",
+      "summary": "書きかけの入力をいったんしまい、入力欄を空にします。空のときにもう一度押すと元に戻します。",
+      "details": "長い指示を書いている途中で、先に別の短い質問をしたいときに使います。戻すときは、カーソルの位置や貼り付けた内容、`!` のシェルモードかどうかも元どおりになります。[[エージェントビュー]]の中では別の働きになります。",
+      "examples": [
+        {
+          "code": "Ctrl+S → 短い質問を送る → Ctrl+S",
+          "desc": "書きかけの指示をしまって質問し、あとで戻す"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "インタラクティブモード",
+          "url": "https://code.claude.com/docs/ja/interactive-mode"
+        },
+        {
+          "title": "キーボードショートカットのカスタマイズ",
+          "url": "https://code.claude.com/docs/ja/keybindings"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c12-06"
+      ]
+    },
+    {
+      "id": "key-ctrl-l",
+      "kind": "key",
+      "name": "Ctrl+L",
+      "summary": "画面を描き直します。入力や会話の履歴はそのまま残ります。",
+      "details": "表示が崩れたり、一部が空白になったりしたときに使います。会話を消すキーではないので、押しても話の続きはそのままです。会話を新しく始めたいときは `/clear` を使います。",
+      "examples": [
+        {
+          "code": "Ctrl+L",
+          "desc": "崩れた表示を直す"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "インタラクティブモード",
+          "url": "https://code.claude.com/docs/ja/interactive-mode"
+        },
+        {
+          "title": "キーボードショートカットのカスタマイズ",
+          "url": "https://code.claude.com/docs/ja/keybindings"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c12-06"
+      ]
+    },
+    {
+      "id": "key-ctrl-enter",
+      "kind": "key",
+      "name": "Ctrl+Enter",
+      "summary": "Claude の作業中にためておいたメッセージを、待たずにすぐ送ります。",
+      "details": "Claude が作業しているあいだに Enter で送ったメッセージは、すぐには割り込まず順番待ちになります。Ctrl+Enter を押すと、それを今すぐ Claude に届けます。Claude の作業がバックグラウンドに回せるものならそのまま続き、そうでなければ中断して先にメッセージを読みます。ターミナルによっては Ctrl+Enter がただの Enter として届くので、そのときは Ctrl+X Ctrl+S を使います。",
+      "examples": [
+        {
+          "code": "（作業中に）テストも追加して Enter → Ctrl+Enter",
+          "desc": "ためた追加の指示をすぐに届ける"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "インタラクティブモード",
+          "url": "https://code.claude.com/docs/ja/interactive-mode"
+        },
+        {
+          "title": "キーボードショートカットのカスタマイズ",
+          "url": "https://code.claude.com/docs/ja/keybindings"
+        }
+      ],
+      "checkedAt": "2026-10-13",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-13 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "sectionIds": [
+        "c12-04",
+        "c12-01"
+      ]
+    }
+  ]
+}

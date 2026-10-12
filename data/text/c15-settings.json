@@ -296,7 +296,13 @@
         "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
       },
       "tryIds": [],
-      "dictIds": []
+      "dictIds": [
+        "slash-model",
+        "slash-config",
+        "slash-status",
+        "slash-theme",
+        "slash-update-config"
+      ]
     },
     {
       "id": "c15-03",
@@ -435,7 +441,13 @@
         "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
       },
       "tryIds": [],
-      "dictIds": []
+      "dictIds": [
+        "slash-model",
+        "slash-effort",
+        "key-alt-p",
+        "key-alt-t",
+        "key-alt-o"
+      ]
     },
     {
       "id": "c15-04",
@@ -535,7 +547,9 @@
         "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
       },
       "tryIds": [],
-      "dictIds": []
+      "dictIds": [
+        "slash-output-style"
+      ]
     },
     {
       "id": "c15-05",
@@ -669,7 +683,9 @@
         "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
       },
       "tryIds": [],
-      "dictIds": []
+      "dictIds": [
+        "slash-statusline"
+      ]
     },
     {
       "id": "c15-06",
@@ -767,7 +783,14 @@
         "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
       },
       "tryIds": [],
-      "dictIds": []
+      "dictIds": [
+        "slash-theme",
+        "slash-keybindings",
+        "slash-terminal-setup",
+        "key-shift-enter",
+        "key-ctrl-j",
+        "key-ctrl-g"
+      ]
     }
   ]
 }

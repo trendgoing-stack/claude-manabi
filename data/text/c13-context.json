@@ -127,7 +127,10 @@
         "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
       },
       "tryIds": [],
-      "dictIds": []
+      "dictIds": [
+        "slash-init",
+        "slash-memory"
+      ]
     },
     {
       "id": "c13-02",
@@ -289,7 +292,9 @@
         "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
       },
       "tryIds": [],
-      "dictIds": []
+      "dictIds": [
+        "slash-memory"
+      ]
     },
     {
       "id": "c13-03",
@@ -642,7 +647,10 @@
         "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
       },
       "tryIds": [],
-      "dictIds": []
+      "dictIds": [
+        "slash-compact",
+        "slash-context"
+      ]
     },
     {
       "id": "c13-05",
@@ -792,7 +800,13 @@
         "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
       },
       "tryIds": [],
-      "dictIds": []
+      "dictIds": [
+        "slash-clear",
+        "slash-compact",
+        "slash-context",
+        "slash-btw",
+        "slash-usage"
+      ]
     },
     {
       "id": "c13-06",

@@ -163,7 +163,12 @@
         "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
       },
       "tryIds": [],
-      "dictIds": []
+      "dictIds": [
+        "key-esc",
+        "key-ctrl-o",
+        "key-ctrl-t",
+        "key-ctrl-enter"
+      ]
     },
     {
       "id": "c12-02",
@@ -300,7 +305,10 @@
         "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
       },
       "tryIds": [],
-      "dictIds": []
+      "dictIds": [
+        "key-at",
+        "key-alt-v"
+      ]
     },
     {
       "id": "c12-03",
@@ -398,7 +406,9 @@
         "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
       },
       "tryIds": [],
-      "dictIds": []
+      "dictIds": [
+        "key-exclamation"
+      ]
     },
     {
       "id": "c12-04",
@@ -553,7 +563,13 @@
         "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
       },
       "tryIds": [],
-      "dictIds": []
+      "dictIds": [
+        "slash-rewind",
+        "key-esc",
+        "key-esc-esc",
+        "key-ctrl-c",
+        "key-ctrl-enter"
+      ]
     },
     {
       "id": "c12-05",
@@ -705,7 +721,15 @@
         "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
       },
       "tryIds": [],
-      "dictIds": []
+      "dictIds": [
+        "slash-clear",
+        "slash-resume",
+        "slash-rename",
+        "slash-export",
+        "slash-exit",
+        "key-ctrl-d",
+        "key-up"
+      ]
     },
     {
       "id": "c12-06",
@@ -913,7 +937,26 @@
         "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
       },
       "tryIds": [],
-      "dictIds": []
+      "dictIds": [
+        "slash-btw",
+        "slash-help",
+        "slash-diff",
+        "slash-copy",
+        "slash-exit",
+        "key-ctrl-c",
+        "key-ctrl-d",
+        "key-shift-enter",
+        "key-ctrl-j",
+        "key-up",
+        "key-ctrl-r",
+        "key-slash",
+        "key-question",
+        "key-ctrl-o",
+        "key-ctrl-b",
+        "key-ctrl-g",
+        "key-ctrl-s",
+        "key-ctrl-l"
+      ]
     }
   ]
 }

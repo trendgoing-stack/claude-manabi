@@ -469,7 +469,9 @@
         "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
       },
       "tryIds": [],
-      "dictIds": []
+      "dictIds": [
+        "slash-loop"
+      ]
     },
     {
       "id": "c19-04",
@@ -923,7 +925,10 @@
         "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
       },
       "tryIds": [],
-      "dictIds": []
+      "dictIds": [
+        "slash-diff",
+        "slash-code-review"
+      ]
     }
   ]
 }

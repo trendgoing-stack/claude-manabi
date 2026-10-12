@@ -350,7 +350,10 @@
         "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
       },
       "tryIds": [],
-      "dictIds": []
+      "dictIds": [
+        "slash-skills",
+        "slash-code-review"
+      ]
     },
     {
       "id": "c16-03",
@@ -501,7 +504,9 @@
         "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
       },
       "tryIds": [],
-      "dictIds": []
+      "dictIds": [
+        "slash-skills"
+      ]
     },
     {
       "id": "c16-04",
@@ -631,7 +636,10 @@
         "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
       },
       "tryIds": [],
-      "dictIds": []
+      "dictIds": [
+        "slash-agents",
+        "slash-tasks"
+      ]
     },
     {
       "id": "c16-05",
@@ -762,7 +770,9 @@
         "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
       },
       "tryIds": [],
-      "dictIds": []
+      "dictIds": [
+        "slash-agents"
+      ]
     },
     {
       "id": "c16-06",
