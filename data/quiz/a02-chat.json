@@ -1,0 +1,272 @@
+{
+  "schemaVersion": 1,
+  "chapterId": "a02",
+  "questions": [
+    {
+      "id": "a02-01-q1",
+      "sectionId": "a02-01",
+      "question": "Claude に狙いどおりの答えを出してもらうための指示の書き方として、最も適切なものはどれか。",
+      "choices": [
+        "決まった命令の書式に合わせて、キーワードだけを並べる",
+        "目的・条件・形式を書き、条件には理由も添える",
+        "してほしくないことだけを、できるだけ多く書き並べる",
+        "前提は伝えず、Claude に推測させて自由に答えさせる"
+      ],
+      "answer": 1,
+      "explanation": "目的・条件・形式をはっきり書き、理由を添えると、Claude は意図を汲んで答えやすくなります。指示は自然な言葉で書けばよく、決まった書式は要りません。禁止だけを並べるより、してほしい形を書くほうが伝わります。",
+      "sources": [
+        {
+          "title": "プロンプティングのベストプラクティス",
+          "url": "https://platform.claude.com/docs/ja/build-with-claude/prompt-engineering/claude-prompting-best-practices"
+        }
+      ]
+    },
+    {
+      "id": "a02-01-q2",
+      "sectionId": "a02-01",
+      "question": "答えの形や口調をそろえたいときに、指示の中に手本の例をいくつか入れる方法を何と呼ぶか。",
+      "choices": [
+        "スナップショット",
+        "コンテキストウィンドウ",
+        "few-shot プロンプティング",
+        "パススコープのルール"
+      ],
+      "answer": 2,
+      "explanation": "手本となる例を入れて答えの形をそろえる方法を few-shot プロンプティングと呼びます。例は実際の用途に近く、変化のあるものを選びます。スナップショットはチャットを共有したときの写しで、別のものです。",
+      "sources": [
+        {
+          "title": "プロンプティングのベストプラクティス",
+          "url": "https://platform.claude.com/docs/ja/build-with-claude/prompt-engineering/claude-prompting-best-practices"
+        }
+      ]
+    },
+    {
+      "id": "a02-02-q1",
+      "sectionId": "a02-02",
+      "question": "Word 文書（DOCX）に入れたグラフの内容も Claude に読んでほしい。どうするのがよいか。",
+      "choices": [
+        "DOCX のまま添付し、グラフを読むように指示に書き添える",
+        "グラフの部分だけを XLSX に貼り付けて添付する",
+        "DOCX のファイル名にグラフの説明を書いてから添付する",
+        "PDF に書き出してから添付する"
+      ],
+      "answer": 3,
+      "explanation": "PDF 以外の文書は文字だけが読まれ、中の画像は読まれません。短い PDF なら図やグラフも読み取れるため、PDF に書き出して添付します。指示に書き添えても、DOCX の中の画像は読まれません。",
+      "sources": [
+        {
+          "title": "Claudeにファイルをアップロード",
+          "url": "https://support.claude.com/ja/articles/8241126"
+        }
+      ]
+    },
+    {
+      "id": "a02-02-q2",
+      "sectionId": "a02-02",
+      "question": "チャットにファイルを添付する方法として、公式に案内されていないものはどれか。",
+      "choices": [
+        "入力欄の「+」から「Add files or photos」を選ぶ",
+        "ファイルをチャット画面にドラッグ＆ドロップする",
+        "Settings の Appearance でファイルを登録する",
+        "コピーした画像を入力欄に貼り付ける"
+      ],
+      "answer": 2,
+      "explanation": "添付は「+」から「Add files or photos」を選ぶほか、ドラッグ＆ドロップや、クリップボードからの画像の貼り付けでできます。Settings の Appearance は画面の配色や文字を選ぶ場所で、ファイルの添付には使いません。",
+      "sources": [
+        {
+          "title": "Claudeにファイルをアップロード",
+          "url": "https://support.claude.com/ja/articles/8241126"
+        }
+      ]
+    },
+    {
+      "id": "a02-02-q3",
+      "sectionId": "a02-02",
+      "question": "表計算の XLSX ファイルを添付する前に、オンにしておく必要がある設定はどれか。",
+      "choices": [
+        "code execution and file creation",
+        "Instructions for Claude",
+        "Color mode",
+        "Shared chats"
+      ],
+      "answer": 0,
+      "explanation": "XLSX ファイルを添付するには、設定で code execution and file creation をオンにしておく必要があります。Instructions for Claude は全会話に効く指示、Color mode は画面の配色、Shared chats は共有の管理で、どれも XLSX の添付とは関係がありません。",
+      "sources": [
+        {
+          "title": "Claudeにファイルをアップロード",
+          "url": "https://support.claude.com/ja/articles/8241126"
+        }
+      ]
+    },
+    {
+      "id": "a02-03-q1",
+      "sectionId": "a02-03",
+      "question": "前に送ったメッセージを編集して送り直すと、どうなるか。",
+      "choices": [
+        "チャットの別の版ができ、元のやり取りも残る",
+        "それ以降のやり取りとアーティファクトが完全に消える",
+        "新しいプロジェクトが作られ、チャットが移される",
+        "編集した内容が Instructions for Claude に保存される"
+      ],
+      "answer": 0,
+      "explanation": "前のメッセージを編集すると、チャットの別の版ができ、その版ごとにアーティファクトも分かれます。元の流れは残るので、別の方向を試してもそれまでの成果を失いません。プロジェクトや Instructions for Claude には影響しません。",
+      "sources": [
+        {
+          "title": "アーティファクトとは何か、どのように使用するのか？",
+          "url": "https://support.claude.com/ja/articles/17153992"
+        }
+      ]
+    },
+    {
+      "id": "a02-03-q2",
+      "sectionId": "a02-03",
+      "question": "返ってきた説明の方向は合っているが、2段落目だけが長い。最も手早い直し方はどれか。",
+      "choices": [
+        "新しいチャットを始めて、最初から同じ指示を送り直す",
+        "チャットを削除して、別の言い方で頼み直す",
+        "「2段落目を半分の長さに」と追加の指示を送る",
+        "表示言語を切り替えてから、もう一度頼む"
+      ],
+      "answer": 2,
+      "explanation": "方向が合っているなら、直してほしい点を具体的に伝える追加の指示で直すのが基本です。Claude は前のやり取りを踏まえて直します。新しいチャットや削除からやり直すと、ここまでの流れを使えません。",
+      "sources": [
+        {
+          "title": "Claudeを始める",
+          "url": "https://support.claude.com/ja/articles/8114491"
+        }
+      ]
+    },
+    {
+      "id": "a02-04-q1",
+      "sectionId": "a02-04",
+      "question": "Web で一つのチャットの名前を変えるときの操作として正しいものはどれか。",
+      "choices": [
+        "チャットを開き、入力欄の「+」から「Rename」を選ぶ",
+        "Settings の Privacy で、チャットの名前を書き換える",
+        "チャットの中で「名前を変えて」と Claude に頼む",
+        "サイドバーで会話にカーソルを合わせ、「⋮」から「Rename」を選ぶ"
+      ],
+      "answer": 3,
+      "explanation": "Web では、サイドバーか「Chats and tasks」で会話にカーソルを合わせ、右の「⋮」から「Rename」を選びます。入力欄の「+」はファイルの添付などに使うメニューで、Settings の Privacy は共有の管理などを行う場所です。",
+      "sources": [
+        {
+          "title": "会話を削除または名前変更する",
+          "url": "https://support.claude.com/ja/articles/8230524"
+        }
+      ]
+    },
+    {
+      "id": "a02-04-q2",
+      "sectionId": "a02-04",
+      "question": "Web で複数のチャットをまとめて削除するときの手順として正しいものはどれか。",
+      "choices": [
+        "「Chats and tasks」で「Select」を選び、チェックを付けて「Delete」を押す",
+        "サイドバーの会話を一つずつドラッグして、画面の外に出す",
+        "Settings の Appearance で、履歴の表示をオフにする",
+        "チャットの「Share」から「Turn off」を押す"
+      ],
+      "answer": 0,
+      "explanation": "「Chats and tasks」で会話の「⋮」から「Select」を選び、消したい会話にチェックを付けて「Delete」を押し、確認します。Appearance は外観の設定、「Turn off」は共有を止める操作で、どちらも削除にはなりません。",
+      "sources": [
+        {
+          "title": "会話を削除または名前変更する",
+          "url": "https://support.claude.com/ja/articles/8230524"
+        }
+      ]
+    },
+    {
+      "id": "a02-05-q1",
+      "sectionId": "a02-05",
+      "question": "チャットを共有したあとに Claude と続けたやり取りは、相手からどう見えるか。",
+      "choices": [
+        "自動で追加され、相手にもすぐ見える",
+        "相手が返信すると、その時点までが見えるようになる",
+        "共有を更新するまで、相手には見えない",
+        "相手が Claude にログインし直すと見えるようになる"
+      ],
+      "answer": 2,
+      "explanation": "共有されるのは、共有した時点までのスナップショットです。あとのやり取りを見せたいときは、「Share」から「Update shared chat」で写しを新しくします。共有は見る専用で、相手は返信できません。",
+      "sources": [
+        {
+          "title": "特定の人とチャットを共有する",
+          "url": "https://support.claude.com/ja/articles/16762496"
+        }
+      ]
+    },
+    {
+      "id": "a02-05-q2",
+      "sectionId": "a02-05",
+      "question": "特定の人との共有で、招かれた人ができることはどれか。",
+      "choices": [
+        "共有されたチャットに返信して、会話を続ける",
+        "共有された時点までのやり取りとアーティファクトを見る",
+        "チャットを自分のアカウントに写して編集する",
+        "招待メールを転送して、ほかの人にも見せる"
+      ],
+      "answer": 1,
+      "explanation": "招かれた人は、共有した時点までのやり取りとアーティファクトを見られます。共有は見る専用で、返信や会話の続き、自分のアカウントへの写しはできません。リンクは招いたアドレスでしか開けないため、転送しても見られません。",
+      "sources": [
+        {
+          "title": "特定の人とチャットを共有する",
+          "url": "https://support.claude.com/ja/articles/16762496"
+        }
+      ]
+    },
+    {
+      "id": "a02-05-q3",
+      "sectionId": "a02-05",
+      "question": "チャットを共有する前に確かめておくべきこととして、最も適切なものはどれか。",
+      "choices": [
+        "共有時点までの入力に、見せたくない内容が含まれていないか",
+        "表示言語が相手の使う言語と同じになっているか",
+        "Instructions for Claude が空になっているか",
+        "チャットの名前が英語になっているか"
+      ],
+      "answer": 0,
+      "explanation": "スナップショットには、共有した時点までに入力した内容がすべて含まれます。個人情報や社外秘の内容がないか、共有前に読み直します。表示言語やチャットの名前は、共有の可否や中身には関係しません。",
+      "sources": [
+        {
+          "title": "チャットの共有と共有解除",
+          "url": "https://support.claude.com/ja/articles/10593882"
+        }
+      ]
+    },
+    {
+      "id": "a02-06-q1",
+      "sectionId": "a02-06",
+      "question": "「回答は結論から書いてほしい」という好みを、すべての会話に効かせたい。どこに書くのがよいか。",
+      "choices": [
+        "プロジェクト指示",
+        "チャットの名前",
+        "共有の招待メール",
+        "Instructions for Claude"
+      ],
+      "answer": 3,
+      "explanation": "Instructions for Claude に書いた指示は、すべての会話に効きます。プロジェクト指示は、そのプロジェクトの中のチャットだけに効きます。チャットの名前や招待メールは、Claude の答え方には影響しません。",
+      "sources": [
+        {
+          "title": "Claudeのパーソナライゼーション機能を理解する",
+          "url": "https://support.claude.com/ja/articles/10185728"
+        }
+      ]
+    },
+    {
+      "id": "a02-06-q2",
+      "sectionId": "a02-06",
+      "question": "表示言語を英語にしたまま、日本語で質問を書いて送った。Claude はどう答えるか。",
+      "choices": [
+        "表示言語に合わせて英語で答える",
+        "話しかけた言語に合わせて日本語で答える",
+        "表示言語を日本語に変えるまで答えない",
+        "日本語と英語の両方を並べて答える"
+      ],
+      "answer": 1,
+      "explanation": "表示言語が変えるのは、メニューやボタンなど画面の文字だけです。Claude は話しかけた言語で答えるので、日本語で書けば日本語で返ってきます。",
+      "sources": [
+        {
+          "title": "好みの言語でClaudeを使用する方法",
+          "url": "https://support.claude.com/ja/articles/10769299"
+        }
+      ]
+    }
+  ]
+}

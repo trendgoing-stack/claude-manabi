@@ -14,6 +14,33 @@
       ]
     },
     {
+      "id": "g-web-search",
+      "term": "ウェブ検索",
+      "reading": "うぇぶけんさく",
+      "aliases": [
+        "web search"
+      ],
+      "definition": "Claude がウェブを検索し、公開されている最新の情報をもとに答える機能。答えには出典が付き、元のページを開いて確かめられる。",
+      "related": [
+        "g-web-fetch",
+        "g-research",
+        "g-knowledge-cutoff"
+      ]
+    },
+    {
+      "id": "g-web-fetch",
+      "term": "ウェブフェッチ",
+      "reading": "うぇぶふぇっち",
+      "aliases": [
+        "web fetch"
+      ],
+      "definition": "ウェブ検索がオンのときに、渡された URL のページの内容を Claude が直接読み込む働き。長いページは全文がコンテキストウィンドウに入る。",
+      "related": [
+        "g-web-search",
+        "g-context-window"
+      ]
+    },
+    {
       "id": "g-agents-md",
       "term": "AGENTS.md",
       "reading": "えーじぇんつえむでぃー",
@@ -21,6 +48,71 @@
       "definition": "AI のコーディングエージェント向けに、プロジェクトの指示を書くファイル。CLAUDE.md や CLAUDE.local.md がないリポジトリでは（既定の設定の場合）、Claude Code はこれをプロジェクトの指示として読み込める。",
       "related": [
         "g-claude-md"
+      ]
+    },
+    {
+      "id": "g-agentic-loop",
+      "term": "エージェントループ",
+      "reading": "えーじぇんとるーぷ",
+      "aliases": [
+        "agentic loop"
+      ],
+      "definition": "Claude Code が依頼を進めるときの流れ。状況を集める、作業する、結果を確かめる、を終わるまで繰り返す。途中でユーザーが割り込める。",
+      "related": [
+        "g-claude-code"
+      ]
+    },
+    {
+      "id": "g-api-key",
+      "term": "API キー",
+      "reading": "えーぴーあいきー",
+      "aliases": [
+        "APIキー",
+        "API key"
+      ],
+      "definition": "API を使うための秘密の文字列。Claude Code では環境変数 ANTHROPIC_API_KEY に設定して承認すると、サブスクリプションのログインより優先される。人に見せたりリポジトリに書いたりしない。",
+      "related": [
+        "g-claude-console"
+      ]
+    },
+    {
+      "id": "g-xml-tag",
+      "term": "XML タグ",
+      "reading": "えっくすえむえるたぐ",
+      "aliases": [
+        "XMLタグ",
+        "XML tags"
+      ],
+      "definition": "example のような名前を山かっこで囲んだ目印で、指示の中の例や資料を囲むための書き方。指示とそれ以外を Claude が区別しやすくなる。",
+      "related": [
+        "g-few-shot"
+      ]
+    },
+    {
+      "id": "g-effort",
+      "term": "effort",
+      "reading": "えふぉーと",
+      "aliases": [
+        "Effort",
+        "努力レベル"
+      ],
+      "definition": "Claude が1回の答えをどこまで丁寧に作り込むかを決める設定。段階を上げると答えは丁寧になるが、時間がかかり、使用量も多く使う。",
+      "related": [
+        "g-thinking",
+        "g-usage-limit"
+      ]
+    },
+    {
+      "id": "g-auto-mode",
+      "term": "auto mode",
+      "reading": "おーともーど",
+      "aliases": [
+        "オートモード"
+      ],
+      "definition": "確認の代わりに、別のモデル（分類器）が操作の前に内容を確かめながら進める権限モード。危険そうな操作は止めるが、安全を保証するものではない。",
+      "related": [
+        "g-classifier",
+        "g-permission-mode"
       ]
     },
     {
@@ -36,6 +128,16 @@
       ]
     },
     {
+      "id": "g-claude-code",
+      "term": "Claude Code",
+      "reading": "くろーどこーど",
+      "aliases": [],
+      "definition": "コードを読み、ファイルを編集し、コマンドを実行しながらソフトウェア開発を手伝う Anthropic のツール。ターミナル、IDE、デスクトップアプリ、Web から使える。",
+      "related": [
+        "g-claude-md"
+      ]
+    },
+    {
       "id": "g-cowork",
       "term": "Claude Cowork",
       "reading": "くろーどこわーく",
@@ -48,6 +150,16 @@
       ]
     },
     {
+      "id": "g-claude-console",
+      "term": "Claude Console",
+      "reading": "くろーどこんそーる",
+      "aliases": [],
+      "definition": "API を従量課金で使うためのアカウントと管理画面。Claude Code にもこのアカウントでログインでき、その場合は API の利用として請求される。",
+      "related": [
+        "g-api-key"
+      ]
+    },
+    {
       "id": "g-claude-local-md",
       "term": "CLAUDE.local.md",
       "reading": "くろーどろーかるえむでぃー",
@@ -56,6 +168,71 @@
       "related": [
         "g-claude-md"
       ]
+    },
+    {
+      "id": "g-permission-prompt",
+      "term": "権限プロンプト",
+      "reading": "けんげんぷろんぷと",
+      "aliases": [
+        "permission prompt",
+        "権限の確認"
+      ],
+      "definition": "Claude Code がファイルの編集やコマンドの実行などをする前に、ユーザーに許可を求める確認の画面。今回だけ許す、以後も許す、断るなどから選ぶ。",
+      "related": [
+        "g-agentic-loop"
+      ]
+    },
+    {
+      "id": "g-permission-mode",
+      "term": "権限モード",
+      "reading": "けんげんもーど",
+      "aliases": [
+        "permission mode",
+        "permission modes"
+      ],
+      "definition": "Claude Code が、ユーザーに確認せずにどこまで操作してよいかを決める設定。CLI では Shift+Tab で切り替えられる。",
+      "related": [
+        "g-claude-code",
+        "g-checkpoint"
+      ]
+    },
+    {
+      "id": "g-permission-rule",
+      "term": "権限ルール",
+      "reading": "けんげんるーる",
+      "aliases": [
+        "権限のルール",
+        "permission rules",
+        "permission rule"
+      ],
+      "definition": "Claude Code のツールの使い方を、allow（許可）・ask（確認）・deny（拒否）で前もって決める設定。`Bash(npm run lint)` のように「ツール名(条件)」の形で書き、deny → ask → allow の順に調べられる。",
+      "related": [
+        "g-permission-prompt",
+        "g-permission-mode"
+      ]
+    },
+    {
+      "id": "g-public-link",
+      "term": "公開リンク",
+      "reading": "こうかいりんく",
+      "aliases": [
+        "public link"
+      ],
+      "definition": "リンクを知っている人なら誰でもチャットのスナップショットを見られる共有のしかた。公開範囲を Private に切り替えるとリンクが止まる。",
+      "related": [
+        "g-chat-snapshot",
+        "g-share-specific-people"
+      ]
+    },
+    {
+      "id": "g-code-execution",
+      "term": "code execution and file creation",
+      "reading": "こーどえぐぜきゅーしょんあんどふぁいるくりえいしょん",
+      "aliases": [
+        "コード実行とファイル作成"
+      ],
+      "definition": "Claude がコードを実行したりファイルを作ったりできるようにする設定。表計算の XLSX ファイルを添付するときにも、オンにしておく必要がある。",
+      "related": []
     },
     {
       "id": "g-context-window",
@@ -72,6 +249,31 @@
       ]
     },
     {
+      "id": "g-surface",
+      "term": "サーフェス",
+      "reading": "さーふぇす",
+      "aliases": [
+        "surface"
+      ],
+      "definition": "Claude Code を使う入り口のこと。CLI、デスクトップアプリ、VS Code や JetBrains、Web などがあり、中で動く仕組みは共通。",
+      "related": [
+        "g-claude-code",
+        "g-cli"
+      ]
+    },
+    {
+      "id": "g-working-directory",
+      "term": "作業ディレクトリ",
+      "reading": "さぎょうでぃれくとり",
+      "aliases": [
+        "working directory"
+      ],
+      "definition": "Claude Code を起動したフォルダとその下のフォルダ。Claude が確認なしで読める範囲の基準になり、`--add-dir` や `/add-dir` で広げられる。",
+      "related": [
+        "g-permission-prompt"
+      ]
+    },
+    {
       "id": "g-subagent",
       "term": "サブエージェント",
       "reading": "さぶえーじぇんと",
@@ -79,6 +281,46 @@
         "subagent"
       ],
       "definition": "Claude が作業の一部を任せる、別のコンテキストウィンドウで動く助手。調べ物などをして、結果の要約だけを元の会話に返す。",
+      "related": [
+        "g-context-window"
+      ]
+    },
+    {
+      "id": "g-sandbox",
+      "term": "サンドボックス",
+      "reading": "さんどぼっくす",
+      "aliases": [
+        "sandbox"
+      ],
+      "definition": "Claude Code が実行するシェルのコマンドについて、書き込める場所とつながれるネットワークの宛先を OS の仕組みで制限する機能。`/sandbox` でオンにする。",
+      "related": [
+        "g-permission-rule"
+      ]
+    },
+    {
+      "id": "g-cli",
+      "term": "CLI",
+      "reading": "しーえるあい",
+      "aliases": [
+        "コマンドラインインターフェース"
+      ],
+      "definition": "コマンドを文字で入力して使う形のソフトウェア。Claude Code の CLI はターミナルで `claude` と入力して起動し、機能がいちばんそろっている。",
+      "related": [
+        "g-claude-code",
+        "g-surface",
+        "g-native-install"
+      ]
+    },
+    {
+      "id": "g-shell-mode",
+      "term": "シェルモード",
+      "reading": "しぇるもーど",
+      "aliases": [
+        "shell mode",
+        "bash モード",
+        "bash mode"
+      ],
+      "definition": "Claude Code の入力の先頭に `!` を付けて、ユーザーが自分でコマンドを実行するモード。コマンドと出力は会話に入り、Claude がそれを読んで応答する。承認の確認は出ない。",
       "related": [
         "g-context-window"
       ]
@@ -110,6 +352,35 @@
       ]
     },
     {
+      "id": "g-usage-limit",
+      "term": "使用量の制限",
+      "reading": "しようりょうのせいげん",
+      "aliases": [
+        "usage limit",
+        "利用上限"
+      ],
+      "definition": "一定の期間に Claude をどれだけ使えるかの制限。リセットされると再び使える。量はプランによって異なる。",
+      "related": [
+        "g-length-limit",
+        "g-token"
+      ]
+    },
+    {
+      "id": "g-thinking",
+      "term": "thinking",
+      "reading": "しんきんぐ",
+      "aliases": [
+        "Thinking",
+        "Extended",
+        "extended thinking",
+        "拡張思考"
+      ],
+      "definition": "Claude が答える前に考える過程を挟むかどうかの設定。オンにすると、考えた過程が答えの上に折りたたんで表示される。effort とは別の設定。",
+      "related": [
+        "g-effort"
+      ]
+    },
+    {
       "id": "g-skill",
       "term": "スキル",
       "reading": "すきる",
@@ -123,6 +394,68 @@
       ]
     },
     {
+      "id": "g-chat-snapshot",
+      "term": "スナップショット",
+      "reading": "すなっぷしょっと",
+      "aliases": [
+        "snapshot"
+      ],
+      "definition": "チャットを共有したときに相手に見せる、共有した時点までのやり取りの写し。共有後のやり取りは、共有を更新するまで相手に見えない。",
+      "related": [
+        "g-share-specific-people",
+        "g-public-link"
+      ]
+    },
+    {
+      "id": "g-slash-command",
+      "term": "スラッシュコマンド",
+      "reading": "すらっしゅこまんど",
+      "aliases": [
+        "slash command"
+      ],
+      "definition": "Claude Code で `/` から始めて入力する命令。`/clear` や `/resume` のような組み込みのもののほか、スキルやプラグインが加えるものもある。メッセージの先頭に書いたときだけ実行される。",
+      "related": [
+        "g-skill"
+      ]
+    },
+    {
+      "id": "g-session",
+      "term": "セッション",
+      "reading": "せっしょん",
+      "aliases": [
+        "session"
+      ],
+      "definition": "Claude Code での一続きの会話。起動したフォルダに結びつき、新しいセッションは前の会話の履歴を持たずに始まる。",
+      "related": [
+        "g-claude-code",
+        "g-context-window"
+      ]
+    },
+    {
+      "id": "g-session-picker",
+      "term": "セッションピッカー",
+      "reading": "せっしょんぴっかー",
+      "aliases": [
+        "session picker"
+      ],
+      "definition": "保存されたセッションの一覧から、再開するものを選ぶ画面。`claude --resume` やセッション中の `/resume` で開き、検索や名前の変更もできる。",
+      "related": [
+        "g-session"
+      ]
+    },
+    {
+      "id": "g-llm",
+      "term": "大規模言語モデル",
+      "reading": "だいきぼげんごもでる",
+      "aliases": [
+        "LLM"
+      ],
+      "definition": "大量の文章から学習し、人の言葉で書いた依頼を読み取って文章で答える AI のモデル。Claude は Anthropic が開発した大規模言語モデル。",
+      "related": [
+        "g-prompt"
+      ]
+    },
+    {
       "id": "g-checkpoint",
       "term": "チェックポイント",
       "reading": "ちぇっくぽいんと",
@@ -131,6 +464,80 @@
       ],
       "definition": "Claude がファイルを変更する前に自動で残す、元に戻すための記録。`/rewind` で会話やコードを以前の時点に戻せる。",
       "related": []
+    },
+    {
+      "id": "g-knowledge-cutoff",
+      "term": "知識のカットオフ",
+      "reading": "ちしきのかっとおふ",
+      "aliases": [
+        "knowledge cutoff",
+        "カットオフ"
+      ],
+      "definition": "モデルが学習したデータの区切りの時期。モデルごとに異なり、これより後のできごとはモデルが知らない可能性がある。",
+      "related": [
+        "g-web-search"
+      ]
+    },
+    {
+      "id": "g-chat-version",
+      "term": "チャットの別の版",
+      "reading": "ちゃっとのべつのはん",
+      "aliases": [],
+      "definition": "前に送ったメッセージを編集して送り直したときにできる、チャットのもう一つの流れ。元のやり取りは残り、版ごとにアーティファクトも分かれる。",
+      "related": [
+        "g-prompt"
+      ]
+    },
+    {
+      "id": "g-token",
+      "term": "トークン",
+      "reading": "とーくん",
+      "aliases": [
+        "token"
+      ],
+      "definition": "モデルが文章を処理するときの小さな単位。effort を上げたりツールを使ったりすると、使うトークンが増え、使用量にも影響する。",
+      "related": [
+        "g-usage-limit",
+        "g-context-window"
+      ]
+    },
+    {
+      "id": "g-share-specific-people",
+      "term": "特定の人との共有",
+      "reading": "とくていのひととのきょうゆう",
+      "aliases": [
+        "share with specific people"
+      ],
+      "definition": "メールアドレスで招いた人だけがチャットを見られる共有のしかた。招待のリンクは招いたアドレスでしか開けず、相手は見るだけで会話は続けられない。",
+      "related": [
+        "g-chat-snapshot",
+        "g-public-link"
+      ]
+    },
+    {
+      "id": "g-length-limit",
+      "term": "長さの制限",
+      "reading": "ながさのせいげん",
+      "aliases": [
+        "length limit"
+      ],
+      "definition": "1つの会話にどれだけの内容を収められるかの制限。コンテキストウィンドウの大きさで決まり、届いたら新しい会話を始めて対処する。",
+      "related": [
+        "g-usage-limit",
+        "g-context-window"
+      ]
+    },
+    {
+      "id": "g-native-install",
+      "term": "ネイティブインストール",
+      "reading": "ねいてぃぶいんすとーる",
+      "aliases": [
+        "Native Install"
+      ],
+      "definition": "公式が推奨する Claude Code の CLI の入れ方。公式のインストール用コマンドで入れ、入れたあとはバックグラウンドで自動的に更新される。",
+      "related": [
+        "g-cli"
+      ]
     },
     {
       "id": "g-path-scoped-rule",
@@ -145,6 +552,16 @@
       ]
     },
     {
+      "id": "g-display-language",
+      "term": "表示言語",
+      "reading": "ひょうじげんご",
+      "aliases": [
+        "interface language"
+      ],
+      "definition": "Claude の画面のメニューやボタンに使われる言語。変わるのは画面の文字だけで、Claude は話しかけた言語で答える。",
+      "related": []
+    },
+    {
       "id": "g-hook",
       "term": "フック",
       "reading": "ふっく",
@@ -154,6 +571,32 @@
       "definition": "ファイルの編集後など、決まったタイミングで自動的に実行される処理（主にシェルコマンド）。CLAUDE.md の指示と違い、Claude の判断にかかわらず必ず実行される。",
       "related": [
         "g-claude-md"
+      ]
+    },
+    {
+      "id": "g-few-shot",
+      "term": "few-shot プロンプティング",
+      "reading": "ふゅーしょっとぷろんぷてぃんぐ",
+      "aliases": [
+        "few-shot",
+        "multishot prompting"
+      ],
+      "definition": "指示の中に手本となる例をいくつか入れて、答えの形・口調・構成をそろえる方法。例は実際の用途に近く、変化のあるものを選ぶ。",
+      "related": [
+        "g-prompt",
+        "g-xml-tag"
+      ]
+    },
+    {
+      "id": "g-plan-mode",
+      "term": "プランモード",
+      "reading": "ぷらんもーど",
+      "aliases": [
+        "plan mode"
+      ],
+      "definition": "Claude がコードを読んで調べ、計画を書くだけで、ソースを編集しない権限モード。計画を承認すると実装に進む。",
+      "related": [
+        "g-permission-mode"
       ]
     },
     {
@@ -167,7 +610,8 @@
       "related": [
         "g-project-knowledge",
         "g-project-instructions"
-      ]
+      ],
+      "noAutoLink": true
     },
     {
       "id": "g-project-instructions",
@@ -210,6 +654,67 @@
       ]
     },
     {
+      "id": "g-prompt",
+      "term": "プロンプト",
+      "reading": "ぷろんぷと",
+      "aliases": [
+        "prompt"
+      ],
+      "definition": "Claude に送る依頼や質問の文章。特別な書き方は要らず、ふだんの言葉で具体的に書くと意図が伝わりやすい。",
+      "related": [
+        "g-llm"
+      ]
+    },
+    {
+      "id": "g-prompt-injection",
+      "term": "プロンプトインジェクション",
+      "reading": "ぷろんぷといんじぇくしょん",
+      "aliases": [
+        "prompt injection"
+      ],
+      "definition": "Claude が読む文章やファイルに指示を紛れ込ませ、利用者の意図しない操作をさせようとする攻撃。信頼できない内容をそのまま渡さないことが対策になる。",
+      "related": [
+        "g-sandbox",
+        "g-auto-mode"
+      ]
+    },
+    {
+      "id": "g-classifier",
+      "term": "分類器",
+      "reading": "ぶんるいき",
+      "aliases": [
+        "classifier"
+      ],
+      "definition": "auto mode で、Claude の操作が頼まれた範囲に収まっているかなどを実行前に確かめる別のモデル。危険と判断した操作を止める。",
+      "related": [
+        "g-auto-mode"
+      ]
+    },
+    {
+      "id": "g-beta",
+      "term": "ベータ",
+      "reading": "べーた",
+      "aliases": [
+        "beta"
+      ],
+      "definition": "ふだん使えるくらいに安定しているが、利用者の声をもとに改良が続いている提供段階。画面や動きが変わることがある。",
+      "related": [
+        "g-research-preview"
+      ]
+    },
+    {
+      "id": "g-rewind-menu",
+      "term": "巻き戻しメニュー",
+      "reading": "まきもどしめにゅー",
+      "aliases": [
+        "rewind menu"
+      ],
+      "definition": "Claude Code で、前の時点のコードや会話に戻すための画面。空の入力欄で `Esc` を2回押すか、`/rewind` で開く。チェックポイントの記録を使う。",
+      "related": [
+        "g-checkpoint"
+      ]
+    },
+    {
       "id": "g-memory",
       "term": "メモリ",
       "reading": "めもり",
@@ -219,7 +724,8 @@
       "definition": "Claude が過去のチャットの内容を覚えておき、あとの会話に生かす機能。プロジェクトごとに分かれていて、プロジェクト外のチャットとは混ざらない。",
       "related": [
         "g-project"
-      ]
+      ],
+      "noAutoLink": true
     },
     {
       "id": "g-rag",
@@ -234,6 +740,43 @@
         "g-project-knowledge",
         "g-context-window",
         "g-project-knowledge-search"
+      ]
+    },
+    {
+      "id": "g-research",
+      "term": "Research",
+      "reading": "りさーち",
+      "aliases": [
+        "リサーチ"
+      ],
+      "definition": "Claude が次に調べることを自分で決めながら検索を重ね、出典付きの詳しい答えにまとめる機能。ウェブ検索がオンのときに使え、つないだサービスの情報も調べられる。",
+      "related": [
+        "g-web-search",
+        "g-thinking"
+      ]
+    },
+    {
+      "id": "g-research-preview",
+      "term": "リサーチプレビュー",
+      "reading": "りさーちぷれびゅー",
+      "aliases": [
+        "research preview"
+      ],
+      "definition": "開発中の機能を早めに試してもらう提供段階。ベータより前の段階で、正式に提供されるまでに大きく変わる可能性がある。",
+      "related": [
+        "g-beta"
+      ]
+    },
+    {
+      "id": "g-workspace-trust",
+      "term": "ワークスペースの信頼",
+      "reading": "わーくすぺーすのしんらい",
+      "aliases": [
+        "workspace trust"
+      ],
+      "definition": "初めてのフォルダで Claude Code を使うときに、そのフォルダを信頼するかを確かめる仕組み。リポジトリの設定ファイルにある許可ルールは、信頼を受け入れるまで使われない。",
+      "related": [
+        "g-permission-rule"
       ]
     }
   ]

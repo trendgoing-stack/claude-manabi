@@ -2,6 +2,7 @@
 import { app } from './state.js';
 import { findTerms } from './terms.js';
 import { flatSections } from './parts.js';
+import { autoLinkTerms, termIdOf } from './render/lesson.js';
 
 /** @type {Map<string, {chapter:object, section:object, score:number}[]>|null} */
 let index = null;
@@ -27,7 +28,12 @@ function build() {
   for (const { chapter, section } of flatSections()) {
     const score = new Map();
     for (const [text, w] of texts(section)) {
-      for (const f of findTerms(String(text).replace(/\[\[([^\]|]+)(?:\|[^\]]+)?\]\]/g, '$1'), app.data.glossary)) score.set(f.id, (score.get(f.id) ?? 0) + w);
+      // [[ ]] で書いた用語は必ず数え、それ以外は自動リンクと同じ規則で探す
+      for (const m of String(text).matchAll(/\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g)) {
+        const id = termIdOf(m[2] ?? m[1]);
+        if (id) score.set(id, (score.get(id) ?? 0) + w);
+      }
+      for (const f of findTerms(String(text).replace(/\[\[[^\]]+\]\]/g, ' '), autoLinkTerms())) score.set(f.id, (score.get(f.id) ?? 0) + w);
     }
     for (const [id, s] of score) {
       if (!map.has(id)) map.set(id, []);

@@ -14,21 +14,33 @@
     }
   ],
   "textFiles": [
+    "text/a01-overview.json",
+    "text/a02-chat.json",
+    "text/a03-research.json",
     "text/a04-projects.json",
-    "text/c13-context.json"
+    "text/c11-start.json",
+    "text/c12-basics.json",
+    "text/c13-context.json",
+    "text/c14-safety.json"
   ],
   "dictFiles": [],
   "quizFiles": [
+    "quiz/a01-overview.json",
+    "quiz/a02-chat.json",
+    "quiz/a03-research.json",
     "quiz/a04-projects.json",
-    "quiz/c13-context.json"
+    "quiz/c11-start.json",
+    "quiz/c12-basics.json",
+    "quiz/c13-context.json",
+    "quiz/c14-safety.json"
   ],
   "glossaryFile": "glossary.json",
   "tryFile": "try.json",
   "counts": {
-    "sections": 12,
-    "quiz": 32,
+    "sections": 48,
+    "quiz": 120,
     "dict": 0,
-    "glossary": 19,
+    "glossary": 62,
     "try": 0
   }
 }

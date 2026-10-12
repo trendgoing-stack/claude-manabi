@@ -1,0 +1,272 @@
+{
+  "schemaVersion": 1,
+  "chapterId": "c11",
+  "questions": [
+    {
+      "id": "c11-01-q1",
+      "sectionId": "c11-01",
+      "question": "Claude Code が依頼を進めるときの基本の流れとして、正しいものはどれか。",
+      "choices": [
+        "計画を全部書き出してから、確認なしで一度にすべて実行する",
+        "状況を集め、作業し、結果を確かめることを、終わるまで繰り返す",
+        "ユーザーが指定したファイルだけを読み、文章で修正案を返す",
+        "作業を始めたら、終わるまでユーザーの入力を受け付けない"
+      ],
+      "answer": 1,
+      "explanation": "Claude Code は、状況を集める・作業する・結果を確かめる、の3つを必要なだけ繰り返して進みます。どのファイルを読むかは Claude 自身が決め、作業中もユーザーは割り込めます。文章で案を返すだけ、という説明はツールを使わない場合の振る舞いです。",
+      "sources": [
+        {
+          "title": "Claude Code の仕組み",
+          "url": "https://code.claude.com/docs/ja/how-claude-code-works"
+        }
+      ]
+    },
+    {
+      "id": "c11-01-q2",
+      "sectionId": "c11-01",
+      "question": "Claude Code の中での「モデル」と「ツール」の役割の説明として、正しいものはどれか。",
+      "choices": [
+        "ツールが考えて判断し、モデルがファイルの読み書きを行う",
+        "モデルとツールは同じもので、呼び方が違うだけである",
+        "モデルが考えて判断し、ツールがファイル操作や実行などで手を動かす",
+        "モデルはコードを書くだけで、検索や実行はユーザーが行う"
+      ],
+      "answer": 2,
+      "explanation": "考えて判断するのはモデルで、ファイル操作・検索・実行などで実際に手を動かすのがツールです。Claude Code は、モデルにツールを渡し、モデルが見る情報を管理する仕組みです。検索や実行も Claude がツールで行います。",
+      "sources": [
+        {
+          "title": "Claude Code の仕組み",
+          "url": "https://code.claude.com/docs/ja/how-claude-code-works"
+        }
+      ]
+    },
+    {
+      "id": "c11-02-q1",
+      "sectionId": "c11-02",
+      "question": "PC を閉じたあとも作業を続けさせたいときに向いている Claude Code の使い方はどれか。",
+      "choices": [
+        "Web（claude.ai/code）でクラウドのセッションを使う",
+        "JetBrains のプラグインから CLI を起動する",
+        "VS Code の拡張機能のパネルで依頼する",
+        "デスクトップアプリで Local を選んで依頼する"
+      ],
+      "answer": 0,
+      "explanation": "Web 版はクラウドで動くため、接続を切っても作業が続きます。JetBrains、VS Code、デスクトップアプリの Local は手元の PC で動くので、PC を閉じれば止まります。デスクトップアプリでも Cloud を選べばクラウドで動かせます。",
+      "sources": [
+        {
+          "title": "プラットフォームと統合",
+          "url": "https://code.claude.com/docs/ja/platforms"
+        }
+      ]
+    },
+    {
+      "id": "c11-02-q2",
+      "sectionId": "c11-02",
+      "question": "リポジトリに置いた CLAUDE.md や設定、MCP サーバーと、Claude Code の入り口（サーフェス）との関係として正しいものはどれか。",
+      "choices": [
+        "CLI から使ったときだけ読み込まれる",
+        "入り口ごとに別々のファイルを用意する必要がある",
+        "デスクトップアプリでは使えず、IDE でだけ使える",
+        "中の仕組みが共通なので、どの入り口から使っても効く"
+      ],
+      "answer": 3,
+      "explanation": "Claude Code はどの入り口でも同じ仕組みで動くため、リポジトリの CLAUDE.md、設定、MCP サーバーはどこから使っても効きます。入り口ごとに別のファイルを用意する必要はありません。",
+      "sources": [
+        {
+          "title": "概要",
+          "url": "https://code.claude.com/docs/ja/overview"
+        }
+      ]
+    },
+    {
+      "id": "c11-02-q3",
+      "sectionId": "c11-02",
+      "question": "JetBrains の IDE で Claude Code を使うときの準備として、正しいものはどれか。",
+      "choices": [
+        "プラグインに CLI が含まれているので、プラグインだけ入れればよい",
+        "CLI を入れたうえで、JetBrains Marketplace からプラグインを入れる",
+        "デスクトップアプリを入れると、自動で IDE に組み込まれる",
+        "VS Code の拡張機能をそのまま JetBrains に入れる"
+      ],
+      "answer": 1,
+      "explanation": "JetBrains のプラグインは IDE のターミナルで CLI を動かしてつながる仕組みで、CLI の複製を同梱していません。そのため CLI とプラグインの両方を入れます。CLI を同梱しているのは VS Code の拡張機能のほうです。",
+      "sources": [
+        {
+          "title": "JetBrains IDEs",
+          "url": "https://code.claude.com/docs/ja/jetbrains"
+        }
+      ]
+    },
+    {
+      "id": "c11-03-q1",
+      "sectionId": "c11-03",
+      "question": "CLI をインストールしたあと、正しく入ったかを確かめる方法として適切なものはどれか。",
+      "choices": [
+        "同じターミナルのまま、インストール用のコマンドをもう一度実行する",
+        "ブラウザで claude.ai を開いてログインできるか確かめる",
+        "新しいターミナルの窓を開き、`claude --version` でバージョンが出るか確かめる",
+        "`/status` をターミナルにそのまま入力する"
+      ],
+      "answer": 2,
+      "explanation": "インストールが終わったら、新しいターミナルの窓で `claude --version` を実行し、バージョン番号が表示されれば成功です。`/status` は Claude Code のセッションの中で使うコマンドで、インストールの確認には使いません。詳しく点検したいときは `claude doctor` を使います。",
+      "sources": [
+        {
+          "title": "高度なセットアップ",
+          "url": "https://code.claude.com/docs/ja/setup"
+        }
+      ]
+    },
+    {
+      "id": "c11-03-q2",
+      "sectionId": "c11-03",
+      "question": "CLI のネイティブインストールと、Homebrew や WinGet でのインストールの違いとして正しいものはどれか。",
+      "choices": [
+        "ネイティブインストールは自動で更新され、Homebrew や WinGet は既定では自分で更新する",
+        "Homebrew や WinGet だけが自動で更新される",
+        "どちらも更新できないので、新しい版は入れ直す",
+        "ネイティブインストールは Windows では使えない"
+      ],
+      "answer": 0,
+      "explanation": "公式が推奨するネイティブインストールは、バックグラウンドで自動的に更新されます。Homebrew や WinGet で入れた場合は既定では自動で更新されないので、それぞれの更新コマンドを実行します。ネイティブインストールは Windows の PowerShell や CMD からも行えます。",
+      "sources": [
+        {
+          "title": "高度なセットアップ",
+          "url": "https://code.claude.com/docs/ja/setup"
+        }
+      ]
+    },
+    {
+      "id": "c11-04-q1",
+      "sectionId": "c11-04",
+      "question": "サブスクリプションでログインしているのに、環境変数 `ANTHROPIC_API_KEY` を設定して使用を承認した。このとき起きることとして正しいものはどれか。",
+      "choices": [
+        "API キーは無視され、常にサブスクリプションが使われる",
+        "サブスクリプションと API キーの利用が交互に使われる",
+        "Claude Code が起動しなくなる",
+        "API キーが優先され、API の利用として請求される"
+      ],
+      "answer": 3,
+      "explanation": "`ANTHROPIC_API_KEY` を設定して使用を承認すると、サブスクリプションのログインより API キーが優先されます。その場合、料金はプランではなく API の利用分として請求されます。どれが使われているかは `/status` で確かめられます。",
+      "sources": [
+        {
+          "title": "認証",
+          "url": "https://code.claude.com/docs/ja/authentication"
+        }
+      ]
+    },
+    {
+      "id": "c11-04-q2",
+      "sectionId": "c11-04",
+      "question": "Claude Code のセッションの中で、いま使われているアカウントや認証の方法を確かめるコマンドはどれか。",
+      "choices": [
+        "`/help`",
+        "`/status`",
+        "`/clear`",
+        "`/exit`"
+      ],
+      "answer": 1,
+      "explanation": "`/status` で、どの認証の方法が使われているかを確かめられます。`/help` はコマンドの一覧、`/clear` は会話の履歴を消す、`/exit` は終了のコマンドです。アカウントを切り替えるときは `/login` を使います。",
+      "sources": [
+        {
+          "title": "認証",
+          "url": "https://code.claude.com/docs/ja/authentication"
+        }
+      ]
+    },
+    {
+      "id": "c11-04-q3",
+      "sectionId": "c11-04",
+      "question": "CLI の初回ログインで、ブラウザが自動では開かなかった。ログインを進めるための方法として正しいものはどれか。",
+      "choices": [
+        "`c` キーでログイン用の URL をコピーし、ブラウザに貼り付ける",
+        "`/exit` を入力して、環境変数 `ANTHROPIC_API_KEY` を必ず設定する",
+        "`/clear` を入力して、会話の履歴を消す",
+        "ブラウザが開くまで、ターミナルの再起動を繰り返す"
+      ],
+      "answer": 0,
+      "explanation": "ブラウザが自動で開かないときは、`c` キーでログイン用の URL をコピーして、ブラウザに貼り付けます。ログインが済むとターミナルに完了の表示が出て、以後は保存された認証情報が使われます。API キーの設定は必須ではありません。",
+      "sources": [
+        {
+          "title": "認証",
+          "url": "https://code.claude.com/docs/ja/authentication"
+        }
+      ]
+    },
+    {
+      "id": "c11-05-q1",
+      "sectionId": "c11-05",
+      "question": "CLI で最初のセッションを始めるときの手順として、最も適切なものはどれか。",
+      "choices": [
+        "ホームフォルダで `claude` を起動し、作業したいファイルの中身を貼り付ける",
+        "`claude doctor` を実行し、その中で質問を入力する",
+        "練習用のフォルダに移動してから `claude` を起動し、まず質問してみる",
+        "リポジトリのファイルをすべてチャットに添付してから起動する"
+      ],
+      "answer": 2,
+      "explanation": "Claude Code は起動したフォルダを作業の範囲にするので、練習用のフォルダに移動してから `claude` を起動します。ファイルは Claude が必要に応じて自分で読むため、中身を貼り付ける必要はありません。`claude doctor` は診断を表示するだけで、セッションは始まりません。",
+      "sources": [
+        {
+          "title": "クイックスタート",
+          "url": "https://code.claude.com/docs/ja/quickstart"
+        }
+      ]
+    },
+    {
+      "id": "c11-05-q2",
+      "sectionId": "c11-05",
+      "question": "デスクトップアプリで、手元のフォルダを対象に Claude Code を使い始める操作として正しいものはどれか。",
+      "choices": [
+        "Chat タブを開き、フォルダをドラッグして依頼する",
+        "Cowork タブを開き、Cloud を選んでフォルダを選ぶ",
+        "Code タブを開き、Cloud を選んでリポジトリ名を入力する",
+        "Code タブを開き、Local を選んで Select folder からフォルダを選ぶ"
+      ],
+      "answer": 3,
+      "explanation": "デスクトップアプリでは Code タブを開き、Local を選んで Select folder からフォルダを選びます。Local は手元のファイルをそのまま使い、Cloud はクラウドで動くセッションです。Chat タブはファイルにアクセスしない一般的な会話用です。",
+      "sources": [
+        {
+          "title": "デスクトップアプリを始める",
+          "url": "https://code.claude.com/docs/ja/desktop-quickstart"
+        }
+      ]
+    },
+    {
+      "id": "c11-06-q1",
+      "sectionId": "c11-06",
+      "question": "CLI で Claude が作業している途中、止めずに方向だけ変えたいときの操作として正しいものはどれか。",
+      "choices": [
+        "修正の指示を入力して Enter を押す",
+        "`Esc` を2回押す",
+        "ターミナルを閉じて起動し直す",
+        "`/clear` を入力する"
+      ],
+      "answer": 0,
+      "explanation": "作業中に修正を入力して Enter を押すと、Claude は止まらずに、手が空いたところでその指示を読んで次の手順を調整します。`Esc` は作業をすぐ止める操作で、2回押すとファイルを前の状態に戻す操作になります。`/clear` は会話の履歴を消します。",
+      "sources": [
+        {
+          "title": "Claude Code の仕組み",
+          "url": "https://code.claude.com/docs/ja/how-claude-code-works"
+        }
+      ]
+    },
+    {
+      "id": "c11-06-q2",
+      "sectionId": "c11-06",
+      "question": "Claude Code の巻き戻しで元に戻せないものはどれか。",
+      "choices": [
+        "Claude が書き換えたファイルの中身",
+        "Claude が新しく作ったファイル",
+        "Claude が実行したデプロイやデータベースの更新",
+        "Claude が編集する前のファイルの状態"
+      ],
+      "answer": 2,
+      "explanation": "巻き戻せるのは、Claude が編集の前に保存しておいたファイルの変更です。デプロイやデータベースの更新など、手元の外に影響する操作は取り消せません。そうした操作は権限の設定で確認を求めるようにしておきます。",
+      "sources": [
+        {
+          "title": "Claude Code の仕組み",
+          "url": "https://code.claude.com/docs/ja/how-claude-code-works"
+        }
+      ]
+    }
+  ]
+}

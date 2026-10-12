@@ -146,6 +146,7 @@ export function validateAll({ meta, texts, quizzes, dicts, glossary, tryJson, sw
     if (!isStr(t.term) || !isStr(t.definition)) err(where, 'term と definition が必要');
     if (!/^[ぁ-ゖー・\s]+$/.test(t.reading ?? '')) err(where, 'reading はひらがな');
     if (t.aliases != null && !isStrArr(t.aliases)) err(where, 'aliases は文字列の配列');
+    if (t.noAutoLink != null && typeof t.noAutoLink !== 'boolean') err(where, 'noAutoLink は true／false');
     for (const n of [t.term, ...(t.aliases ?? [])]) {
       const k = String(n).trim().toLowerCase();
       if (names.has(k) && names.get(k) !== t.id) err(where, `表記「${n}」が ${names.get(k)} と重複`);
@@ -161,6 +162,8 @@ export function validateAll({ meta, texts, quizzes, dicts, glossary, tryJson, sw
       if (path.endsWith('url')) continue;
       // コードブロック・図・`インラインのコード` の中は <引数> のような書き方を許す
       if (!/(^|\.)code$/.test(path) && !path.includes('figure') && HTML_RE.test(s.replace(/`[^`]*`/g, ''))) err(where, `HTML のような記述（${path}）。<…> はバッククォートで囲む`);
+      if (path.includes('figure') && EXPLICIT_RE.test(s)) err(where, `図の中では [[ ]] を使えない（${path}）`);
+      EXPLICIT_RE.lastIndex = 0;
       for (const m of s.matchAll(EXPLICIT_RE)) {
         const key = (m[2] ?? m[1]).trim();
         if (!tIndex.has(key) && !tIndex.has(key.toLowerCase())) err(where, `[[${m[0].slice(2, -2)}]] が用語集にない`);

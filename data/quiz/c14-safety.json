@@ -1,0 +1,318 @@
+{
+  "schemaVersion": 1,
+  "chapterId": "c14",
+  "questions": [
+    {
+      "id": "c14-01-q1",
+      "sectionId": "c14-01",
+      "question": "Manual mode で、作業ディレクトリの中のファイルを Claude に読ませて構成を説明させたとき、権限プロンプトはどうなるか。",
+      "choices": [
+        "ファイルを1つ読むたびに確認が出る",
+        "読むだけの操作なので確認なしで進む",
+        "最初に一度だけ確認が出て、以後は出ない",
+        "`/add-dir` で追加するまで読めない"
+      ],
+      "answer": 1,
+      "explanation": "Manual mode でも、ファイルを読む・検索するといった読むだけの操作は、作業ディレクトリとその下のフォルダの中なら確認なしで進みます。確認が出るのはファイルの編集やコマンドの実行などです。`/add-dir` は作業ディレクトリの外のフォルダを追加するときに使います。",
+      "sources": [
+        {
+          "title": "権限を設定する",
+          "url": "https://code.claude.com/docs/ja/permissions"
+        }
+      ]
+    },
+    {
+      "id": "c14-01-q2",
+      "sectionId": "c14-01",
+      "question": "ファイルの編集の確認で「Yes, and don't ask again」を選んだとき、その許可はいつまで続くか。",
+      "choices": [
+        "その1回の編集だけ",
+        "同じリポジトリでは今後ずっと",
+        "そのセッションが終わるまで",
+        "PC を再起動するまで"
+      ],
+      "answer": 2,
+      "explanation": "ファイルの編集についての「次から聞かない」は、そのセッションが終わるまで有効で、ファイルには保存されません。リポジトリで今後も続くのは、コマンドやウェブのドメインの許可がルールとして保存された場合です。今回だけの許可は「Yes」を選んだときです。",
+      "sources": [
+        {
+          "title": "権限を設定する",
+          "url": "https://code.claude.com/docs/ja/permissions"
+        }
+      ]
+    },
+    {
+      "id": "c14-02-q1",
+      "sectionId": "c14-02",
+      "question": "deny に `Bash(docker *)`、allow に `Bash(docker ps)` を書いた。Claude が `docker ps` を実行しようとするとどうなるか。",
+      "choices": [
+        "より細かい allow が優先され、確認なしで実行される",
+        "deny が先に調べられるので、実行できない",
+        "allow と deny が矛盾するので、毎回確認が出る",
+        "後から書いたルールが優先される"
+      ],
+      "answer": 1,
+      "explanation": "ルールは deny、ask、allow の順に調べられ、最初に当てはまったものに従います。ルールの細かさは関係ないため、deny の `Bash(docker *)` に当てはまる `docker ps` は、allow があっても実行できません。書いた順番で優先が決まるわけでもありません。",
+      "sources": [
+        {
+          "title": "権限を設定する",
+          "url": "https://code.claude.com/docs/ja/permissions"
+        }
+      ]
+    },
+    {
+      "id": "c14-02-q2",
+      "sectionId": "c14-02",
+      "question": "Claude に push を絶対にさせたくない。最も確実な方法はどれか。",
+      "choices": [
+        "CLAUDE.md に「push しないこと」と書く",
+        "指示のたびに「push しないで」と書き添える",
+        "権限のルールの deny に push のコマンドを入れる",
+        "acceptEdits モードに切り替える"
+      ],
+      "answer": 2,
+      "explanation": "権限のルールは Claude Code 自体が守らせるもので、deny に当てはまる操作は実行されません。CLAUDE.md や会話での指示は Claude への頼みごとで、強制ではありません。acceptEdits はファイル編集の確認を省くモードで、push を止めるものではありません。",
+      "sources": [
+        {
+          "title": "権限を設定する",
+          "url": "https://code.claude.com/docs/ja/permissions"
+        }
+      ]
+    },
+    {
+      "id": "c14-02-q3",
+      "sectionId": "c14-02",
+      "question": "deny に `Bash(git push *)` を書いたときの注意点として正しいものはどれか。",
+      "choices": [
+        "`git -C . push` のように書き方を変えたコマンドには当てはまらないことがある",
+        "このルールを書くと git のコマンドがすべて使えなくなる",
+        "このルールは auto mode では無視される",
+        "このルールは CLAUDE.md にも同じ内容を書かないと効かない"
+      ],
+      "answer": 0,
+      "explanation": "Bash のルールは書かれたコマンドの文字列で判断するため、同じ操作でも書き方が違うと当てはまらないことがあります。そのため、大事な制限はサンドボックスなどと組み合わせます。deny ルールはどのモードでも効き、`git push` で始まるコマンドだけが対象で、CLAUDE.md は関係ありません。",
+      "sources": [
+        {
+          "title": "権限を設定する",
+          "url": "https://code.claude.com/docs/ja/permissions"
+        }
+      ]
+    },
+    {
+      "id": "c14-03-q1",
+      "sectionId": "c14-03",
+      "question": "CLI で、セッションの途中に権限モードを切り替える操作はどれか。",
+      "choices": [
+        "`Esc` を2回押す",
+        "`Ctrl+G` を押す",
+        "`/permissions` を実行する",
+        "`Shift+Tab` を押す"
+      ],
+      "answer": 3,
+      "explanation": "CLI では `Shift+Tab` を押すたびに権限モードが切り替わり、ステータスバーに今のモードが表示されます。`Esc` を2回押すと巻き戻しのメニューが開き、`Ctrl+G` はプランモードの計画をエディタで開く操作です。`/permissions` はルールを確認・編集する画面です。",
+      "sources": [
+        {
+          "title": "権限モードを選択する",
+          "url": "https://code.claude.com/docs/ja/permission-modes"
+        }
+      ]
+    },
+    {
+      "id": "c14-03-q2",
+      "sectionId": "c14-03",
+      "question": "`bypassPermissions`（`--dangerously-skip-permissions`）を使ってよい場面として適切なものはどれか。",
+      "choices": [
+        "インターネットにつながらないコンテナや VM の中",
+        "本番のリポジトリで急いで作業したいとき",
+        "普段使いの PC で、確認が多くて面倒なとき",
+        "人から受け取ったリポジトリを調べるとき"
+      ],
+      "answer": 0,
+      "explanation": "bypassPermissions は確認と安全チェックを省き、プロンプトインジェクションへの守りもないため、手元の PC を傷つけるおそれがない隔離された環境だけで使います。本番のリポジトリや普段の PC、信頼できるか分からないリポジトリで使うのは危険です。確認を減らしたいだけなら、ルールやサンドボックス、auto mode を検討します。",
+      "sources": [
+        {
+          "title": "権限モードを選択する",
+          "url": "https://code.claude.com/docs/ja/permission-modes"
+        }
+      ]
+    },
+    {
+      "id": "c14-03-q3",
+      "sectionId": "c14-03",
+      "question": "auto mode の説明として正しいものはどれか。",
+      "choices": [
+        "すべての確認と安全チェックを省いて、すぐに実行する",
+        "前もって許可した操作だけを実行し、ほかは自動で拒否する",
+        "別のモデル（分類器）が操作の前に内容を確かめ、危険そうなものを止める",
+        "ファイルの編集だけを確認なしで行い、コマンドは毎回確認する"
+      ],
+      "answer": 2,
+      "explanation": "auto mode では、分類器があなたの代わりに操作を確かめ、頼んだ範囲を超える操作などを止めます。すべてを省くのは bypassPermissions、許可済みのものだけを動かすのは dontAsk、ファイル編集を任せるのは acceptEdits です。auto mode も安全を保証するものではありません。",
+      "sources": [
+        {
+          "title": "権限モードを選択する",
+          "url": "https://code.claude.com/docs/ja/permission-modes"
+        }
+      ]
+    },
+    {
+      "id": "c14-04-q1",
+      "sectionId": "c14-04",
+      "question": "プランモードで Claude が行うことはどれか。",
+      "choices": [
+        "計画を立てながら、ソースの編集も同時に進める",
+        "ファイルを読んで調べ、計画を書くが、承認するまでソースは編集しない",
+        "ファイルを読まずに、指示の文面だけから計画を書く",
+        "計画を書いた後、承認を待たずに自動で実装に進む"
+      ],
+      "answer": 1,
+      "explanation": "プランモードでは、Claude はファイルを読み、調べるためのコマンドを動かして計画を書きますが、ソースは編集しません。編集は、あなたが計画を承認するまで止められています。調べずに計画を書くわけでも、承認なしに実装に進むわけでもありません。",
+      "sources": [
+        {
+          "title": "権限モードを選択する",
+          "url": "https://code.claude.com/docs/ja/permission-modes"
+        }
+      ]
+    },
+    {
+      "id": "c14-04-q2",
+      "sectionId": "c14-04",
+      "question": "Claude が示した計画を、実装の前に自分で直接書き換えたい。どうするか。",
+      "choices": [
+        "`/rewind` を実行する",
+        "`Shift+Tab` を2回押す",
+        "`/permissions` で計画を編集する",
+        "`Ctrl+G` でテキストエディタに開いて書き換える"
+      ],
+      "answer": 3,
+      "explanation": "計画が示されたときに `Ctrl+G` を押すと、計画をテキストエディタで開いて直接書き換えられます。言葉で直してほしいときは「No, keep planning」を選んで伝えます。`/rewind` は巻き戻し、`Shift+Tab` はモードの切り替え、`/permissions` はルールの管理です。",
+      "sources": [
+        {
+          "title": "権限モードを選択する",
+          "url": "https://code.claude.com/docs/ja/permission-modes"
+        },
+        {
+          "title": "Claude Code のベストプラクティス",
+          "url": "https://code.claude.com/docs/ja/best-practices"
+        }
+      ]
+    },
+    {
+      "id": "c14-04-q3",
+      "sectionId": "c14-04",
+      "question": "プランモードを使う効果が最も大きい作業はどれか。",
+      "choices": [
+        "コメントの誤字を1か所直す",
+        "変数名を1つ変える",
+        "よく知らないコードで、複数のファイルにまたがる機能を追加する",
+        "ログを1行足す"
+      ],
+      "answer": 2,
+      "explanation": "計画は、進め方に迷うとき、変更が複数のファイルにまたがるとき、よく知らないコードを触るときに効果があります。誤字の修正や変数名の変更、ログの追加のように変更を1文で説明できる作業は、計画を省いて直接頼むほうが効率的です。",
+      "sources": [
+        {
+          "title": "Claude Code のベストプラクティス",
+          "url": "https://code.claude.com/docs/ja/best-practices"
+        }
+      ]
+    },
+    {
+      "id": "c14-05-q1",
+      "sectionId": "c14-05",
+      "question": "巻き戻しのメニューで、会話は残したままファイルの変更だけを元に戻したい。どれを選ぶか。",
+      "choices": [
+        "Restore code",
+        "Restore conversation",
+        "Summarize from here",
+        "Never mind"
+      ],
+      "answer": 0,
+      "explanation": "Restore code は、会話を残したままファイルの変更だけを選んだ時点に戻します。Restore conversation はコードを今のままにして会話だけを戻し、Summarize from here はその時点から後の会話を要約します。Never mind は何もせずに戻ります。",
+      "sources": [
+        {
+          "title": "チェックポイント",
+          "url": "https://code.claude.com/docs/ja/checkpointing"
+        }
+      ]
+    },
+    {
+      "id": "c14-05-q2",
+      "sectionId": "c14-05",
+      "question": "チェックポイントで元に戻せない変更はどれか。",
+      "choices": [
+        "Claude がファイル編集の道具で書き換えた README",
+        "Claude がファイル編集の道具で新しく作ったテストファイル",
+        "Claude が Bash コマンドの `mv` で移動したファイル",
+        "セッションを再開する前に Claude が編集したファイル"
+      ],
+      "answer": 2,
+      "explanation": "チェックポイントが記録するのは、Claude のファイル編集の道具による変更です。`rm` や `mv` などの Bash コマンドによる変更は戻せません。チェックポイントは会話と一緒に保存されるので、セッションを再開した後でも、それ以前の編集を巻き戻せます。",
+      "sources": [
+        {
+          "title": "チェックポイント",
+          "url": "https://code.claude.com/docs/ja/checkpointing"
+        }
+      ]
+    },
+    {
+      "id": "c14-06-q1",
+      "sectionId": "c14-06",
+      "question": "サンドボックスについての説明として正しいものはどれか。",
+      "choices": [
+        "Claude Code のすべてのツールとフックを囲い込む",
+        "Claude が実行するシェルのコマンドについて、書き込み先と通信先を OS が制限する",
+        "オンにすると、権限のルールの deny が効かなくなる",
+        "ウェブ取得の道具が開けるドメインを制限する機能である"
+      ],
+      "answer": 1,
+      "explanation": "サンドボックスは、Claude が実行するシェルのコマンドと、そこから起動されたプロセスの書き込み先と通信先を OS の仕組みで制限します。Read や Edit などのファイルの道具、フック、MCP サーバー、ウェブ取得の道具は対象外です。サンドボックスをオンにしても deny ルールは引き続き効きます。",
+      "sources": [
+        {
+          "title": "サンドボックス化された Bash ツールを設定する",
+          "url": "https://code.claude.com/docs/ja/sandboxing"
+        }
+      ]
+    },
+    {
+      "id": "c14-06-q2",
+      "sectionId": "c14-06",
+      "question": "Windows の PC でサンドボックスを使いたい。どうするか。",
+      "choices": [
+        "PowerShell で `/sandbox` を実行すればそのまま使える",
+        "`--dangerously-skip-permissions` を付けて起動する",
+        "WSL2 の中で Claude Code を動かす",
+        "VS Code の拡張機能からだけ使える"
+      ],
+      "answer": 2,
+      "explanation": "サンドボックスは macOS、Linux、WSL2 で動きます。Windows でそのまま動かしている Claude Code では、コマンドはサンドボックスなしで実行されるため、WSL2 の中で動かします。`--dangerously-skip-permissions` は確認を省くもので、サンドボックスとは別物であり、隔離された環境以外では使いません。",
+      "sources": [
+        {
+          "title": "サンドボックス化された Bash ツールを設定する",
+          "url": "https://code.claude.com/docs/ja/sandboxing"
+        }
+      ]
+    },
+    {
+      "id": "c14-06-q3",
+      "sectionId": "c14-06",
+      "question": "`.env` の中身を Claude に読ませないための対策として、本文の内容に合うものはどれか。",
+      "choices": [
+        "`Read(./.env)` を deny に入れ、サンドボックスと組み合わせる",
+        "CLAUDE.md に「.env は読まないこと」と書けば十分である",
+        "acceptEdits モードにしておけば読まれない",
+        "`.env` を `/add-dir` で追加しておく"
+      ],
+      "answer": 0,
+      "explanation": "`Read(./.env)` の deny ルールで Claude のファイルの道具からの読み込みを止められますが、スクリプトが自分でファイルを開く場合には効かないため、サンドボックスと組み合わせます。CLAUDE.md の指示は強制ではなく、acceptEdits は編集の確認を省くモードです。`/add-dir` は読める範囲を広げる操作です。",
+      "sources": [
+        {
+          "title": "権限を設定する",
+          "url": "https://code.claude.com/docs/ja/permissions"
+        },
+        {
+          "title": "サンドボックス化された Bash ツールを設定する",
+          "url": "https://code.claude.com/docs/ja/sandboxing"
+        }
+      ]
+    }
+  ]
+}

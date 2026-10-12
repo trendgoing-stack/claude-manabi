@@ -1,0 +1,803 @@
+{
+  "schemaVersion": 1,
+  "id": "c14",
+  "part": "c",
+  "order": 14,
+  "title": "第14章 権限・プランモード・巻き戻し",
+  "summary": "Claude Code に、どこまで確認なしで作業させるかを決める仕組みを学びます。操作の前に出る確認、許可・確認・拒否のルール、権限モードとプランモード、失敗した変更を戻すチェックポイント、コマンドを囲い込むサンドボックスを押さえ、安心して任せられる使い方を身につけます。",
+  "minutes": 13,
+  "sections": [
+    {
+      "id": "c14-01",
+      "title": "14.1 権限の仕組み",
+      "points": [
+        "Claude Code は、ファイルの編集やコマンドの実行の前に確認を出せる",
+        "読むだけの操作は、作業ディレクトリの中なら確認なしで進む",
+        "「Yes, and don't ask again」を選ぶと、同じ操作を次から聞かずに許可する",
+        "初めてのフォルダでは、そのフォルダを信頼するかを確かめる画面が出る"
+      ],
+      "digest": {
+        "text": "Claude Code は、ファイルを書き換える、コマンドを動かす、ウェブのページを取りに行くといった操作の前に、あなたの許可を求めます。読むだけの操作は、作業ディレクトリの中なら確認なしで進みます。確認には「今回だけ許可」「次から聞かない」「断る」などで答えます。「次から聞かない」は、コマンドなら同じリポジトリの次のセッションまで続き、ファイルの編集ならセッションの終わりまでです。許可した内容は `/permissions` でときどき見直します。",
+        "keys": [
+          "編集・コマンド実行・ウェブ取得の前に確認が出る（Manual mode の場合）",
+          "読むだけの操作は作業ディレクトリ内なら確認なし",
+          "作業ディレクトリを広げるには `--add-dir`・`/add-dir`",
+          "「次から聞かない」の続く範囲は操作の種類で違う",
+          "初めてのフォルダではワークスペースの信頼を確かめる"
+        ]
+      },
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Claude Code は、ファイルを読む・書く、コマンドを実行する、ウェブのページを取りに行く、といった道具（ツール）を使って作業します。便利な反面、大事なファイルを書き換えたり、意図しないコマンドを動かしたりされると困ります。そこで Claude Code には、操作の前にあなたの許可を求める仕組みがあります。この確認を権限プロンプト（permission prompt）と呼びます。"
+        },
+        {
+          "type": "p",
+          "text": "どの操作で確認が出るかは、14.3 で説明する権限モードによって変わります。すべての操作を自分で確かめる Manual mode を例に、練習用の「家計簿アプリ」のリポジトリで頼んだときの動きを見てみましょう。"
+        },
+        {
+          "type": "list",
+          "items": [
+            "「`src/` を読んで構成を説明して」：読むだけなので、作業ディレクトリの中なら確認なしで進みます。",
+            "「テストを実行して」：`npm test` を動かす前に確認が出ます。`ls` や `git status` のような読むだけのコマンドは、確認なしで動きます。",
+            "「README に使い方を書き足して」：ファイルを書き換える前に確認が出ます。",
+            "「使っているライブラリの公式ページを調べて」：ウェブのページを取りに行く前に確認が出ます（前もって許可されている一部のドキュメントのサイトを除く）。"
+          ]
+        },
+        {
+          "type": "figure",
+          "figure": {
+            "type": "terminal",
+            "title": "Claude Code（Manual mode）",
+            "lines": [
+              {
+                "kind": "prompt",
+                "text": "テストを実行して"
+              },
+              {
+                "kind": "dim",
+                "text": "Bash command"
+              },
+              {
+                "text": "  npm test"
+              },
+              {
+                "text": "Do you want to proceed?"
+              },
+              {
+                "kind": "hl",
+                "text": "❯ 1. Yes"
+              },
+              {
+                "text": "  2. Yes, and don't ask again for: npm test *"
+              },
+              {
+                "text": "  3. No"
+              }
+            ]
+          },
+          "caption": "コマンドを実行する前に出る確認の簡略図。選べる項目は状況によって変わります"
+        },
+        {
+          "type": "h",
+          "text": "確認への答え方"
+        },
+        {
+          "type": "list",
+          "items": [
+            "Yes：今回だけ許可します。",
+            "Yes, and don't ask again：同じ種類の操作を、次から聞かずに許可します。コマンドやウェブのドメインはルールとして保存され、同じリポジトリの次のセッションでも有効です。ファイルの編集の許可は、そのセッションが終わるまでです。",
+            "No：断ります。理由を書かずに断ると、Claude はそのターンの作業を止めて、あなたの指示を待ちます。"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "作業ディレクトリ（working directory）は、Claude Code を起動したフォルダとその下のフォルダです。ほかのフォルダも扱わせたいときは、起動時に `--add-dir` を付けるか、セッション中に `/add-dir` で追加します。"
+        },
+        {
+          "type": "p",
+          "text": "初めてのフォルダで対話のセッションを始めると、そのフォルダを信頼するかを確かめる画面（workspace trust dialog）が出ます。リポジトリに入っている設定ファイルの許可ルールは、信頼を受け入れるまで使われません。人から受け取ったリポジトリでは、表示された内容を読んでから受け入れましょう。"
+        },
+        {
+          "type": "note",
+          "kind": "caution",
+          "text": "「次から聞かない」は便利ですが、許可が積み重なると、何を許したのか分からなくなります。迷ったら今回だけの Yes を選び、許可した内容はときどき `/permissions` で見直しましょう。"
+        }
+      ],
+      "surfaces": [
+        "cli",
+        "ide"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "権限を設定する",
+          "url": "https://code.claude.com/docs/ja/permissions"
+        },
+        {
+          "title": "セキュリティ",
+          "url": "https://code.claude.com/docs/ja/security"
+        }
+      ],
+      "checkedAt": "2026-10-12",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "tryIds": [],
+      "dictIds": []
+    },
+    {
+      "id": "c14-02",
+      "title": "14.2 許可・確認・拒否のルール",
+      "points": [
+        "ルールは allow（許可）・ask（確認）・deny（拒否）の3種類",
+        "deny → ask → allow の順に調べ、最初に当てはまったものに従う",
+        "`/permissions` でルールの一覧と、どの設定ファイルから来たかを確かめられる",
+        "CLAUDE.md の指示は強制ではない。必ず止めたい操作はルールで決める"
+      ],
+      "digest": {
+        "text": "よく使う安全な操作は前もって許可し、危ない操作は禁止しておくと、確認の手間と危険の両方を減らせます。ルールは allow・ask・deny の3種類で、「ツール名(条件)」の形で書きます。Claude Code は deny、ask、allow の順に調べるので、deny に当てはまる操作は allow を書いても許可されません。ルールは `/permissions` で確認・編集できます。Bash のルールはコマンドの書き方が変わると当てはまらないため、完全な防壁ではありません。",
+        "keys": [
+          "allow＝確認なし、ask＝毎回確認、deny＝使わせない",
+          "書き方は `Bash(npm run test *)`・`Read(./.env)` など",
+          "調べる順は deny → ask → allow（細かさは関係ない）",
+          "ルールは Claude Code が守らせる。CLAUDE.md は頼みごと",
+          "Bash のルールは書き方の違いをすり抜けられる"
+        ]
+      },
+      "blocks": [
+        {
+          "type": "p",
+          "text": "確認のたびに答えるのは手間ですが、何でも許可するのは危険です。そこで、よく使う安全な操作は前もって許可し、危ない操作は禁止する「ルール」を書いておきます。ルールには次の3種類があります。"
+        },
+        {
+          "type": "list",
+          "items": [
+            "allow（許可）：確認なしで使わせる",
+            "ask（確認）：使うたびに確認を出す",
+            "deny（拒否）：使わせない"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "ルールは「ツール名(条件)」の形で書きます。`Bash(npm run lint)` はそのコマンドだけ、`Bash(npm run test *)` は `npm run test` で始まるコマンド、`Read(./.env)` は `.env` ファイルの読み込みを指します。`*` は「任意の文字列」の意味です。"
+        },
+        {
+          "type": "code",
+          "lang": "json",
+          "caption": "例：練習用の「家計簿アプリ」のリポジトリの .claude/settings.json",
+          "code": "{\n  \"permissions\": {\n    \"allow\": [\"Bash(npm run test *)\", \"Bash(npm run lint)\"],\n    \"ask\": [\"Bash(git push *)\"],\n    \"deny\": [\"Read(./.env)\", \"Read(./secrets/**)\"]\n  }\n}"
+        },
+        {
+          "type": "p",
+          "text": "この例では、テストとリントは確認なしで動き、push の前には必ず確認が出ます。さらに、`.env` と `secrets/` フォルダの中身は Claude のファイルの道具では読めません。"
+        },
+        {
+          "type": "h",
+          "text": "ルールの調べ方"
+        },
+        {
+          "type": "p",
+          "text": "Claude Code は deny、ask、allow の順にルールを調べ、最初に当てはまったものに従います。ルールの細かさは関係ありません。たとえば `Bash(docker *)` を deny にすると、`Bash(docker ps)` を allow に書いても許可されません。設定ファイルが複数あるときも、どこか1か所で deny になった操作は、ほかの場所の allow では許可できません。"
+        },
+        {
+          "type": "p",
+          "text": "今あるルールは `/permissions` で一覧できます。それぞれのルールがどの設定ファイルから来たかも表示され、ここから追加や削除もできます。設定ファイルの置き場所と優先順位は第15章で扱います。"
+        },
+        {
+          "type": "note",
+          "kind": "pitfall",
+          "text": "CLAUDE.md に「push しないこと」と書いても、それは Claude への頼みごとで、強制ではありません。権限のルールは、Claude Code 自体が守らせるものです。必ず止めたい操作は、deny か ask のルールにします。"
+        },
+        {
+          "type": "note",
+          "kind": "caution",
+          "text": "Bash のルールは、書かれたコマンドの文字列で判断します。`Bash(git push *)` は `git push origin main` には当てはまりますが、`git -C . push origin main` のように書き方を変えたコマンドには当てはまりません。ルールは完全な防壁ではないので、大事な制限は 14.6 のサンドボックスと組み合わせます。"
+        }
+      ],
+      "surfaces": [
+        "cli"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "権限を設定する",
+          "url": "https://code.claude.com/docs/ja/permissions"
+        },
+        {
+          "title": "セキュリティ",
+          "url": "https://code.claude.com/docs/ja/security"
+        }
+      ],
+      "checkedAt": "2026-10-12",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "tryIds": [],
+      "dictIds": []
+    },
+    {
+      "id": "c14-03",
+      "title": "14.3 権限モード",
+      "points": [
+        "権限モードは「どこまで確認なしで進めるか」をまとめて決める土台",
+        "CLI では `Shift+Tab` で切り替え、今のモードはステータスバーに出る",
+        "auto mode では、別のモデル（分類器）が操作を確かめながら進める",
+        "bypassPermissions は、隔離されたコンテナや VM の中だけで使う"
+      ],
+      "digest": {
+        "text": "権限モードは、確認を出す範囲をまとめて切り替える設定です。すべて自分で確かめる Manual、ファイル編集を任せる acceptEdits、調べるだけの plan、分類器が確かめながら進める auto、許可済みのものだけを動かす dontAsk、すべての確認を省く bypassPermissions があります。CLI では `Shift+Tab` で切り替え、起動時は `--permission-mode` で指定します。auto mode も安全を保証するものではなく、bypassPermissions は隔離された環境だけで使います。",
+        "keys": [
+          "Manual（`default`）・acceptEdits・plan・auto・dontAsk・bypassPermissions",
+          "`Shift+Tab` で切り替え、ステータスバーで確認",
+          "起動時は `--permission-mode <モード>`",
+          "auto mode は分類器が確認の代わりをする（保証ではない）",
+          "bypassPermissions はネットにつながらないコンテナ・VM だけ"
+        ]
+      },
+      "blocks": [
+        {
+          "type": "p",
+          "text": "権限モード（permission mode）は、確認を出す範囲をまとめて切り替える設定です。14.2 のルールが個々の操作の決まりだとすると、モードはその土台です。主なモードと、使いどころの例は次のとおりです。"
+        },
+        {
+          "type": "table",
+          "title": "権限モードと使いどころの例",
+          "table": {
+            "header": [
+              "モード",
+              "確認なしで進むもの",
+              "使いどころの例"
+            ],
+            "rows": [
+              [
+                "Manual（`default`）",
+                "読むだけの操作",
+                "初めて触るコードを、1つずつ確かめながら直す"
+              ],
+              [
+                "`acceptEdits`",
+                "読む操作、作業ディレクトリ内のファイル編集、`mkdir` や `mv` などのファイル操作",
+                "変更は後で `git diff` でまとめて見直す"
+              ],
+              [
+                "`plan`",
+                "読む操作（auto mode が使えるときは、分類器が認めた調べるためのコマンドも）",
+                "直す前に、影響する範囲と手順を確かめる"
+              ],
+              [
+                "`auto`",
+                "ほぼすべて（分類器が裏で確かめる）",
+                "方向性が決まった長めの作業を任せる"
+              ],
+              [
+                "`dontAsk`",
+                "読む操作と、前もって許可したもの（ほかは自動で拒否）",
+                "CI やスクリプトで、決まった作業だけをさせる"
+              ],
+              [
+                "`bypassPermissions`",
+                "すべて",
+                "インターネットにつながらないコンテナや VM の中だけ"
+              ]
+            ]
+          }
+        },
+        {
+          "type": "h",
+          "text": "切り替え方"
+        },
+        {
+          "type": "p",
+          "text": "CLI では `Shift+Tab` を押すたびにモードが切り替わり、入力欄の下のステータスバーに今のモード（例：`⏸ plan mode on`）が表示されます。auto mode から始めた場合は、Manual、acceptEdits、plan の順に進み、auto に戻ります。"
+        },
+        {
+          "type": "figure",
+          "figure": {
+            "type": "state",
+            "states": [
+              {
+                "id": "auto",
+                "label": "auto",
+                "x": 0,
+                "y": 0,
+                "initial": true
+              },
+              {
+                "id": "manual",
+                "label": "Manual",
+                "x": 4,
+                "y": 0
+              },
+              {
+                "id": "edits",
+                "label": "acceptEdits",
+                "x": 4,
+                "y": 2
+              },
+              {
+                "id": "plan",
+                "label": "plan",
+                "x": 0,
+                "y": 2
+              }
+            ],
+            "transitions": [
+              {
+                "from": "auto",
+                "to": "manual",
+                "label": "Shift+Tab"
+              },
+              {
+                "from": "manual",
+                "to": "edits",
+                "label": "Shift+Tab"
+              },
+              {
+                "from": "edits",
+                "to": "plan",
+                "label": "Shift+Tab"
+              },
+              {
+                "from": "plan",
+                "to": "auto",
+                "label": "Shift+Tab"
+              }
+            ]
+          },
+          "caption": "auto mode で始めたセッションで Shift+Tab を押したときの切り替わり方（auto mode が使える場合）"
+        },
+        {
+          "type": "p",
+          "text": "起動時に決めるときは `--permission-mode` を付けます。VS Code の拡張機能では入力欄の下のモード表示、デスクトップアプリでは Code タブの送信ボタンの横にあるモードの選択から切り替えます（dontAsk は CLI だけで使えます）。"
+        },
+        {
+          "type": "code",
+          "lang": "shell",
+          "caption": "プランモードで起動する",
+          "code": "claude --permission-mode plan"
+        },
+        {
+          "type": "p",
+          "text": "最近のバージョンでは、ターミナルと VS Code で始める対話のセッションは、既定で auto mode から始まります。組織の設定や使うモデルの都合で auto mode が使えないときは、Manual で始まります。"
+        },
+        {
+          "type": "h",
+          "text": "auto mode の考え方"
+        },
+        {
+          "type": "p",
+          "text": "auto mode では、あなたの代わりに別のモデル（分類器、classifier）が操作の前に内容を確かめます。頼んだ範囲を超える操作や、読んだ内容に仕込まれた指示に従っているように見える操作などを止め、日常的な作業は確認なしで進めます。会話で伝えた「push はしないで」のような境界は、会話が圧縮されると失われることがあるので、確実に止めたい操作は deny ルールにします。"
+        },
+        {
+          "type": "note",
+          "kind": "caution",
+          "title": "確認を省くモードの注意",
+          "text": "auto mode も安全を保証するものではなく、大事な操作を自分で確かめる代わりにはなりません。`bypassPermissions`（`--dangerously-skip-permissions` も同じ）は確認と安全チェックを省き、プロンプトインジェクションへの守りもありません。使うのは、インターネットにつながらないコンテナや VM のような隔離された環境に限ります。普段の PC や本番のリポジトリでは使いません。"
+        }
+      ],
+      "surfaces": [
+        "cli",
+        "ide",
+        "desktop"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "権限モードを選択する",
+          "url": "https://code.claude.com/docs/ja/permission-modes"
+        },
+        {
+          "title": "権限を設定する",
+          "url": "https://code.claude.com/docs/ja/permissions"
+        },
+        {
+          "title": "セキュリティ",
+          "url": "https://code.claude.com/docs/ja/security"
+        }
+      ],
+      "checkedAt": "2026-10-12",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "tryIds": [],
+      "dictIds": []
+    },
+    {
+      "id": "c14-04",
+      "title": "14.4 プランモード",
+      "points": [
+        "プランモードでは、Claude は調べて計画を書くだけで、ソースを編集しない",
+        "`Shift+Tab`、指示の先頭の `/plan`、`--permission-mode plan` で入る",
+        "計画は承認するまで実行されない。`Ctrl+G` でエディタで直せる",
+        "変更を1文で説明できる小さな作業なら、計画は省いてよい"
+      ],
+      "digest": {
+        "text": "プランモードは、調べることと直すことを分けるためのモードです。Claude はファイルを読み、調べるためのコマンドを動かして計画を書きますが、ソースは編集しません。計画を読み、直したい点があれば「No, keep planning」で伝え、`Ctrl+G` でエディタから書き換えることもできます。承認すると、選んだ方法で実装が始まります。進め方に迷うときや複数のファイルにまたがるときに効き、小さな修正なら計画は省きます。",
+        "keys": [
+          "プランモードでは編集せず、計画だけを書く",
+          "入り方：`Shift+Tab`・`/plan`・`--permission-mode plan`",
+          "「No, keep planning」で練り直し、`Ctrl+G` でエディタで編集",
+          "承認すると実装が始まる（承認の選び方でモードが決まる）",
+          "1文で説明できる変更なら計画は省く"
+        ]
+      },
+      "blocks": [
+        {
+          "type": "p",
+          "text": "頼んだ作業がいきなり実装に進むと、問題を取り違えたまま、たくさんのファイルを書き換えてしまうことがあります。プランモード（plan mode）は、調べることと直すことを分けるためのモードです。Claude はファイルを読み、調べるためのコマンドを動かし、計画を書きますが、ソースは編集しません。編集は、あなたが計画を承認するまで止められています。"
+        },
+        {
+          "type": "figure",
+          "figure": {
+            "type": "flow",
+            "steps": [
+              {
+                "id": "a",
+                "label": "プランモードに入る",
+                "kind": "terminal"
+              },
+              {
+                "id": "b",
+                "label": "コードを読んで調べる"
+              },
+              {
+                "id": "c",
+                "label": "計画を示す"
+              },
+              {
+                "id": "d",
+                "label": "計画は妥当？",
+                "kind": "decision",
+                "next": [
+                  {
+                    "to": "f",
+                    "label": "はい"
+                  },
+                  {
+                    "to": "e",
+                    "label": "いいえ"
+                  }
+                ]
+              },
+              {
+                "id": "e",
+                "label": "直す点を伝える",
+                "col": 1,
+                "next": [
+                  {
+                    "to": "c"
+                  }
+                ]
+              },
+              {
+                "id": "f",
+                "label": "承認して実装"
+              },
+              {
+                "id": "g",
+                "label": "テストで確かめる",
+                "kind": "terminal"
+              }
+            ]
+          },
+          "caption": "プランモードで計画を練ってから実装する流れ"
+        },
+        {
+          "type": "h",
+          "text": "使い方"
+        },
+        {
+          "type": "steps",
+          "items": [
+            "練習用のリポジトリで `Shift+Tab` を押し、ステータスバーを `⏸ plan mode on` にします。1回の指示だけプランモードにしたいときは、指示の先頭に `/plan` を付けます。",
+            "調べてほしいことと、やりたいことを伝えます。",
+            "Claude が計画を示したら読みます。直したい点があれば「No, keep planning」を選んで伝えます。`Ctrl+G` を押すと、計画をテキストエディタで直接書き換えられます。",
+            "納得したら承認します。「Yes, and use auto mode」なら auto mode で、「Yes, manually approve edits」なら編集を1つずつ確認しながら実装が始まります。"
+          ]
+        },
+        {
+          "type": "code",
+          "lang": "prompt",
+          "caption": "プランモードでの指示の例（家計簿アプリ）",
+          "code": "src/budget/ を読んで、月ごとの集計がどう計算されているか調べて。\nそのうえで、集計を「週ごと」にも切り替えられるようにしたい。\n変更が必要なファイル、作業の手順、確かめ方（テスト）を計画にまとめて。"
+        },
+        {
+          "type": "p",
+          "text": "auto mode が使えない環境では、承認の選択肢の表示が変わります。承認せずにプランモードを抜けたいときは、もう一度 `Shift+Tab` を押します。"
+        },
+        {
+          "type": "note",
+          "kind": "tip",
+          "text": "計画にも手間はかかります。誤字の修正や変数名の変更のように、変更を1文で説明できる作業なら、計画を省いて直接頼みましょう。進め方に迷うとき、複数のファイルにまたがるとき、よく知らないコードを触るときに効果があります。"
+        }
+      ],
+      "surfaces": [
+        "cli",
+        "ide",
+        "desktop"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "権限モードを選択する",
+          "url": "https://code.claude.com/docs/ja/permission-modes"
+        },
+        {
+          "title": "Claude Code のベストプラクティス",
+          "url": "https://code.claude.com/docs/ja/best-practices"
+        },
+        {
+          "title": "一般的なワークフロー",
+          "url": "https://code.claude.com/docs/ja/common-workflows"
+        }
+      ],
+      "checkedAt": "2026-10-12",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "tryIds": [],
+      "dictIds": []
+    },
+    {
+      "id": "c14-05",
+      "title": "14.5 チェックポイントと巻き戻し",
+      "points": [
+        "プロンプトを送るたびに、チェックポイントが自動で作られる",
+        "入力欄が空のときに `Esc` を2回、または `/rewind` で巻き戻しのメニューを開く",
+        "コードだけ・会話だけ・両方を戻せる。途中から要約することもできる",
+        "Bash コマンドによる変更や、外での変更は戻せない。Git の代わりではない"
+      ],
+      "digest": {
+        "text": "Claude Code は、プロンプトを送るたびにその時点のコードの状態をチェックポイントとして記録します。`Esc` を2回押すか `/rewind` で巻き戻しのメニューを開き、戻りたい時点を選んで、コードと会話の両方、会話だけ、コードだけを戻せます。途中から後、または前の会話を要約してコンテキストを空けることもできます。戻せるのは Claude のファイル編集の道具による変更だけで、Bash コマンドや外での変更は戻せません。大事な区切りは Git にコミットします。",
+        "keys": [
+          "プロンプトを送るたびにチェックポイントができる",
+          "`Esc` 2回 または `/rewind` でメニューを開く",
+          "Restore code and conversation／conversation／code",
+          "Summarize from here／up to here で要約",
+          "Bash の変更・外での変更は戻せない。Git の代わりではない"
+        ]
+      },
+      "blocks": [
+        {
+          "type": "p",
+          "text": "試した変更がうまくいかなかったとき、手で元に戻すのは大変です。Claude Code は、あなたがプロンプトを送るたびに、その時点のコードの状態をチェックポイントとして自動で記録します。Claude のファイル編集の道具で行った変更は、ここから元に戻せます。チェックポイントは会話と一緒に保存されるので、セッションを再開した後でも巻き戻せます。"
+        },
+        {
+          "type": "h",
+          "text": "巻き戻し方"
+        },
+        {
+          "type": "p",
+          "text": "入力欄が空の状態で `Esc` を2回押すか、`/rewind` を実行すると、巻き戻しのメニューが開きます。そのセッションで送ったプロンプトの一覧から戻りたい時点を選び、何をするかを選びます。"
+        },
+        {
+          "type": "figure",
+          "figure": {
+            "type": "terminal",
+            "title": "Claude Code",
+            "lines": [
+              {
+                "kind": "prompt",
+                "text": "/rewind"
+              },
+              {
+                "kind": "dim",
+                "text": "（送ったプロンプトの一覧）"
+              },
+              {
+                "text": "  一覧画面の見出しを変えて"
+              },
+              {
+                "kind": "hl",
+                "text": "❯ 集計を週ごとにも切り替えられるようにして"
+              },
+              {
+                "text": "  テストを追加して"
+              },
+              {
+                "kind": "dim",
+                "text": "（選んだ時点でできること）"
+              },
+              {
+                "text": "  Restore code and conversation"
+              },
+              {
+                "text": "  Restore conversation / Restore code"
+              },
+              {
+                "text": "  Summarize from here / Summarize up to here"
+              }
+            ]
+          },
+          "caption": "巻き戻しのメニューの簡略図。戻りたいプロンプトを選んでから、何をするかを選びます"
+        },
+        {
+          "type": "list",
+          "items": [
+            "Restore code and conversation：コードと会話の両方をその時点に戻す",
+            "Restore conversation：コードは今のまま、会話だけを戻す",
+            "Restore code：会話は残したまま、ファイルの変更だけを戻す",
+            "Summarize from here／Summarize up to here：選んだ時点から後（または前）の会話を要約して、コンテキストウィンドウを空ける",
+            "Never mind：何もせずに一覧に戻る"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "コードを戻す選択肢は、その時点の後にファイルの変更が記録されているときだけ表示されます。会話を戻すと、選んだ時点のプロンプトが入力欄に戻るので、書き直して送り直せます。VS Code の拡張機能では、メッセージにマウスを重ねると出る巻き戻しのボタンから、コードを戻したり、会話を分岐させたりできます。"
+        },
+        {
+          "type": "note",
+          "kind": "pitfall",
+          "title": "戻せないもの",
+          "text": "Bash コマンド（`rm` や `mv` など）で変更したファイル、Claude Code の外で自分が編集した内容、ほかのセッションでの変更は、通常はチェックポイントに記録されず、戻せません。サブエージェントによる編集も、多くの場合は戻りません。"
+        },
+        {
+          "type": "note",
+          "kind": "caution",
+          "text": "チェックポイントは、セッションの中で手早く戻すための仕組みで、Git の代わりにはなりません。大事な区切りではコミットしておきましょう。巻き戻しを試すときも、練習用のリポジトリで行います。"
+        }
+      ],
+      "surfaces": [
+        "cli",
+        "ide"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "チェックポイント",
+          "url": "https://code.claude.com/docs/ja/checkpointing"
+        },
+        {
+          "title": "Claude Code のベストプラクティス",
+          "url": "https://code.claude.com/docs/ja/best-practices"
+        },
+        {
+          "title": "VS Code で Claude Code を使用する",
+          "url": "https://code.claude.com/docs/ja/vs-code"
+        }
+      ],
+      "checkedAt": "2026-10-12",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "tryIds": [],
+      "dictIds": []
+    },
+    {
+      "id": "c14-06",
+      "title": "14.6 サンドボックスと安全な使い方",
+      "points": [
+        "サンドボックスは、Claude が動かすシェルのコマンドを OS の仕組みで囲い込む",
+        "`/sandbox` でオンにする。macOS・Linux・WSL2 で動く",
+        "ファイルの道具やフック、MCP サーバーはサンドボックスの外で動く",
+        "秘密情報は deny ルールで読ませない。新しい使い方は練習用のリポジトリで試す"
+      ],
+      "digest": {
+        "text": "サンドボックスは、Claude が実行するシェルのコマンドに対して、書き込める場所とつながれる宛先を OS が制限する仕組みです。`/sandbox` でオンにし、サンドボックスの中のコマンドを確認なしで動かす auto-allow か、通常どおり確認を出す regular permissions を選びます。macOS・Linux・WSL2 で動き、Windows で使うときは WSL2 の中で動かします。ファイルの道具やフックは外で動くので、ルールと組み合わせて守りを重ねます。新しい使い方は練習用のリポジトリで試します。",
+        "keys": [
+          "サンドボックス＝コマンドの書き込み先と通信先を OS が制限",
+          "`/sandbox` でオン。auto-allow か regular permissions",
+          "macOS・Linux・WSL2 で動く",
+          "ファイルの道具・フック・MCP サーバーは対象外",
+          "秘密情報は `Read(...)` の deny で読ませない"
+        ]
+      },
+      "blocks": [
+        {
+          "type": "p",
+          "text": "権限のルールは、Claude Code がその操作を許すかどうかを決めます。しかし、許可したコマンドが中で何をするかまでは見張れません。サンドボックス（sandbox）は、Claude が実行するシェルのコマンドと、そこから起動されたプロセスに対して、OS が境界を設ける仕組みです。既定では次のように制限されます。"
+        },
+        {
+          "type": "list",
+          "items": [
+            "書き込み：作業ディレクトリ、一時フォルダ、追加したディレクトリだけ",
+            "ネットワーク：許可したドメインだけ。最初は何も許可されておらず、新しいドメインが必要になったときの扱いは権限モードで変わる（Manual などでは確認が出る）",
+            "読み込み：PC のほとんどの場所を読める（`~/.ssh` なども含む）ので、読ませたくない場所は設定で除く"
+          ]
+        },
+        {
+          "type": "h",
+          "text": "オンにする"
+        },
+        {
+          "type": "steps",
+          "items": [
+            "練習用のリポジトリでセッションを始め、`/sandbox` を実行します。サンドボックスのパネルが開きます。",
+            "Mode タブで、auto-allow（サンドボックスの中のコマンドを確認なしで実行）か、regular permissions（サンドボックスの中でも通常どおり確認を出す）を選びます。",
+            "Claude にテストなどのコマンドを実行させ、動きを確かめます。"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "サンドボックスは macOS、Linux、WSL2 で動きます。Windows でそのまま動かしている Claude Code では、コマンドはサンドボックスなしで実行されます。Windows で使うときは、WSL2 の中で Claude Code を動かします。Linux と WSL2 では `bubblewrap` と `socat` が必要です。"
+        },
+        {
+          "type": "note",
+          "kind": "pitfall",
+          "text": "サンドボックスが囲うのはシェルのコマンドだけです。Read や Edit などのファイルの道具、フック、MCP サーバーは外で動きます。入力欄で `!` を付けて自分で打つコマンドも、多くの場合は外で動きます。Claude がサンドボックスの外での再実行を求めてきたら、理由が分からないときは断りましょう。"
+        },
+        {
+          "type": "figure",
+          "figure": {
+            "type": "layers",
+            "arrow": [
+              "個々の操作",
+              "全体を囲う"
+            ],
+            "levels": [
+              {
+                "label": "権限モード",
+                "note": "確認を出す範囲の土台"
+              },
+              {
+                "label": "権限のルール",
+                "note": "allow・ask・deny で個別に決める"
+              },
+              {
+                "label": "サンドボックス",
+                "note": "コマンドの届く範囲を OS で制限",
+                "hl": true
+              },
+              {
+                "label": "コンテナ・VM",
+                "note": "Claude Code 全体を隔離する"
+              }
+            ]
+          },
+          "caption": "安全の仕組みは1つに頼らず、重ねて使います"
+        },
+        {
+          "type": "h",
+          "text": "安全に使うための習慣"
+        },
+        {
+          "type": "list",
+          "items": [
+            "新しい使い方は練習用のリポジトリで試す。確認を省くモードを本番のリポジトリで試さない",
+            "`.env` や鍵のファイルは `Read(./.env)` のような deny ルールで読ませない。ただし、スクリプトが自分でファイルを開く場合はルールが効かないので、サンドボックスと組み合わせる",
+            "提案されたコマンドと変更は、承認する前に読む",
+            "信頼できない内容を、そのまま Claude に流し込まない。中に仕込まれた指示に Claude を従わせる攻撃を、プロンプトインジェクション（prompt injection）と呼ぶ",
+            "確認を省いて任せたいときは、コンテナや VM、dev container の中で動かす"
+          ]
+        },
+        {
+          "type": "note",
+          "kind": "caution",
+          "text": "サンドボックスも完全な隔離ではありません。`github.com` のような広いドメインを許可すると、そこを経由してデータを持ち出される余地が生まれます。許可するドメインや書き込み先は、必要なものだけにします。"
+        }
+      ],
+      "surfaces": [
+        "cli",
+        "ide"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "サンドボックス化された Bash ツールを設定する",
+          "url": "https://code.claude.com/docs/ja/sandboxing"
+        },
+        {
+          "title": "セキュリティ",
+          "url": "https://code.claude.com/docs/ja/security"
+        },
+        {
+          "title": "権限を設定する",
+          "url": "https://code.claude.com/docs/ja/permissions"
+        }
+      ],
+      "checkedAt": "2026-10-12",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "tryIds": [],
+      "dictIds": []
+    }
+  ]
+}

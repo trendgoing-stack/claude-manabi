@@ -1,0 +1,311 @@
+{
+  "schemaVersion": 1,
+  "chapterId": "c12",
+  "questions": [
+    {
+      "id": "c12-01-q1",
+      "sectionId": "c12-01",
+      "question": "Claude Code が指示を受けてから作業を進める流れ（エージェントループ）の説明として正しいものはどれか。",
+      "choices": [
+        "最初に全手順の計画を立て、途中で変えずに最後まで実行する",
+        "情報を集める・作業する・結果を確かめるをくり返し、途中で割り込める",
+        "ユーザーが読むファイルと実行するコマンドをすべて指定する必要がある",
+        "作業が終わるまでユーザーの入力を受け付けない"
+      ],
+      "answer": 1,
+      "explanation": "Claude はツールを使って情報を集め、作業し、結果を確かめる段階を、前の結果をもとに調整しながらくり返します。ユーザーはいつでも割り込んで向きを変えられます。読むファイルやコマンドは Claude が自分で判断するので、すべて指定する必要はありません。",
+      "sources": [
+        {
+          "title": "Claude Code の仕組み",
+          "url": "https://code.claude.com/docs/ja/how-claude-code-works"
+        }
+      ]
+    },
+    {
+      "id": "c12-01-q2",
+      "sectionId": "c12-01",
+      "question": "権限プロンプトの画面の中で、「No」に断る理由を添えて Claude に伝えるにはどうするか。",
+      "choices": [
+        "`Ctrl+O` を押して詳しい表示を開き、理由を書く",
+        "「Yes, and don't ask again …」を選んでから理由を書く",
+        "「No」を選んだ状態で `Tab` を押し、コメント欄に理由を書いて送る",
+        "`Ctrl+C` を2回押して終了し、起動し直して理由を書く"
+      ],
+      "answer": 2,
+      "explanation": "「Yes」か「No」を選んだ状態で `Tab` を押すとコメント欄が開き、「No」に添えた理由は断った理由として Claude に渡され、Claude は作業を続けます。`Esc` は「コメントなしの No」と同じで、その回の作業が止まります。「don't ask again」は許可する選択肢なので、断るときには使いません。",
+      "sources": [
+        {
+          "title": "権限を設定する",
+          "url": "https://code.claude.com/docs/ja/permissions"
+        },
+        {
+          "title": "インタラクティブモード",
+          "url": "https://code.claude.com/docs/ja/interactive-mode"
+        }
+      ]
+    },
+    {
+      "id": "c12-02-q1",
+      "sectionId": "c12-02",
+      "question": "指示の中で `@src/` のようにフォルダを指したとき、会話に入るものはどれか。",
+      "choices": [
+        "フォルダの中のファイルの一覧",
+        "フォルダの中のすべてのファイルの中身",
+        "フォルダの中で最後に変更されたファイルの中身",
+        "フォルダの git の変更履歴"
+      ],
+      "answer": 0,
+      "explanation": "`@` でフォルダを指すと、入るのはファイルの一覧で、中身ではありません。中身を読ませたいファイルは、`@src/summary.ts` のようにファイルを指します。1つのメッセージで複数のファイルを指すこともできます。",
+      "sources": [
+        {
+          "title": "一般的なワークフロー",
+          "url": "https://code.claude.com/docs/ja/common-workflows"
+        }
+      ]
+    },
+    {
+      "id": "c12-02-q2",
+      "sectionId": "c12-02",
+      "question": "Windows のターミナルで、コピーした画像を Claude Code の入力欄に貼り付けるキーとして公式に案内されているものはどれか。",
+      "choices": [
+        "`Ctrl+Shift+I`",
+        "`Win+V`",
+        "`Shift+Insert`",
+        "`Alt+V`"
+      ],
+      "answer": 3,
+      "explanation": "画像の貼り付けは、Windows と WSL では `Alt+V`、Mac では `Ctrl+V`（iTerm2 では `Cmd+V`）です。貼り付けた画像は `[Image #1]` のような目印として入力欄に入ります。ほかに、ドラッグ＆ドロップや画像のパスを書く方法もあります。",
+      "sources": [
+        {
+          "title": "インタラクティブモード",
+          "url": "https://code.claude.com/docs/ja/interactive-mode"
+        },
+        {
+          "title": "一般的なワークフロー",
+          "url": "https://code.claude.com/docs/ja/common-workflows"
+        }
+      ]
+    },
+    {
+      "id": "c12-02-q3",
+      "sectionId": "c12-02",
+      "question": "`@` でファイルを指したときに、そのファイルの中身のほかに読み込まれるものはどれか。",
+      "choices": [
+        "同じフォルダにある、すべてのファイルの中身",
+        "そのファイルのフォルダと、そこから上のフォルダにある CLAUDE.md",
+        "そのファイルを最後に編集したセッションの会話",
+        "そのファイルに関係する GitHub の Issue"
+      ],
+      "answer": 1,
+      "explanation": "`@` でファイルを指すと、そのファイルのあるフォルダと、そこから上のフォルダにある CLAUDE.md もコンテキストに加わります。同じフォルダのほかのファイルの中身や、過去の会話が自動で入るわけではありません。",
+      "sources": [
+        {
+          "title": "一般的なワークフロー",
+          "url": "https://code.claude.com/docs/ja/common-workflows"
+        }
+      ]
+    },
+    {
+      "id": "c12-03-q1",
+      "sectionId": "c12-03",
+      "question": "入力の先頭に `!` を付けて `! npm run lint` と送ったときの動きとして正しいものはどれか。",
+      "choices": [
+        "Claude がコマンドの内容を判断し、承認を求めてから実行する",
+        "コマンドは実行されるが、出力は会話に入らない",
+        "コマンドが直接実行され、出力が会話に入り、Claude がそれを読んで応答する",
+        "コマンドは実行されず、Claude がコマンドの意味を説明する"
+      ],
+      "answer": 2,
+      "explanation": "`!` で始めるとシェルモードになり、Claude を通さずにコマンドが実行されます。コマンドと出力は会話のコンテキストに入り、Claude はそれを読んで自動で応答します。シェルモードでは Claude の解釈や承認は入りません。",
+      "sources": [
+        {
+          "title": "インタラクティブモード",
+          "url": "https://code.claude.com/docs/ja/interactive-mode"
+        }
+      ]
+    },
+    {
+      "id": "c12-03-q2",
+      "sectionId": "c12-03",
+      "question": "シェルモードのコマンドについて、特に注意すべき点はどれか。",
+      "choices": [
+        "承認の確認が出ず、サンドボックスを有効にしていても通常はその外で動く",
+        "実行のたびに権限プロンプトが出るので、長い作業には向かない",
+        "出力が会話に入らないので、結果を自分で貼り付ける必要がある",
+        "Windows では使えないので、WSL に切り替える必要がある"
+      ],
+      "answer": 0,
+      "explanation": "シェルモードは自分でコマンドを実行する仕組みなので、承認の確認が出ません。サンドボックスは Claude が実行するコマンドに効くもので、自分で打つコマンドは通常その外で動きます。ファイルを消すようなコマンドは、内容を確かめてから実行します。",
+      "sources": [
+        {
+          "title": "インタラクティブモード",
+          "url": "https://code.claude.com/docs/ja/interactive-mode"
+        }
+      ]
+    },
+    {
+      "id": "c12-04-q1",
+      "sectionId": "c12-04",
+      "question": "Claude の作業中に、止めずに「テストファイルは変更しないで」と補足したい。どうするのがよいか。",
+      "choices": [
+        "`Esc` を2回押して巻き戻しメニューから補足を選ぶ",
+        "`Ctrl+C` で中断してから、新しいセッションで指示し直す",
+        "作業が終わるまで待ってから `/rewind` で補足を書く",
+        "作業中のまま文章を打って `Enter` で送る"
+      ],
+      "answer": 3,
+      "explanation": "作業中に文章を打って `Enter` を押すと、作業を止めずに補足が送られます。実行中のツールが終わったところで Claude が読み、次の手順に生かします。`Esc` 2回は巻き戻しや入力の消去、`Ctrl+C` は中断の操作です。",
+      "sources": [
+        {
+          "title": "Claude Code の仕組み",
+          "url": "https://code.claude.com/docs/ja/how-claude-code-works"
+        },
+        {
+          "title": "インタラクティブモード",
+          "url": "https://code.claude.com/docs/ja/interactive-mode"
+        }
+      ]
+    },
+    {
+      "id": "c12-04-q2",
+      "sectionId": "c12-04",
+      "question": "入力欄に文字が入っている状態で `Esc` を2回押すと、どうなるか。",
+      "choices": [
+        "巻き戻しメニューが開く",
+        "入力が消え、消した文は履歴に残る",
+        "入力した文がそのまま送信される",
+        "Claude Code が終了する"
+      ],
+      "answer": 1,
+      "explanation": "入力欄に文字があるときの `Esc` 2回は入力を消す操作で、消した文は履歴に保存されるので `↑` で呼び戻せます。巻き戻しメニューが開くのは、入力欄が空のときです。",
+      "sources": [
+        {
+          "title": "インタラクティブモード",
+          "url": "https://code.claude.com/docs/ja/interactive-mode"
+        },
+        {
+          "title": "チェックポイント",
+          "url": "https://code.claude.com/docs/ja/checkpointing"
+        }
+      ]
+    },
+    {
+      "id": "c12-04-q3",
+      "sectionId": "c12-04",
+      "question": "巻き戻しメニューの「Restore code」で元に戻せる変更はどれか。",
+      "choices": [
+        "Claude がファイル編集のツールで書き換えたファイル",
+        "Claude が `rm` や `mv` などのシェルコマンドで変えたファイル",
+        "ユーザーが別のエディタで書き換えたファイル",
+        "Claude がデプロイしたサーバー上のファイル"
+      ],
+      "answer": 0,
+      "explanation": "巻き戻しの対象は、Claude のファイル編集ツールによる変更です。シェルコマンドで変えたファイル、Claude Code の外で手で変えたファイル、外部のシステムへの変更は記録されていないため戻せません。区切りごとに git でコミットしておくと安心です。",
+      "sources": [
+        {
+          "title": "チェックポイント",
+          "url": "https://code.claude.com/docs/ja/checkpointing"
+        }
+      ]
+    },
+    {
+      "id": "c12-05-q1",
+      "sectionId": "c12-05",
+      "question": "昨日作業したフォルダで、最後に使った会話の続きからすぐに始めたい。実行するコマンドはどれか。",
+      "choices": [
+        "`claude --resume --all`",
+        "`claude --new`",
+        "`claude --continue`",
+        "`claude --fork-session`"
+      ],
+      "answer": 2,
+      "explanation": "`claude --continue`（`-c`）は、今のフォルダで最後に使ったセッションを開きます。一覧から選びたいときは `claude --resume` です。`--fork-session` は再開時に別のセッション ID で複製を作るためのもので、`--resume` か `--continue` と組み合わせて使います。",
+      "sources": [
+        {
+          "title": "セッションの管理",
+          "url": "https://code.claude.com/docs/ja/sessions"
+        },
+        {
+          "title": "CLI リファレンス",
+          "url": "https://code.claude.com/docs/ja/cli-reference"
+        }
+      ]
+    },
+    {
+      "id": "c12-05-q2",
+      "sectionId": "c12-05",
+      "question": "今の会話を残したまま、別の方針を試すために会話を分けたい。使うコマンドはどれか。",
+      "choices": [
+        "`/clear`",
+        "`/branch`",
+        "`/compact`",
+        "`/rename`"
+      ],
+      "answer": 1,
+      "explanation": "`/branch` はそれまでの会話をコピーして新しい側に切り替え、元の会話はそのまま残します。元には `/resume` で戻れます。`/clear` は空の状態で新しい会話を始め、`/compact` は会話を要約し、`/rename` は名前を変えるだけです。",
+      "sources": [
+        {
+          "title": "セッションの管理",
+          "url": "https://code.claude.com/docs/ja/sessions"
+        }
+      ]
+    },
+    {
+      "id": "c12-05-q3",
+      "sectionId": "c12-05",
+      "question": "セッションに名前を付けておく利点として正しいものはどれか。",
+      "choices": [
+        "`claude --resume 名前` や `/resume 名前` で直接再開できる",
+        "名前を付けたセッションだけが保存される",
+        "名前を付けるとコンテキストウィンドウが広がる",
+        "名前を付けたセッションは別のフォルダでも同時に編集できる"
+      ],
+      "answer": 0,
+      "explanation": "起動時の `-n` やセッション中の `/rename` で名前を付けると、セッションピッカーで見つけやすくなり、名前で直接再開できます。名前を付けなくてもセッションは自動で保存されます。名前はコンテキストの大きさには関係しません。",
+      "sources": [
+        {
+          "title": "セッションの管理",
+          "url": "https://code.claude.com/docs/ja/sessions"
+        }
+      ]
+    },
+    {
+      "id": "c12-06-q1",
+      "sectionId": "c12-06",
+      "question": "使えるショートカットの一覧を Claude Code の画面で確かめるにはどうするか。",
+      "choices": [
+        "入力欄に文字がある状態で `?` を押す",
+        "`/exit` を実行してから `claude --help` を見る",
+        "`Ctrl+O` を押して詳しい表示に切り替える",
+        "入力欄が空のときに `?` を押す"
+      ],
+      "answer": 3,
+      "explanation": "入力欄が空のときに `?` を押すと、ショートカットの一覧が出ます。入力欄に文字があるときの `?` は、ただの文字として入力されます。`Ctrl+O` はツールの動きを詳しく見る表示の切り替えです。",
+      "sources": [
+        {
+          "title": "インタラクティブモード",
+          "url": "https://code.claude.com/docs/ja/interactive-mode"
+        }
+      ]
+    },
+    {
+      "id": "c12-06-q2",
+      "sectionId": "c12-06",
+      "question": "スラッシュコマンドの扱いとして正しいものはどれか。",
+      "choices": [
+        "メッセージのどこに書いても、その場で実行される",
+        "Claude の作業中に送ると、送ったものはすべて捨てられる",
+        "メッセージの先頭に書いたときだけ実行され、後ろの文字は引数になる",
+        "コマンドの名前は大文字で書かないと実行されない"
+      ],
+      "answer": 2,
+      "explanation": "スラッシュコマンドとして実行されるのは、メッセージの先頭に書いたときだけで、名前の後ろの文字は引数として渡されます。作業中に送ったコマンドの多くは捨てられず、その回の作業が終わってから実行されます。",
+      "sources": [
+        {
+          "title": "コマンド",
+          "url": "https://code.claude.com/docs/ja/commands"
+        }
+      ]
+    }
+  ]
+}

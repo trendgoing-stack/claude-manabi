@@ -28,6 +28,17 @@ export function termIdOf(name) {
   return byName.get(String(name).trim().toLowerCase()) ?? byName.get(String(name).trim()) ?? null;
 }
 
+let autoTerms = [];
+let autoFor = null;
+/** 自動リンクの対象（noAutoLink の用語は [[ ]] で書いたときだけリンクする。「プロジェクト」のような一般的な語のため） */
+export function autoLinkTerms() {
+  if (autoFor !== app.data.glossary) {
+    autoTerms = app.data.glossary.filter((t) => !t.noAutoLink);
+    autoFor = app.data.glossary;
+  }
+  return autoTerms;
+}
+
 const termButton = (id, label) => h('button', { type: 'button', class: 'term-link', onClick: () => openTermDialog(id) }, richText(label));
 
 /** 自動リンク（`コード` の外側だけ） */
@@ -40,7 +51,7 @@ function autoLinked(text, seen, frag) {
       continue;
     }
     let last = 0;
-    for (const f of findTerms(part, app.data.glossary)) {
+    for (const f of findTerms(part, autoLinkTerms())) {
       if (seen.has(f.id)) continue;
       seen.add(f.id);
       if (f.start > last) frag.append(richText(part.slice(last, f.start)));
