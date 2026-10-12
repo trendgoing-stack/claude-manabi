@@ -444,7 +444,9 @@
         "status": "doc-verified",
         "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
       },
-      "tryIds": [],
+      "tryIds": [
+        "try-11-01"
+      ],
       "dictIds": [
         "slash-doctor"
       ]
@@ -728,7 +730,9 @@
         "status": "doc-verified",
         "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
       },
-      "tryIds": [],
+      "tryIds": [
+        "try-11-01"
+      ],
       "dictIds": [
         "slash-init"
       ]
@@ -861,7 +865,9 @@
         "status": "doc-verified",
         "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
       },
-      "tryIds": [],
+      "tryIds": [
+        "try-11-01"
+      ],
       "dictIds": [
         "slash-doctor"
       ]

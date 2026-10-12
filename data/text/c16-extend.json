@@ -349,7 +349,9 @@
         "status": "doc-verified",
         "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
       },
-      "tryIds": [],
+      "tryIds": [
+        "try-16-01"
+      ],
       "dictIds": [
         "slash-skills",
         "slash-code-review"
@@ -503,7 +505,9 @@
         "status": "doc-verified",
         "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
       },
-      "tryIds": [],
+      "tryIds": [
+        "try-16-01"
+      ],
       "dictIds": [
         "slash-skills"
       ]
@@ -635,7 +639,9 @@
         "status": "doc-verified",
         "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
       },
-      "tryIds": [],
+      "tryIds": [
+        "try-16-02"
+      ],
       "dictIds": [
         "slash-agents",
         "slash-tasks"
@@ -769,7 +775,9 @@
         "status": "doc-verified",
         "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
       },
-      "tryIds": [],
+      "tryIds": [
+        "try-16-02"
+      ],
       "dictIds": [
         "slash-agents"
       ]

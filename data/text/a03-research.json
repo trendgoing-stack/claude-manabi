@@ -246,7 +246,9 @@
         "status": "doc-verified",
         "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）。10684626 にアプリの記載がないため surfaces は web のみ"
       },
-      "tryIds": [],
+      "tryIds": [
+        "try-03-01"
+      ],
       "dictIds": []
     },
     {
@@ -339,7 +341,9 @@
         "status": "doc-verified",
         "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
       },
-      "tryIds": [],
+      "tryIds": [
+        "try-03-01"
+      ],
       "dictIds": []
     },
     {
@@ -798,7 +802,9 @@
         "status": "doc-verified",
         "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
       },
-      "tryIds": [],
+      "tryIds": [
+        "try-03-01"
+      ],
       "dictIds": []
     }
   ]

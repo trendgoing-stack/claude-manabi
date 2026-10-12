@@ -126,7 +126,9 @@
         "status": "doc-verified",
         "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
       },
-      "tryIds": [],
+      "tryIds": [
+        "try-13-01"
+      ],
       "dictIds": [
         "slash-init",
         "slash-memory"
@@ -291,7 +293,9 @@
         "status": "doc-verified",
         "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
       },
-      "tryIds": [],
+      "tryIds": [
+        "try-13-01"
+      ],
       "dictIds": [
         "slash-memory"
       ]
@@ -646,7 +650,9 @@
         "status": "doc-verified",
         "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
       },
-      "tryIds": [],
+      "tryIds": [
+        "try-13-02"
+      ],
       "dictIds": [
         "slash-compact",
         "slash-context"
@@ -799,7 +805,10 @@
         "status": "doc-verified",
         "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
       },
-      "tryIds": [],
+      "tryIds": [
+        "try-13-01",
+        "try-13-02"
+      ],
       "dictIds": [
         "slash-clear",
         "slash-compact",

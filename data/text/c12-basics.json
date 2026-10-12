@@ -304,7 +304,9 @@
         "status": "doc-verified",
         "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
       },
-      "tryIds": [],
+      "tryIds": [
+        "try-12-01"
+      ],
       "dictIds": [
         "key-at",
         "key-alt-v"
@@ -405,7 +407,9 @@
         "status": "doc-verified",
         "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
       },
-      "tryIds": [],
+      "tryIds": [
+        "try-12-01"
+      ],
       "dictIds": [
         "key-exclamation"
       ]
@@ -562,7 +566,9 @@
         "status": "doc-verified",
         "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
       },
-      "tryIds": [],
+      "tryIds": [
+        "try-14-02"
+      ],
       "dictIds": [
         "slash-rewind",
         "key-esc",
@@ -720,7 +726,9 @@
         "status": "doc-verified",
         "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
       },
-      "tryIds": [],
+      "tryIds": [
+        "try-12-02"
+      ],
       "dictIds": [
         "slash-clear",
         "slash-resume",

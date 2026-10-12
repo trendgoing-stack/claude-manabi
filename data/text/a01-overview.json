@@ -456,7 +456,9 @@
         "status": "doc-verified",
         "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
       },
-      "tryIds": [],
+      "tryIds": [
+        "try-01-01"
+      ],
       "dictIds": [
         "key-alt-p",
         "key-alt-t"

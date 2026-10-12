@@ -238,7 +238,9 @@
         "status": "doc-verified",
         "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
       },
-      "tryIds": [],
+      "tryIds": [
+        "try-08-01"
+      ],
       "dictIds": []
     },
     {
@@ -352,7 +354,9 @@
         "status": "doc-verified",
         "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
       },
-      "tryIds": [],
+      "tryIds": [
+        "try-08-01"
+      ],
       "dictIds": []
     },
     {
@@ -706,7 +710,9 @@
         "status": "doc-verified",
         "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
       },
-      "tryIds": [],
+      "tryIds": [
+        "try-08-01"
+      ],
       "dictIds": []
     }
   ]
