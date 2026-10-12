@@ -1,0 +1,276 @@
+{
+  "schemaVersion": 1,
+  "chapterId": "c16",
+  "questions": [
+    {
+      "id": "c16-01-q1",
+      "sectionId": "c16-01",
+      "question": "ふだんのコンテキストへの読み込まれ方として正しいものはどれか。",
+      "choices": [
+        "スキルは会話の始めに本文まで全部読み込まれる",
+        "CLAUDE.md は会話の始めに全文が読み込まれ、毎回のやり取りに含まれる",
+        "フックの処理内容は、毎回メインのコンテキストに全文が入る",
+        "サブエージェントが読んだファイルの中身は、すべてメインの会話に入る"
+      ],
+      "answer": 1,
+      "explanation": "CLAUDE.md は会話の始めに全文が読み込まれ、毎回のやり取りに含まれます。スキルはふだん名前と説明だけで、本文は使うときに読み込まれます。フックは会話の外で動き、サブエージェントは別のコンテキストで作業して結果だけを返します。",
+      "sources": [
+        {
+          "title": "Claude Code を拡張する",
+          "url": "https://code.claude.com/docs/ja/features-overview"
+        }
+      ]
+    },
+    {
+      "id": "c16-01-q2",
+      "sectionId": "c16-01",
+      "question": "「`.env` ファイルは絶対に編集させない」というルールを確実に守らせたいとき、最も向いている拡張はどれか。",
+      "choices": [
+        "CLAUDE.md に「編集しない」と書く",
+        "同じ内容をスキルにまとめる",
+        "編集の操作そのものを止めるフックを使う",
+        "読むだけのサブエージェントを作る"
+      ],
+      "answer": 2,
+      "explanation": "CLAUDE.md やスキルの指示は Claude が解釈して従う「お願い」なので、守られない場合があります。フックは決まったタイミングで必ず動くため、操作を止めるルールに向いています。読むだけのサブエージェントは、メインの会話の編集を止めるものではありません。",
+      "sources": [
+        {
+          "title": "Claude Code を拡張する",
+          "url": "https://code.claude.com/docs/ja/features-overview"
+        }
+      ]
+    },
+    {
+      "id": "c16-02-q1",
+      "sectionId": "c16-02",
+      "question": "どのリポジトリで作業していても使える自分用のスキル `tidy-commit` を作るとき、SKILL.md を置く場所はどれか。",
+      "choices": [
+        "`~/.claude/skills/tidy-commit/SKILL.md`",
+        "`.claude/skills/tidy-commit/SKILL.md`",
+        "`~/.claude/agents/tidy-commit.md`",
+        "`.claude/settings.json` の中"
+      ],
+      "answer": 0,
+      "explanation": "自分用のスキルはホームフォルダの `~/.claude/skills/<名前>/SKILL.md` に置き、その PC のすべてのリポジトリで使えます。`.claude/skills/` はそのリポジトリ用です。`agents` フォルダはサブエージェントを置く場所です。",
+      "sources": [
+        {
+          "title": "Claude をスキルで拡張する",
+          "url": "https://code.claude.com/docs/ja/skills"
+        }
+      ]
+    },
+    {
+      "id": "c16-02-q2",
+      "sectionId": "c16-02",
+      "question": "SKILL.md の本文に書いた `` !`git log --oneline -15` `` の行は、どう扱われるか。",
+      "choices": [
+        "Claude がコマンドとして実行するかを、毎回あなたに確認する",
+        "コードの例としてそのまま Claude に見せる",
+        "スキルを呼んだあとに、Claude が必要と判断したときだけ実行する",
+        "Claude が読む前に Claude Code が実行し、出力に置き換える"
+      ],
+      "answer": 3,
+      "explanation": "`` !`コマンド` `` は動的コンテキスト注入と呼ばれ、Claude がスキルを読む前に Claude Code がコマンドを実行して、その行を出力に置き換えます。Claude があとで実行するかを判断するものではありません。そのため、スキルを呼ぶたびに手元でコマンドが動きます。",
+      "sources": [
+        {
+          "title": "Claude をスキルで拡張する",
+          "url": "https://code.claude.com/docs/ja/skills"
+        }
+      ]
+    },
+    {
+      "id": "c16-02-q3",
+      "sectionId": "c16-02",
+      "question": "以前から使っている `.claude/commands/deploy.md`（カスタムコマンド）について正しいものはどれか。",
+      "choices": [
+        "今は動かないので、すぐに書き換える必要がある",
+        "`/deploy` で動き続け、スキルと同じ仕組みとして扱われる",
+        "Claude だけが使え、`/deploy` とは入力できない",
+        "プラグインに入れたときだけ動く"
+      ],
+      "answer": 1,
+      "explanation": "カスタムコマンドはスキルに統合され、`.claude/commands/` のファイルは今も `/名前` で動きます。新しく作るなら、補助のファイルを置けるスキルが勧められています。プラグインに入れる必要はありません。",
+      "sources": [
+        {
+          "title": "Claude をスキルで拡張する",
+          "url": "https://code.claude.com/docs/ja/skills"
+        }
+      ]
+    },
+    {
+      "id": "c16-03-q1",
+      "sectionId": "c16-03",
+      "question": "公開用サーバーへ反映するスキルを、Claude が自分の判断で動かさないようにしたい。フロントマターに書くものはどれか。",
+      "choices": [
+        "`user-invocable: false`",
+        "`context: fork`",
+        "`disable-model-invocation: true`",
+        "`allowed-tools` に反映用のコマンドを書く"
+      ],
+      "answer": 2,
+      "explanation": "`disable-model-invocation: true` にすると、あなたが `/名前` で呼んだときだけ動き、説明もコンテキストに入らなくなります。`user-invocable: false` は逆に `/` メニューから隠し、Claude だけが使うための設定です。`context: fork` は別のコンテキストで動かす設定で、誰が呼ぶかは変わりません。",
+      "sources": [
+        {
+          "title": "Claude をスキルで拡張する",
+          "url": "https://code.claude.com/docs/ja/skills"
+        }
+      ]
+    },
+    {
+      "id": "c16-03-q2",
+      "sectionId": "c16-03",
+      "question": "スキル `release-note` を確実にすぐ動かしたいときの入力として、最も適切なものはどれか。",
+      "choices": [
+        "`/release-note v1.2`",
+        "`v1.2 について /release-note してもいいよ`",
+        "`release-note というスキルがあるよね`",
+        "`@release-note v1.2`"
+      ],
+      "answer": 0,
+      "explanation": "メッセージの先頭に `/名前` を書くと、スキルがすぐに実行され、後ろの文字は引数として渡されます。文の途中に書いた `/名前` は使ってよいという許可の意味になり、すぐには実行されません。`@` はファイルやサブエージェントを指すときに使います。",
+      "sources": [
+        {
+          "title": "Claude をスキルで拡張する",
+          "url": "https://code.claude.com/docs/ja/skills"
+        }
+      ]
+    },
+    {
+      "id": "c16-03-q3",
+      "sectionId": "c16-03",
+      "question": "`context: fork` を書いたスキルについて正しいものはどれか。",
+      "choices": [
+        "それまでの会話の履歴をすべて引き継いで動く",
+        "決まりだけを書いたスキルに付けると、最も効果が出る",
+        "既定では、メインの会話を止めて終わるまで待たせる",
+        "会話の履歴を見ないので、本文に具体的な作業の指示が要る"
+      ],
+      "answer": 3,
+      "explanation": "`context: fork` のスキルはサブエージェントとして別のコンテキストで動き、それまでの会話を見ません。そのため、本文だけで分かる作業の指示が必要で、決まりだけのスキルでは意味のある結果が返りません。既定では背景で動きます。",
+      "sources": [
+        {
+          "title": "Claude をスキルで拡張する",
+          "url": "https://code.claude.com/docs/ja/skills"
+        }
+      ]
+    },
+    {
+      "id": "c16-04-q1",
+      "sectionId": "c16-04",
+      "question": "サブエージェントに調べものを任せる主な利点はどれか。",
+      "choices": [
+        "途中で読んだ大量の情報がメインの会話に入らず、結果だけが戻る",
+        "使用量の制限に数えられない",
+        "作業の途中経過が、すべてメインの会話に表示される",
+        "必ずメインの会話より新しいモデルで動く"
+      ],
+      "answer": 0,
+      "explanation": "サブエージェントは自分のコンテキストウィンドウで作業し、最後の結果だけをメインの会話に返すので、会話があふれにくくなります。作業はメインの会話と同じ使用量の制限に数えられます。また、途中で読んだ内容はサブエージェント側に残り、メインの会話には入りません。",
+      "sources": [
+        {
+          "title": "カスタムサブエージェントの作成",
+          "url": "https://code.claude.com/docs/ja/sub-agents"
+        }
+      ]
+    },
+    {
+      "id": "c16-04-q2",
+      "sectionId": "c16-04",
+      "question": "特定のサブエージェントを1つの作業で確実に使わせたいときの方法はどれか。",
+      "choices": [
+        "依頼文の最後に「できればサブエージェントで」と書く",
+        "`/agents` を実行して対話画面で選ぶ",
+        "`@` を打ち、候補の一覧からそのサブエージェントを選ぶ",
+        "CLAUDE.md にサブエージェントの名前を書く"
+      ],
+      "answer": 2,
+      "explanation": "`@` で候補からサブエージェントを指名すると、そのサブエージェントが確実に使われます。文章で頼む方法では、任せるかどうかの判断は Claude に残ります。現在の版の `/agents` は、作り方の案内を表示するコマンドです。",
+      "sources": [
+        {
+          "title": "カスタムサブエージェントの作成",
+          "url": "https://code.claude.com/docs/ja/sub-agents"
+        }
+      ]
+    },
+    {
+      "id": "c16-05-q1",
+      "sectionId": "c16-05",
+      "question": "サブエージェントの定義ファイルで、フロントマターに必ず書く項目の組み合わせはどれか。",
+      "choices": [
+        "`name` と `tools`",
+        "`name` と `description`",
+        "`description` と `model`",
+        "`tools` と `model`"
+      ],
+      "answer": 1,
+      "explanation": "必須なのは `name` と `description` です。`tools` は省くとサブエージェントが使えるツールを引き継ぎ、`model` も省略できます。説明は Claude が任せるかを決める手がかりになるので、具体的に書きます。",
+      "sources": [
+        {
+          "title": "カスタムサブエージェントの作成",
+          "url": "https://code.claude.com/docs/ja/sub-agents"
+        }
+      ]
+    },
+    {
+      "id": "c16-05-q2",
+      "sectionId": "c16-05",
+      "question": "`.claude/agents/` と `~/.claude/agents/` に同じ名前のサブエージェントがあるとき、使われるのはどれか。",
+      "choices": [
+        "`~/.claude/agents/` の自分用",
+        "あとから作った方",
+        "両方が順に動く",
+        "`.claude/agents/` のリポジトリ用"
+      ],
+      "answer": 3,
+      "explanation": "サブエージェントは、リポジトリ用の `.claude/agents/` が自分用の `~/.claude/agents/` より優先されます。スキルでは逆に自分用が優先されるので、取り違えに注意します。作った順や、両方を動かすといった決まりはありません。",
+      "sources": [
+        {
+          "title": "カスタムサブエージェントの作成",
+          "url": "https://code.claude.com/docs/ja/sub-agents"
+        }
+      ]
+    },
+    {
+      "id": "c16-06-q1",
+      "sectionId": "c16-06",
+      "question": "サブエージェントではなく、メインの会話で進める方が向いている作業はどれか。",
+      "choices": [
+        "テストを全部実行し、失敗したものだけを知りたい",
+        "多くのファイルを読んで、使われていない関数を探したい",
+        "画面の文言を、やり取りしながら少しずつ直したい",
+        "書き換えのできない点検係に README を確かめさせたい"
+      ],
+      "answer": 2,
+      "explanation": "やり取りを重ねて直していく作業や小さな修正は、メインの会話の方が向いています。フォーク以外のサブエージェントはまっさらな状態から始まるため、情報を集め直す時間がかかります。出力の多い作業や、ツールを絞りたい仕事はサブエージェントに向きます。",
+      "sources": [
+        {
+          "title": "カスタムサブエージェントの作成",
+          "url": "https://code.claude.com/docs/ja/sub-agents"
+        }
+      ]
+    },
+    {
+      "id": "c16-06-q2",
+      "sectionId": "c16-06",
+      "question": "サブエージェントのフロントマターの `skills` に書いたスキルは、どう扱われるか。",
+      "choices": [
+        "起動時に、そのスキルの全文がサブエージェントのコンテキストに読み込まれる",
+        "メインの会話でだけ使えるようになる",
+        "サブエージェントが呼べるスキルが、その一覧だけに限られる",
+        "そのスキルが `context: fork` に変わる"
+      ],
+      "answer": 0,
+      "explanation": "`skills` に書いたスキルは、サブエージェントの起動時に全文が読み込まれます。これは読み込むスキルを決める項目で、使えるスキルを一覧だけに限るものではありません。`context: fork` はスキル側に書く、別の設定です。",
+      "sources": [
+        {
+          "title": "カスタムサブエージェントの作成",
+          "url": "https://code.claude.com/docs/ja/sub-agents"
+        },
+        {
+          "title": "Claude Code を拡張する",
+          "url": "https://code.claude.com/docs/ja/features-overview"
+        }
+      ]
+    }
+  ]
+}

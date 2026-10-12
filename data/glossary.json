@@ -57,6 +57,20 @@
       ]
     },
     {
+      "id": "g-anthropic-skill",
+      "term": "Anthropic のスキル",
+      "reading": "あんそろぴっくのすきる",
+      "aliases": [
+        "Anthropic skills"
+      ],
+      "definition": "Anthropic が作って保守しているスキル。Excel・Word・PowerPoint・PDF のファイル作成などに使われ、関係する依頼で Claude が自動で使う。",
+      "related": [
+        "g-skill",
+        "g-custom-skill",
+        "g-code-execution"
+      ]
+    },
+    {
       "id": "g-legacy-memory",
       "term": "以前からの方式のメモリ",
       "reading": "いぜんからのほうしきのめもり",
@@ -132,6 +146,16 @@
       ]
     },
     {
+      "id": "g-agent-skills",
+      "term": "Agent Skills",
+      "reading": "えーじぇんとすきるず",
+      "aliases": [],
+      "definition": "スキルの形式を定めた公開の仕様。Claude 以外のツールでも同じ形式のスキルを使えるように公開されている。",
+      "related": [
+        "g-skill"
+      ]
+    },
+    {
       "id": "g-agentic-loop",
       "term": "エージェントループ",
       "reading": "えーじぇんとるーぷ",
@@ -154,6 +178,18 @@
       "definition": "API を使うための秘密の文字列。Claude Code では環境変数 ANTHROPIC_API_KEY に設定して承認すると、サブスクリプションのログインより優先される。人に見せたりリポジトリに書いたりしない。",
       "related": [
         "g-claude-console"
+      ]
+    },
+    {
+      "id": "g-explore-agent",
+      "term": "Explore",
+      "reading": "えくすぷろあ",
+      "aliases": [
+        "Explore エージェント"
+      ],
+      "definition": "Claude Code に最初から入っている、読むだけのサブエージェント。コードを探して調べることに使い、ファイルは書き換えない。",
+      "related": [
+        "g-subagent"
       ]
     },
     {
@@ -190,7 +226,7 @@
       "aliases": [
         "Model Context Protocol"
       ],
-      "definition": "AI とツールやデータをつなぐ方法を決めた公開の規格。Anthropic が作った。コネクタの土台になっている。",
+      "definition": "AI とツールやデータをつなぐ方法を決めた公開の規格。Anthropic が作った。コネクタの土台になっている。Claude Code でも MCP サーバーをつなぐと、外部のサービスのデータを読んだり操作したりできる。",
       "related": [
         "g-connector",
         "g-mcp-server"
@@ -224,6 +260,17 @@
       ]
     },
     {
+      "id": "g-customize",
+      "term": "Customize",
+      "reading": "かすたまいず",
+      "aliases": [],
+      "definition": "Claude アプリの左のサイドバーにあるメニュー。Skills・Connectors・Plugins のタブがあり、スキルのオン・オフや、ディレクトリからの追加を行う。",
+      "related": [
+        "g-skill",
+        "g-plugin"
+      ]
+    },
+    {
       "id": "g-custom-connector",
       "term": "カスタムコネクタ",
       "reading": "かすたむこねくた",
@@ -235,6 +282,34 @@
       "related": [
         "g-connector",
         "g-mcp-server"
+      ]
+    },
+    {
+      "id": "g-custom-command",
+      "term": "カスタムコマンド",
+      "reading": "かすたむこまんど",
+      "aliases": [
+        "custom commands"
+      ],
+      "definition": "`.claude/commands/` に置いた Markdown ファイルで作る、自作のスラッシュコマンド。今はスキルと同じ仕組みに統合されていて、新しく作るならスキルが勧められている。",
+      "related": [
+        "g-skill",
+        "g-slash-command"
+      ]
+    },
+    {
+      "id": "g-custom-skill",
+      "term": "カスタムスキル",
+      "reading": "かすたむすきる",
+      "aliases": [
+        "custom skills",
+        "custom skill"
+      ],
+      "definition": "個人や組織が、自分たちの仕事のやり方に合わせて作るスキル。Claude アプリでは、SKILL.md を入れたフォルダを ZIP にして Customize の Skills からアップロードする。",
+      "related": [
+        "g-skill",
+        "g-skill-md",
+        "g-anthropic-skill"
       ]
     },
     {
@@ -611,6 +686,19 @@
       ]
     },
     {
+      "id": "g-system-prompt",
+      "term": "システムプロンプト",
+      "reading": "しすてむぷろんぷと",
+      "aliases": [
+        "system prompt"
+      ],
+      "definition": "モデルの役割や振る舞いを決める、会話の土台になる指示。Claude Code のサブエージェントでは、定義ファイルの本文がそのサブエージェントのシステムプロンプトになる。",
+      "related": [
+        "g-subagent",
+        "g-prompt"
+      ]
+    },
+    {
       "id": "g-compaction",
       "term": "自動圧縮",
       "reading": "じどうあっしゅく",
@@ -689,6 +777,33 @@
       "related": [
         "g-instructions-for-claude",
         "g-context-window"
+      ]
+    },
+    {
+      "id": "g-skill-md",
+      "term": "SKILL.md",
+      "reading": "すきるえむでぃー",
+      "aliases": [
+        "skill.md"
+      ],
+      "definition": "スキルのフォルダに必ず入れる中心のファイル。Claude アプリのヘルプでは skill.md、Claude Code と Agent Skills の仕様では SKILL.md と表記される。先頭のフロントマターに name や description などを書き、その下に Markdown で手順や決まりごとを書く。Claude Code では、入っているフォルダの名前が `/名前` のコマンドになる。",
+      "related": [
+        "g-skill",
+        "g-frontmatter",
+        "g-custom-skill"
+      ]
+    },
+    {
+      "id": "g-skill-scanning",
+      "term": "スキルのスキャン",
+      "reading": "すきるのすきゃん",
+      "aliases": [
+        "skill scanning"
+      ],
+      "definition": "Enterprise プランで組織が使える、アップロードされたスキルやプラグインに悪意のある内容がないかを調べる仕組み。",
+      "related": [
+        "g-skill",
+        "g-plugin"
       ]
     },
     {
@@ -803,6 +918,19 @@
       ]
     },
     {
+      "id": "g-progressive-disclosure",
+      "term": "段階的な開示",
+      "reading": "だんかいてきなかいじ",
+      "aliases": [
+        "progressive disclosure"
+      ],
+      "definition": "スキルの情報を、必要になった分だけ順に読み込む仕組み。Claude はまず名前と説明を見て使うかを決め、使うときに本文や追加の資料を読む。",
+      "related": [
+        "g-skill",
+        "g-context-window"
+      ]
+    },
+    {
       "id": "g-checkpoint",
       "term": "チェックポイント",
       "reading": "ちぇっくぽいんと",
@@ -890,6 +1018,18 @@
       ]
     },
     {
+      "id": "g-dynamic-context-injection",
+      "term": "動的コンテキスト注入",
+      "reading": "どうてきこんてきすとちゅうにゅう",
+      "aliases": [
+        "dynamic context injection"
+      ],
+      "definition": "スキルの本文に書いた `` !`コマンド` `` を、Claude が読む前に Claude Code が実行し、その出力に置き換える仕組み。差分やログなど、そのときの情報をスキルに差し込める。",
+      "related": [
+        "g-skill-md"
+      ]
+    },
+    {
       "id": "g-token",
       "term": "トークン",
       "reading": "とーくん",
@@ -953,6 +1093,18 @@
       ]
     },
     {
+      "id": "g-bundled-skill",
+      "term": "bundled skills",
+      "reading": "ばんどるどすきるず",
+      "aliases": [
+        "bundled skill"
+      ],
+      "definition": "Claude Code に最初から入っているスキル。自分で作るスキルと同じく、Claude に渡す指示として働き、`/code-review` や `/debug` のようにスラッシュコマンドで呼べる。",
+      "related": [
+        "g-skill"
+      ]
+    },
+    {
       "id": "g-display-language",
       "term": "表示言語",
       "reading": "ひょうじげんご",
@@ -999,6 +1151,21 @@
       "related": [
         "g-prompt",
         "g-xml-tag"
+      ]
+    },
+    {
+      "id": "g-plugin",
+      "term": "プラグイン",
+      "reading": "ぷらぐいん",
+      "aliases": [
+        "Plugins",
+        "plugin"
+      ],
+      "definition": "ある役割やチームの仕事に合わせて、スキル・コネクタ・サブエージェントなどを1つにまとめたパッケージ。Claude アプリでは Customize の Plugins から追加し、同じアカウントの Claude Code にも同期される。Claude Code ではフックや MCP サーバーも含められ、プラグインのスキルは `/プラグイン名:スキル名` の形で呼ぶ。",
+      "related": [
+        "g-skill",
+        "g-subagent",
+        "g-customize"
       ]
     },
     {
@@ -1074,7 +1241,7 @@
       "aliases": [
         "フロントマター"
       ],
-      "definition": "Markdown ファイルの先頭で `---` に挟んで書く設定欄。名前や説明などの項目を YAML 形式で書き、出力スタイルなどのファイルで使う。",
+      "definition": "Markdown ファイルの先頭で `---` に挟んで書く設定欄。名前や説明などの項目を YAML 形式で書き、スキルやサブエージェントの名前・説明、出力スタイルなどのファイルで使う。",
       "related": [
         "g-output-style"
       ]
