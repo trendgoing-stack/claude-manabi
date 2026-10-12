@@ -44,6 +44,16 @@
       ]
     },
     {
+      "id": "g-ask-claude",
+      "term": "Ask Claude",
+      "reading": "あすくくろーど",
+      "aliases": [],
+      "definition": "iPhone の Siri・Spotlight・共有メニューやショートカット アプリから、Claude アプリを開かずに質問や依頼を送るための入口。",
+      "related": [
+        "g-dictation"
+      ]
+    },
+    {
       "id": "g-network-egress",
       "term": "Allow network egress",
       "reading": "あらうねっとわーくいーぐれす",
@@ -156,6 +166,31 @@
       ]
     },
     {
+      "id": "g-agent-teams",
+      "term": "agent teams",
+      "reading": "えーじぇんとちーむず",
+      "aliases": [
+        "エージェントチーム"
+      ],
+      "definition": "Claude がまとめ役になり、作業を分けて複数のセッションに割り振る Claude Code の機能。担当どうしが連絡を取り合える。実験的な機能で、既定では無効。",
+      "related": [
+        "g-subagent"
+      ]
+    },
+    {
+      "id": "g-agent-view",
+      "term": "エージェントビュー",
+      "reading": "えーじぇんとびゅー",
+      "aliases": [
+        "agent view"
+      ],
+      "definition": "裏で動く複数の Claude Code のセッションを、1つのターミナルの画面で見渡して管理する機能。`claude agents` で開く。リサーチプレビューの段階。",
+      "related": [
+        "g-background-session",
+        "g-worktree"
+      ]
+    },
+    {
       "id": "g-agentic-loop",
       "term": "エージェントループ",
       "reading": "えーじぇんとるーぷ",
@@ -247,6 +282,16 @@
       ]
     },
     {
+      "id": "g-automatically-approve",
+      "term": "Automatically approve",
+      "reading": "おーとまてぃかりーあぷるーぶ",
+      "aliases": [],
+      "definition": "Claude in Chrome の承認の方式の一つ。安全確認のしくみが各操作を実行前に調べ、危ない操作は止めるが、完全な防御ではない。ほかに、毎回承認する Manually approve と、確認なしで進む Skip all approvals がある。",
+      "related": [
+        "g-claude-in-chrome"
+      ]
+    },
+    {
       "id": "g-auto-mode",
       "term": "auto mode",
       "reading": "おーともーど",
@@ -257,6 +302,31 @@
       "related": [
         "g-classifier",
         "g-permission-mode"
+      ]
+    },
+    {
+      "id": "g-dictation",
+      "term": "音声入力",
+      "reading": "おんせいにゅうりょく",
+      "aliases": [
+        "dictation"
+      ],
+      "definition": "話した言葉を文字に変えて、依頼として送る機能。Claude の答えは文字で返る。声で答える音声モードとは別の機能。",
+      "related": [
+        "g-voice-mode"
+      ]
+    },
+    {
+      "id": "g-voice-mode",
+      "term": "音声モード",
+      "reading": "おんせいもーど",
+      "aliases": [
+        "voice mode"
+      ],
+      "definition": "Claude と声でやり取りする機能（ベータ）。Claude も声で答え、会話は文字起こしとしてチャットの履歴に残る。",
+      "related": [
+        "g-dictation",
+        "g-push-to-talk"
       ]
     },
     {
@@ -391,6 +461,60 @@
       ]
     },
     {
+      "id": "g-quick-entry",
+      "term": "クイックエントリ",
+      "reading": "くいっくえんとり",
+      "aliases": [
+        "quick entry"
+      ],
+      "definition": "Mac 版の Claude Desktop で、どのアプリを使っていてもキー操作で Claude の入力欄を呼び出す機能。画面の一部やウィンドウを添付したり、声で入力したりできる。",
+      "related": [
+        "g-claude-desktop",
+        "g-dictation"
+      ]
+    },
+    {
+      "id": "g-cloud-environment",
+      "term": "クラウド環境",
+      "reading": "くらうどかんきょう",
+      "aliases": [
+        "cloud environment",
+        "cloud environments"
+      ],
+      "definition": "クラウドセッションが動く場所の設定。ネットワークの範囲（None・Trusted・Full・Custom）、環境変数、セットアップスクリプトを決める。最初は Default という環境が使われる。",
+      "related": [
+        "g-cloud-session",
+        "g-setup-script"
+      ]
+    },
+    {
+      "id": "g-cloud-session",
+      "term": "クラウドセッション",
+      "reading": "くらうどせっしょん",
+      "aliases": [
+        "cloud session",
+        "cloud sessions"
+      ],
+      "definition": "手元の PC ではなく、クラウドの仮想マシンで動く Claude Code のセッション。PC を閉じても作業が続く。claude.ai/code、Claude アプリ、デスクトップアプリ、`claude --cloud` から始める。ブラウザで使うものは Claude Code on the web とも呼ぶ。",
+      "related": [
+        "g-cloud-environment",
+        "g-teleport",
+        "g-claude-github-app"
+      ]
+    },
+    {
+      "id": "g-claude-in-chrome",
+      "term": "Claude in Chrome",
+      "reading": "くろーどいんくろーむ",
+      "aliases": [],
+      "definition": "Google Chrome に入れる Claude の拡張機能（Chrome のサイドパネルで使う形はベータ）。Claude がページを読み、クリックや入力、フォームの記入などを代わりに行う。",
+      "related": [
+        "g-side-panel",
+        "g-automatically-approve",
+        "g-prompt-injection"
+      ]
+    },
+    {
       "id": "g-claude-md",
       "term": "CLAUDE.md",
       "reading": "くろーどえむでぃー",
@@ -400,6 +524,16 @@
         "g-claude-local-md",
         "g-auto-memory",
         "g-context-window"
+      ]
+    },
+    {
+      "id": "g-claude-github-app",
+      "term": "Claude GitHub App",
+      "reading": "くろーどぎっとはぶあっぷ",
+      "aliases": [],
+      "definition": "GitHub のリポジトリに入れる Claude 用のアプリ。リポジトリへのアクセスを Claude に許可する。ブラウザでつないだクラウドセッションが非公開のリポジトリで作業するときや、PR の自動修正（Auto-fix）、GitHub Actions での連携などで使う。",
+      "related": [
+        "g-cloud-session"
       ]
     },
     {
@@ -466,6 +600,19 @@
       "related": [
         "g-artifact-template",
         "g-design-system"
+      ]
+    },
+    {
+      "id": "g-claude-desktop",
+      "term": "Claude Desktop",
+      "reading": "くろーどですくとっぷ",
+      "aliases": [
+        "デスクトップアプリ"
+      ],
+      "definition": "Mac・Windows のパソコンに入れて使う Claude のアプリ（Linux 版はベータ）。チャットのほか、プランによっては Claude Cowork や Claude Code の機能も使える。",
+      "related": [
+        "g-quick-entry",
+        "g-computer-use"
       ]
     },
     {
@@ -596,6 +743,19 @@
       ]
     },
     {
+      "id": "g-computer-use",
+      "term": "コンピュータ操作",
+      "reading": "こんぴゅーたそうさ",
+      "aliases": [
+        "computer use"
+      ],
+      "definition": "Claude Cowork や Claude Code の作業の中で、Claude がパソコンのアプリを開き、クリックや入力をして操作する機能（ベータ）。アプリごとに許可が必要で、隔離のしくみ（サンドボックス）はない。",
+      "related": [
+        "g-claude-desktop",
+        "g-cowork"
+      ]
+    },
+    {
       "id": "g-surface",
       "term": "サーフェス",
       "reading": "さーふぇす",
@@ -606,6 +766,18 @@
       "related": [
         "g-claude-code",
         "g-cli"
+      ]
+    },
+    {
+      "id": "g-side-panel",
+      "term": "サイドパネル",
+      "reading": "さいどぱねる",
+      "aliases": [
+        "side panel"
+      ],
+      "definition": "Claude in Chrome で、ブラウザの横に開く Claude の画面。ここに依頼を書くと、Claude が開いているタブを見ながら作業する。",
+      "related": [
+        "g-claude-in-chrome"
       ]
     },
     {
@@ -893,6 +1065,19 @@
       ]
     },
     {
+      "id": "g-setup-script",
+      "term": "セットアップスクリプト",
+      "reading": "せっとあっぷすくりぷと",
+      "aliases": [
+        "setup script",
+        "setup scripts"
+      ],
+      "definition": "クラウドセッションが始まるとき、Claude Code が動き出す前に実行される Bash のスクリプト。依存関係のインストールなどに使い、クラウド環境ごとに設定する。",
+      "related": [
+        "g-cloud-environment"
+      ]
+    },
+    {
       "id": "g-llm",
       "term": "大規模言語モデル",
       "reading": "だいきぼげんごもでる",
@@ -1018,6 +1203,18 @@
       ]
     },
     {
+      "id": "g-teleport",
+      "term": "テレポート",
+      "reading": "てれぽーと",
+      "aliases": [
+        "teleport"
+      ],
+      "definition": "クラウドセッションを手元のターミナルに引き取ること。`claude --teleport` や `/teleport` で行い、セッションのブランチと会話の履歴が手元に移る。",
+      "related": [
+        "g-cloud-session"
+      ]
+    },
+    {
       "id": "g-dynamic-context-injection",
       "term": "動的コンテキスト注入",
       "reading": "どうてきこんてきすとちゅうにゅう",
@@ -1093,6 +1290,20 @@
       ]
     },
     {
+      "id": "g-background-session",
+      "term": "バックグラウンドセッション",
+      "reading": "ばっくぐらうんどせっしょん",
+      "aliases": [
+        "background session",
+        "background sessions"
+      ],
+      "definition": "ターミナルにつながっていなくても手元の PC で動き続ける Claude Code のセッション。`claude --bg` で始めたり、`/background` で今の会話を移したりする。",
+      "related": [
+        "g-agent-view",
+        "g-session"
+      ]
+    },
+    {
       "id": "g-bundled-skill",
       "term": "bundled skills",
       "reading": "ばんどるどすきるず",
@@ -1137,6 +1348,16 @@
       "definition": "ファイルの編集後など、決まったタイミングで自動的に実行される処理（主にシェルコマンド）。CLAUDE.md の指示と違い、Claude の判断にかかわらず必ず実行される。",
       "related": [
         "g-claude-md"
+      ]
+    },
+    {
+      "id": "g-push-to-talk",
+      "term": "push-to-talk",
+      "reading": "ぷっしゅとぅとーく",
+      "aliases": [],
+      "definition": "音声モードで、ボタンを押している間だけ声を聞き取る方式。話の切れ目で自動で答えるハンズフリーより、騒がしい場所に向く。",
+      "related": [
+        "g-voice-mode"
       ]
     },
     {
@@ -1425,6 +1646,19 @@
       ]
     },
     {
+      "id": "g-remote-control",
+      "term": "Remote Control",
+      "reading": "りもーとこんとろーる",
+      "aliases": [
+        "リモートコントロール"
+      ],
+      "definition": "手元の PC で動く Claude Code のセッションに、claude.ai/code や Claude アプリからつないで操作する機能。作業は PC で動き続けるので、PC と `claude` を動かしたままにしておく必要がある。",
+      "related": [
+        "g-cloud-session",
+        "g-session"
+      ]
+    },
+    {
       "id": "g-legacy-artifact",
       "term": "legacy artifacts",
       "reading": "れがしーあーてぃふぁくつ",
@@ -1446,6 +1680,31 @@
       "definition": "初めてのフォルダで Claude Code を使うときに、そのフォルダを信頼するかを確かめる仕組み。リポジトリの設定ファイルにある許可ルールは、信頼を受け入れるまで使われない。",
       "related": [
         "g-permission-rule"
+      ]
+    },
+    {
+      "id": "g-worktree",
+      "term": "worktree",
+      "reading": "わーくつりー",
+      "aliases": [
+        "ワークツリー",
+        "git worktree",
+        "worktrees"
+      ],
+      "definition": "git の機能で作る、もう1つの作業場所。リポジトリの履歴を共有したまま、ファイルとブランチを別に持つ。Claude Code では `claude --worktree <名前>` で、`.claude/worktrees/` の下に作って使う。",
+      "related": [
+        "g-worktreeinclude",
+        "g-session"
+      ]
+    },
+    {
+      "id": "g-worktreeinclude",
+      "term": ".worktreeinclude",
+      "reading": "わーくつりーいんくるーど",
+      "aliases": [],
+      "definition": "Claude Code が worktree を作るとき、`.gitignore` で無視されているファイル（`.env` など）のうち、どれをコピーするかを書くファイル。リポジトリの直下に置き、`.gitignore` と同じ書き方をする。",
+      "related": [
+        "g-worktree"
       ]
     }
   ]

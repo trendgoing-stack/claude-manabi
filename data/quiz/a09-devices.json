@@ -1,0 +1,281 @@
+{
+  "schemaVersion": 1,
+  "chapterId": "a09",
+  "questions": [
+    {
+      "id": "a09-01-q1",
+      "sectionId": "a09-01",
+      "question": "Mac 版 Claude Desktop のクイックエントリの使い方として正しいものはどれか。",
+      "choices": [
+        "Claude Desktop を終了した状態でも、ブラウザから呼び出せる",
+        "初期設定では Option キーを2回押して、どのアプリからでも入力欄を開ける",
+        "呼び出すと、いつも直前のチャットの続きに書き込まれる",
+        "呼び出しのキーは決まっていて、ほかの組み合わせには変えられない"
+      ],
+      "answer": 1,
+      "explanation": "クイックエントリは、初期設定では Option キーを2回押すと、作業中のアプリから入力欄を呼び出して新しいチャットを始められます。Claude Desktop が起動している必要がありますが、ウィンドウが隠れていてもかまいません。呼び出しのキーは Option + Space や自分で決めた組み合わせに変えられます。",
+      "sources": [
+        {
+          "title": "MacでClaude Desktopのクイックエントリを使用する",
+          "url": "https://support.claude.com/ja/articles/12626668"
+        }
+      ]
+    },
+    {
+      "id": "a09-01-q2",
+      "sectionId": "a09-01",
+      "question": "クイックエントリで画面の一部やウィンドウを添付するために、macOS で許可しておく必要があるものはどれか。",
+      "choices": [
+        "Screen Recording",
+        "Location Services",
+        "Full Disk Access",
+        "Bluetooth"
+      ],
+      "answer": 0,
+      "explanation": "画面の画像やウィンドウの添付には、macOS の Privacy & Security で Screen Recording の許可が要ります。クイックエントリそのものには Accessibility、音声入力には Speech Recognition の許可が必要です。位置情報や Bluetooth は、この機能の条件として案内されていません。",
+      "sources": [
+        {
+          "title": "MacでClaude Desktopのクイックエントリを使用する",
+          "url": "https://support.claude.com/ja/articles/12626668"
+        }
+      ]
+    },
+    {
+      "id": "a09-02-q1",
+      "sectionId": "a09-02",
+      "question": "iPhone で、ほかのアプリで選んだ文章を Claude アプリを開かずに送る方法として適切なものはどれか。",
+      "choices": [
+        "文章をスクリーンショットにして、アルバムに保存しておく",
+        "文章をコピーし、Claude のウィジェットを長押しして貼り付ける",
+        "共有メニューから Ask Claude を選んで送る",
+        "設定アプリの Claude の項目に文章を貼り付ける"
+      ],
+      "answer": 2,
+      "explanation": "Ask Claude は、Siri・Spotlight・共有メニューなどから質問や依頼を送るための入口で、選んだ文字を共有して頼めます。ウィジェットのボタンは、新しいチャット・音声入力・写真の撮影の3つで、貼り付けの入口ではありません。",
+      "sources": [
+        {
+          "title": "iOSでClaudeアプリのインテント、ショートカット、ウィジェットを使用する",
+          "url": "https://support.claude.com/ja/articles/10263469"
+        }
+      ]
+    },
+    {
+      "id": "a09-02-q2",
+      "sectionId": "a09-02",
+      "question": "iOS のショートカット アプリから Ask Claude で依頼したとき、使われるモデルはどれか。",
+      "choices": [
+        "ショートカットごとに、その都度選んだモデル",
+        "最後に音声モードで使ったモデル",
+        "いちばん新しく公開されたモデル",
+        "Claude アプリを開いたときに表示される既定のモデル"
+      ],
+      "answer": 3,
+      "explanation": "ショートカットからの依頼は、Claude アプリを開いたときに表示される既定のモデルで処理されると案内されています。ショートカットごとにモデルを選ぶ方法は案内されていません。また、ショートカットからのやり取りも使用量の制限に数えられます。",
+      "sources": [
+        {
+          "title": "iOSでClaudeアプリのインテント、ショートカット、ウィジェットを使用する",
+          "url": "https://support.claude.com/ja/articles/10263469"
+        }
+      ]
+    },
+    {
+      "id": "a09-03-q1",
+      "sectionId": "a09-03",
+      "question": "音声入力と音声モードの違いとして正しいものはどれか。",
+      "choices": [
+        "音声入力では Claude が声で答え、音声モードでは文字で答える",
+        "音声入力は話した言葉を文字の依頼にし、音声モードでは Claude も声で答える",
+        "音声入力は英語だけ、音声モードは日本語だけで使える",
+        "どちらも同じ機能で、呼び方が違うだけである"
+      ],
+      "answer": 1,
+      "explanation": "音声入力は、話した言葉を文字に変えて依頼として送り、Claude の答えは文字で返ります。音声モードは、Claude も声で答える会話の形のやり取りです。公式にも、2つは別の機能だと案内されています。",
+      "sources": [
+        {
+          "title": "Claude Mobileで音声入力を使用する",
+          "url": "https://support.claude.com/ja/articles/10065434"
+        },
+        {
+          "title": "音声モードを使用する",
+          "url": "https://support.claude.com/ja/articles/11101966"
+        }
+      ]
+    },
+    {
+      "id": "a09-03-q2",
+      "sectionId": "a09-03",
+      "question": "騒がしい駅のホームで音声モードを使うとき、話の途中で Claude が答え始めるのを防ぐのに向いている方法はどれか。",
+      "choices": [
+        "ハンズフリーのまま、できるだけ早口で話す",
+        "答える声を別の声に変える",
+        "push-to-talk に切り替え、ボタンを押している間だけ話す",
+        "表示言語を英語に変える"
+      ],
+      "answer": 2,
+      "explanation": "push-to-talk はボタンを押している間だけ聞き取るため、雑音の多い場所に向いています。初期設定のハンズフリーは話の切れ目で答えるので、雑音で途中から答え始めることがあります。声や表示言語を変えても、聞き取りの方式は変わりません。",
+      "sources": [
+        {
+          "title": "音声モードを使用する",
+          "url": "https://support.claude.com/ja/articles/11101966"
+        }
+      ]
+    },
+    {
+      "id": "a09-03-q3",
+      "sectionId": "a09-03",
+      "question": "音声モードで話した内容は、終わったあとどうなるか。",
+      "choices": [
+        "文字起こしとして、ふだんのチャットと同じく履歴に残る",
+        "何も残らず、会話が終わると消える",
+        "音声ファイルとして端末の写真アプリに保存される",
+        "プロジェクトナレッジに自動で追加される"
+      ],
+      "answer": 0,
+      "explanation": "音声モードの会話は、文字起こしとしてチャットの履歴に保存されます。そのため、同じ会話を文字で続けることもできます。音声ファイルが写真アプリに保存されたり、ナレッジに自動で追加されたりするわけではありません。",
+      "sources": [
+        {
+          "title": "音声モードを使用する",
+          "url": "https://support.claude.com/ja/articles/11101966"
+        }
+      ]
+    },
+    {
+      "id": "a09-04-q1",
+      "sectionId": "a09-04",
+      "question": "Claude in Chrome を Claude Desktop の会話から使うための手順として正しいものはどれか。",
+      "choices": [
+        "Settings の Extensions で .mcpb ファイルを読み込む",
+        "Chrome の設定で、Claude Desktop を既定のブラウザにする",
+        "クイックエントリを開き、Chrome のウィンドウを添付する",
+        "Settings の Connectors で Claude in Chrome をオンにし、使う会話でもオンにする"
+      ],
+      "answer": 3,
+      "explanation": "デスクトップアプリでは、Settings の Connectors で Claude in Chrome の Configure を開いてオンにします。初期設定では会話ごとにオフなので、使いたいチャットでオンにします。.mcpb ファイルはデスクトップ拡張機能を手で入れるときの形式で、ウィンドウの添付は画面を見せるだけの機能です。",
+      "sources": [
+        {
+          "title": "ChromeでClaudeを始める",
+          "url": "https://support.claude.com/ja/articles/12012173"
+        }
+      ]
+    },
+    {
+      "id": "a09-04-q2",
+      "sectionId": "a09-04",
+      "question": "Claude in Chrome で、うまくいった依頼をくり返し使いたいときの方法として適切なものはどれか。",
+      "choices": [
+        "ショートカットとして保存し、入力欄で「/」を打って呼び出す",
+        "依頼の文をブックマークに登録し、毎回開いて貼り付ける",
+        "Chrome の履歴から同じページを開き直す",
+        "サイドパネルを閉じずに、ずっと開いたままにしておく"
+      ],
+      "answer": 0,
+      "explanation": "Claude in Chrome では、うまくいった依頼をショートカットとして保存し、入力欄で「/」を打って呼び出せます。時計のアイコンから、ショートカットを決まった間隔で動かすこともできます。ページを開き直したり、パネルを開いたままにしたりしても、依頼は保存されません。",
+      "sources": [
+        {
+          "title": "ChromeでClaudeを始める",
+          "url": "https://support.claude.com/ja/articles/12012173"
+        }
+      ]
+    },
+    {
+      "id": "a09-05-q1",
+      "sectionId": "a09-05",
+      "question": "初めて使う予約サイトで Claude in Chrome に作業を頼むとき、承認の方式として最も慎重なものはどれか。",
+      "choices": [
+        "Skip all approvals",
+        "Manually approve",
+        "Automatically approve",
+        "サイトを常に許可したうえで Skip all approvals"
+      ],
+      "answer": 1,
+      "explanation": "Manually approve は、操作の前に毎回あなたの承認を求めるので、新しいサイトで中身を確かめながら進められます。Automatically approve は安全確認のしくみが調べますが、承認の回数は減ります。Skip all approvals は確認も検査もないため、完全に信頼できるときだけに使います。Automatically approve も完全な防御ではないので、お金や大事なファイルが関わる作業ではそばで見守るか Manually approve にします。",
+      "sources": [
+        {
+          "title": "Chrome内のClaudeの権限ガイド",
+          "url": "https://support.claude.com/ja/articles/12902446"
+        },
+        {
+          "title": "Chromeで安全にClaudeを使用する",
+          "url": "https://support.claude.com/ja/articles/12902428"
+        }
+      ]
+    },
+    {
+      "id": "a09-05-q2",
+      "sectionId": "a09-05",
+      "question": "Claude in Chrome がページを読んでいる途中、急に関係のないサイトへ移り、パスワードを求めてきた。取るべき行動はどれか。",
+      "choices": [
+        "Claude が必要と判断したので、パスワードを入力する",
+        "そのサイトを「Always allow actions on this site」にする",
+        "承認の方式を Skip all approvals に変えて続けさせる",
+        "すぐに作業を止め、プロンプトインジェクションを疑って報告する"
+      ],
+      "answer": 3,
+      "explanation": "関係のない話や予定にないサイトへの移動、大事な情報の要求は、ページに隠れた指示に従わされるプロンプトインジェクションの兆しです。すぐに作業を止め、チャットのフィードバックから報告します。許可を広げたり確認をなくしたりすると、被害が広がるおそれがあります。",
+      "sources": [
+        {
+          "title": "Chromeで安全にClaudeを使用する",
+          "url": "https://support.claude.com/ja/articles/12902428"
+        }
+      ]
+    },
+    {
+      "id": "a09-05-q3",
+      "sectionId": "a09-05",
+      "question": "Claude in Chrome を安全に使うための準備として勧められているものはどれか。",
+      "choices": [
+        "銀行や医療のアカウントにサインインしていない、別のプロファイルを使う",
+        "サインインの手間を省くため、パスワードを依頼の文に書いておく",
+        "見られたくないページを開いたまま、サイドパネルで作業させる",
+        "知らない人の書き込みが多いページから練習を始める"
+      ],
+      "answer": 0,
+      "explanation": "大事なアカウントのない別のプロファイルを使うと、万一のときの影響を小さくできます。Claude は作業中のタブの画面を撮って読むので、見られたくないページではサイドパネルを開きません。練習は信頼できるサイトの簡単な作業から始めます。",
+      "sources": [
+        {
+          "title": "Chromeで安全にClaudeを使用する",
+          "url": "https://support.claude.com/ja/articles/12902428"
+        }
+      ]
+    },
+    {
+      "id": "a09-06-q1",
+      "sectionId": "a09-06",
+      "question": "コンピュータ操作で、Claude が作業の方法を選ぶ順番として正しいものはどれか。",
+      "choices": [
+        "画面の操作 → ブラウザ → コネクタ",
+        "ブラウザ → 画面の操作 → コネクタ",
+        "コネクタ → ブラウザ → 画面の操作",
+        "コネクタ → 画面の操作 → ブラウザ"
+      ],
+      "answer": 2,
+      "fixedOrder": true,
+      "explanation": "Claude は、速く確実なコネクタを先に使い、次にブラウザ、最後に画面のクリックと入力で操作します。画面の操作は時間がかかり、間違いも起きやすいため最後の手段です。",
+      "sources": [
+        {
+          "title": "Coworkでクロードがあなたのコンピュータを使用できるようにする",
+          "url": "https://support.claude.com/ja/articles/14128542"
+        }
+      ]
+    },
+    {
+      "id": "a09-06-q2",
+      "sectionId": "a09-06",
+      "question": "コンピュータ操作を任せる前の準備として適切なものはどれか。",
+      "choices": [
+        "作業が速く終わるよう、すべてのアプリを先に開いておく",
+        "機密のファイルやアプリを閉じ、使わせたくないアプリはブロックしておく",
+        "許可の確認が出ないよう、パソコンをスリープにしておく",
+        "銀行のアプリに許可を出し、残高の確認から練習する"
+      ],
+      "answer": 1,
+      "explanation": "Claude は画面を撮って読むので、映っている機密の情報も見えてしまいます。先に閉じておき、使わせたくないアプリはブロックの一覧に入れます。また、Claude とアプリの間にはサンドボックスがなく、危険な操作を避ける制限も絶対ではないため、見守りながら任せます。パソコンがスリープすると作業は進まず、銀行・医療・行政のアプリには許可を出さないよう勧められています。",
+      "sources": [
+        {
+          "title": "Coworkでクロードがあなたのコンピュータを使用できるようにする",
+          "url": "https://support.claude.com/ja/articles/14128542"
+        }
+      ]
+    }
+  ]
+}

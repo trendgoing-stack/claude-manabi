@@ -1,0 +1,257 @@
+{
+  "schemaVersion": 1,
+  "chapterId": "c18",
+  "questions": [
+    {
+      "id": "c18-01-q1",
+      "sectionId": "c18-01",
+      "question": "2つの作業を同時に進めたいが、どちらも同じファイルを書き換える見込みがある。どうするのがよいか。",
+      "choices": [
+        "同じ作業場所で2つのセッションを同時に動かす",
+        "worktree で作業場所を分けてから、それぞれのセッションで進める",
+        "1つのセッションに2つの作業をまとめて頼む",
+        "片方のセッションをプランモードにしておく"
+      ],
+      "answer": 1,
+      "explanation": "同じファイルを触る作業を並列にするときは、worktree でセッションごとに別の作業場所を用意すると、書き換えがぶつかりません。同じ作業場所で同時に動かすと互いの変更が混ざります。1つのセッションにまとめて頼むと、作業は順番に進み、同時には進みません。プランモードは編集しないで計画を立てるモードで、作業場所を分ける仕組みではありません。",
+      "sources": [
+        {
+          "title": "エージェントを並列実行する",
+          "url": "https://code.claude.com/docs/ja/agents"
+        }
+      ]
+    },
+    {
+      "id": "c18-01-q2",
+      "sectionId": "c18-01",
+      "question": "サブエージェントとエージェントビューのセッションの違いとして正しいものはどれか。",
+      "choices": [
+        "サブエージェントはクラウドで動き、エージェントビューのセッションは手元で動く",
+        "サブエージェントは結果をあなたにだけ報告し、エージェントビューのセッションは呼び出し元の会話に結果を返す",
+        "サブエージェントは呼び出し元の会話に結果を返し、エージェントビューのセッションは結果をあなたに報告する",
+        "どちらも、作業を始める前に必ず worktree を作る"
+      ],
+      "answer": 2,
+      "explanation": "サブエージェントは1つのセッションの中の担当で、結果を呼び出し元の会話に返します。エージェントビューで任せたセッションは独立した会話で、結果はあなたに報告されます。説明が逆になっている選択肢に注意しましょう。",
+      "sources": [
+        {
+          "title": "エージェントを並列実行する",
+          "url": "https://code.claude.com/docs/ja/agents"
+        }
+      ]
+    },
+    {
+      "id": "c18-02-q1",
+      "sectionId": "c18-02",
+      "question": "`claude --worktree add-search` を実行したとき、作業場所とブランチはどうなるか。",
+      "choices": [
+        "`.claude/worktrees/add-search/` に作られ、`worktree-add-search` という新しいブランチになる",
+        "元の作業場所のまま、`add-search` というブランチに切り替わる",
+        "ホームフォルダの下に作られ、今のブランチをそのまま使う",
+        "クラウドの仮想マシンに作られ、`main` ブランチで作業する"
+      ],
+      "answer": 0,
+      "explanation": "`--worktree` に名前を付けると、既定ではリポジトリの直下の `.claude/worktrees/<名前>/` に worktree が作られ、`worktree-<名前>` という新しいブランチになります。元の作業場所のブランチを切り替えるわけではありません。クラウドで動かすのは `--cloud` です。",
+      "sources": [
+        {
+          "title": "worktree を使用して並列セッションを実行する",
+          "url": "https://code.claude.com/docs/ja/worktrees"
+        }
+      ]
+    },
+    {
+      "id": "c18-02-q2",
+      "sectionId": "c18-02",
+      "question": "worktree で作業したセッションを終えるとき、worktree に未コミットの変更が残っていた。Claude Code はどうするか。",
+      "choices": [
+        "変更を自動でコミットしてから worktree を消す",
+        "何も聞かずに worktree とブランチを消す",
+        "変更を元の作業場所にコピーする",
+        "worktree を残すか消すかを聞く"
+      ],
+      "answer": 3,
+      "explanation": "終了時、worktree に変更や新しいコミットが残っていれば、残すか消すかを聞かれます。何も聞かずに消えるのは、作業が残っていない場合です（セッション名を付けたセッションでは、その場合も先に聞かれます）。自動でコミットしたり、元の作業場所にコピーしたりはしません。",
+      "sources": [
+        {
+          "title": "worktree を使用して並列セッションを実行する",
+          "url": "https://code.claude.com/docs/ja/worktrees"
+        }
+      ]
+    },
+    {
+      "id": "c18-02-q3",
+      "sectionId": "c18-02",
+      "question": "新しく作った worktree に `.env` が入っていなかった。この理由として正しいものはどれか。",
+      "choices": [
+        "worktree は読み取り専用で、ファイルを置けないから",
+        "worktree は取り出したばかりの状態で、無視されたファイルは含まれないから",
+        "`.env` はクラウド環境の環境変数に自動で移されるから",
+        "Claude Code が秘密情報を見つけて削除したから"
+      ],
+      "answer": 1,
+      "explanation": "worktree は新しく取り出した作業場所なので、`.gitignore` で無視されている `.env` などは含まれません。必要なら `.worktreeinclude` に書いてコピーさせます。worktree は読み取り専用ではなく、Claude Code が `.env` を消したり、クラウド環境へ移したりもしません。",
+      "sources": [
+        {
+          "title": "worktree を使用して並列セッションを実行する",
+          "url": "https://code.claude.com/docs/ja/worktrees"
+        }
+      ]
+    },
+    {
+      "id": "c18-03-q1",
+      "sectionId": "c18-03",
+      "question": "エージェントビューで、セッションに入らずに最新の出力や質問を確かめ、その場で返事をしたい。どのキーを使うか。",
+      "choices": [
+        "`Space`",
+        "`Enter`",
+        "`Esc`",
+        "`Ctrl+X`"
+      ],
+      "answer": 0,
+      "explanation": "`Space` は、セッションに入らずに最新の出力や待っている質問をのぞき、その場で返事ができる操作です。`Enter` はセッションに入る操作、`Esc` はシェルに戻る操作、`Ctrl+X` はセッションを止める操作です。",
+      "sources": [
+        {
+          "title": "複数のエージェントをエージェントビューで管理する",
+          "url": "https://code.claude.com/docs/ja/agent-view"
+        }
+      ]
+    },
+    {
+      "id": "c18-03-q2",
+      "sectionId": "c18-03",
+      "question": "エージェントビューから任せた複数のセッションが、同じ作業場所を書き換え合わないのはなぜか。",
+      "choices": [
+        "セッションが1つずつ順番にしか動かないから",
+        "すべてのセッションがクラウドの別の仮想マシンで動くから",
+        "各セッションがファイルを編集する前に、自分の worktree に移るから",
+        "エージェントビューのセッションはファイルを編集できないから"
+      ],
+      "answer": 2,
+      "explanation": "エージェントビューなどから任せたセッションは、ファイルを編集する前に `.claude/worktrees/` の下の自分の worktree に移ります。そのため同時に動いても同じ作業場所を書き換え合いません。セッションは手元の PC で同時に動き、ファイルの編集もできます。",
+      "sources": [
+        {
+          "title": "複数のエージェントをエージェントビューで管理する",
+          "url": "https://code.claude.com/docs/ja/agent-view"
+        }
+      ]
+    },
+    {
+      "id": "c18-04-q1",
+      "sectionId": "c18-04",
+      "question": "クラウドセッションが、手元の Remote Control より向いている場面はどれか。",
+      "choices": [
+        "手元の PC にだけ入れた MCP サーバーを使いたい",
+        "自分の `~/.claude/CLAUDE.md` の指示に従わせたい",
+        "GitHub にないリポジトリから結果を push したい",
+        "PC を閉じたあとも作業を続けさせたい"
+      ],
+      "answer": 3,
+      "explanation": "クラウドセッションはクラウドの仮想マシンで動くので、PC を閉じても作業が続きます。一方で、リポジトリを新しく複製した状態から始まるため、手元にだけある MCP サーバーや `~/.claude/CLAUDE.md` は使われません。手元の環境を使いたいときは Remote Control が向いています。",
+      "sources": [
+        {
+          "title": "Claude Code をクラウドで始める",
+          "url": "https://code.claude.com/docs/ja/web-quickstart"
+        },
+        {
+          "title": "クラウド環境を設定する",
+          "url": "https://code.claude.com/docs/ja/cloud-environments"
+        }
+      ]
+    },
+    {
+      "id": "c18-04-q2",
+      "sectionId": "c18-04",
+      "question": "クラウド環境の設定について、正しいものはどれか。",
+      "choices": [
+        "環境変数はその環境を使う人が読めるので、API キーなどを書かない",
+        "環境変数は暗号化されて誰にも見えないので、パスワードを書いてよい",
+        "ネットワークは常にどこへでもつながり、制限できない",
+        "セットアップスクリプトは、セッションが終わったあとに実行される"
+      ],
+      "answer": 0,
+      "explanation": "クラウド環境の環境変数とセットアップスクリプトは、その環境を使う人なら読めるため、秘密情報を書かないようにします。ネットワークは None・Trusted・Full・Custom から選べます。セットアップスクリプトは、セッションが始まるとき、Claude Code が動き出す前に実行されます。",
+      "sources": [
+        {
+          "title": "クラウド環境を設定する",
+          "url": "https://code.claude.com/docs/ja/cloud-environments"
+        }
+      ]
+    },
+    {
+      "id": "c18-05-q1",
+      "sectionId": "c18-05",
+      "question": "手元で新しいコミットを作ったあと、`claude --cloud \"…\"` でその内容をもとに作業させたい。先にすることはどれか。",
+      "choices": [
+        "`/teleport` を実行する",
+        "コミットを GitHub に push する",
+        "worktree を作る",
+        "クラウド環境の環境変数にコミットの内容を書く"
+      ],
+      "answer": 1,
+      "explanation": "GitHub のリポジトリにつないで使う場合、クラウドの仮想マシンは手元のフォルダではなく、GitHub にある今のブランチを複製します。手元だけのコミットは届かないので、先に push しておきます。`/teleport` はクラウドのセッションを手元に引き取る操作で、向きが逆です。",
+      "sources": [
+        {
+          "title": "クラウドで Claude Code を使用する",
+          "url": "https://code.claude.com/docs/ja/claude-code-on-the-web"
+        }
+      ]
+    },
+    {
+      "id": "c18-05-q2",
+      "sectionId": "c18-05",
+      "question": "`claude --teleport` でクラウドのセッションを手元に引き取ったあと、手元で作業を進めた。その作業はどうなるか。",
+      "choices": [
+        "クラウドのセッションにも自動で反映される",
+        "クラウドのセッションと交互にしか進められない",
+        "手元の写しで進み、クラウドのセッションには反映されない",
+        "終了すると自動でクラウドに送り返される"
+      ],
+      "answer": 2,
+      "explanation": "テレポートすると、ターミナルにはセッションの写しができ、そのあとの作業は手元にとどまります。クラウドのセッションに自動で反映されたり、送り返されたりはしません。CLI からは、開いているセッションをクラウドへ送ることもできません。",
+      "sources": [
+        {
+          "title": "クラウドで Claude Code を使用する",
+          "url": "https://code.claude.com/docs/ja/claude-code-on-the-web"
+        }
+      ]
+    },
+    {
+      "id": "c18-06-q1",
+      "sectionId": "c18-06",
+      "question": "Remote Control でスマホからつないだセッションの作業は、どこで実行されるか。",
+      "choices": [
+        "スマホの中",
+        "Anthropic のクラウドの仮想マシン",
+        "GitHub のサーバー",
+        "セッションを始めた手元の PC"
+      ],
+      "answer": 3,
+      "explanation": "Remote Control では、作業はセッションを始めた手元の PC で動き続け、スマホやブラウザは操作の窓になります。そのため手元のファイルや MCP サーバーがそのまま使えます。クラウドの仮想マシンで動くのはクラウドセッションです。",
+      "sources": [
+        {
+          "title": "任意のデバイスからローカルセッションを続行する Remote Control",
+          "url": "https://code.claude.com/docs/ja/remote-control"
+        }
+      ]
+    },
+    {
+      "id": "c18-06-q2",
+      "sectionId": "c18-06",
+      "question": "ターミナルで開いている会話を、それまでの履歴ごとスマホから続けたい。どうするか。",
+      "choices": [
+        "その会話で `/remote-control` を実行する",
+        "`claude --cloud` で新しいセッションを始める",
+        "`claude agents` でエージェントビューを開く",
+        "`claude --worktree` で起動し直す"
+      ],
+      "answer": 0,
+      "explanation": "開いている会話で `/remote-control`（`/rc`）を実行すると、それまでの会話を引き継いだまま、claude.ai/code や Claude アプリからつなげます。`claude --cloud` はクラウドに新しいセッションを作るもので、今の会話は送られません。エージェントビューや worktree は、別の端末からつなぐ機能ではありません。",
+      "sources": [
+        {
+          "title": "任意のデバイスからローカルセッションを続行する Remote Control",
+          "url": "https://code.claude.com/docs/ja/remote-control"
+        }
+      ]
+    }
+  ]
+}
