@@ -1,0 +1,337 @@
+{
+  "schemaVersion": 1,
+  "chapterId": "c19",
+  "questions": [
+    {
+      "id": "c19-01-q1",
+      "sectionId": "c19-01",
+      "question": "`claude -p` に `--output-format json` を付けたとき、答えの文章が入るのはどこか。",
+      "choices": [
+        "`session_id` フィールド",
+        "`usage` フィールド",
+        "`result` フィールド",
+        "標準エラー出力"
+      ],
+      "answer": 2,
+      "explanation": "`json` 形式では、答えの文章は `result` に入り、セッション ID などの情報と一緒に1つの JSON で出力されます。`session_id` は会話を `--resume` で続けるときに使う値です。`--json-schema` で形を決めた答えは、別の `structured_output` に入ります。",
+      "sources": [
+        {
+          "title": "Claude Code をプログラムで実行する",
+          "url": "https://code.claude.com/docs/ja/headless"
+        }
+      ]
+    },
+    {
+      "id": "c19-01-q2",
+      "sectionId": "c19-01",
+      "question": "非対話モードで `--allowedTools` を指定するおもな目的はどれか。",
+      "choices": [
+        "確認に答える人がいないので、使ってよいツールを前もって許可するため",
+        "答えを JSON の形式で出力するため",
+        "CLAUDE.md やフックを読み込まずに起動するため",
+        "直前の会話の続きから始めるため"
+      ],
+      "answer": 0,
+      "explanation": "非対話モードでは権限プロンプトに答える人がいないため、使ってよいツールを `--allowedTools` で前もって許可します。JSON での出力は `--output-format`、読み込みを省くのは `--bare`、会話を続けるのは `--continue` の役割です。",
+      "sources": [
+        {
+          "title": "Claude Code をプログラムで実行する",
+          "url": "https://code.claude.com/docs/ja/headless"
+        }
+      ]
+    },
+    {
+      "id": "c19-01-q3",
+      "sectionId": "c19-01",
+      "question": "中身を確かめていないリポジトリで `claude -p` を実行するのを避けるべき理由はどれか。",
+      "choices": [
+        "`-p` ではリポジトリのファイルを読めず、答えが出ないため",
+        "`-p` で実行した変更は、あとから元に戻せないため",
+        "`-p` では作業ディレクトリの外のファイルしか扱えないため",
+        "信頼の確認が出ず、`--bare` なしではリポジトリのフックや MCP サーバーが動きうるため"
+      ],
+      "answer": 3,
+      "explanation": "`-p` ではワークスペースの信頼の確認が表示されません。`--bare` を付けない限り、リポジトリの `.claude/settings.json` のフックや `.mcp.json` の MCP サーバーがそのまま動くため、中身を知らないリポジトリでは使わないようにします。",
+      "sources": [
+        {
+          "title": "Claude Code をプログラムで実行する",
+          "url": "https://code.claude.com/docs/ja/headless"
+        }
+      ]
+    },
+    {
+      "id": "c19-02-q1",
+      "sectionId": "c19-02",
+      "question": "Claude Code GitHub Actions のワークフローに `prompt` を書かなかったとき、どう動くか。",
+      "choices": [
+        "cron 式で決めた時刻に自動で動く",
+        "issue や PR のコメントの `@claude` に応えて動く",
+        "PR が開かれるたびに必ずレビューを投稿する",
+        "`prompt` が無いので一切動かない"
+      ],
+      "answer": 1,
+      "explanation": "`prompt` が無いワークフローはインタラクティブモードになり、コメントなどの `@claude` を待って、その依頼に応えます。`prompt` を書くと自動化モードになり、PR のイベントや cron のスケジュールなどでメンションなしに動きます。",
+      "sources": [
+        {
+          "title": "Claude Code GitHub Actions",
+          "url": "https://code.claude.com/docs/ja/github-actions"
+        }
+      ]
+    },
+    {
+      "id": "c19-02-q2",
+      "sectionId": "c19-02",
+      "question": "GitHub Actions で Claude を動かすとき、API キーの扱いとして正しいものはどれか。",
+      "choices": [
+        "ワークフローファイルに値を書き、リポジトリを非公開にする",
+        "CLAUDE.md に値を書いて Claude に読ませる",
+        "リポジトリの secrets に登録し、ワークフローから名前で参照する",
+        "PR の説明欄に貼り、マージ後に消す"
+      ],
+      "answer": 2,
+      "explanation": "API キーやトークンはリポジトリのファイルに直接書いてコミットせず、リポジトリの secrets に登録して `secrets.ANTHROPIC_API_KEY` のように名前で参照します。非公開のリポジトリでも、ファイルに値を書くのは避けます。",
+      "sources": [
+        {
+          "title": "Claude Code GitHub Actions",
+          "url": "https://code.claude.com/docs/ja/github-actions"
+        }
+      ]
+    },
+    {
+      "id": "c19-03-q1",
+      "sectionId": "c19-03",
+      "question": "ノート PC を閉じている間も、毎晩決まった時刻に Claude に作業させたい。どれを使うのが合うか。",
+      "choices": [
+        "routines",
+        "Desktop の予約タスク",
+        "`/loop`",
+        "ターミナルで `claude -p` を手で実行する"
+      ],
+      "answer": 0,
+      "explanation": "routines は Anthropic が管理するクラウドで動くため、PC を閉じていても実行されます。Desktop の予約タスクはアプリが開いていて PC が起きているときだけ、`/loop` は開いているセッションの中だけで動きます。",
+      "sources": [
+        {
+          "title": "スケジュールに従ってプロンプトを実行する",
+          "url": "https://code.claude.com/docs/ja/scheduled-tasks"
+        },
+        {
+          "title": "Claude Code Desktop でスケジュール設定されたタスクを実行する",
+          "url": "https://code.claude.com/docs/ja/desktop-scheduled-tasks"
+        }
+      ]
+    },
+    {
+      "id": "c19-03-q2",
+      "sectionId": "c19-03",
+      "question": "Desktop の予約タスクの予定時刻に PC がスリープしていた場合、どうなるか。",
+      "choices": [
+        "飛ばした分がすべて順に実行される",
+        "クラウドに切り替わって予定どおり実行される",
+        "次の予定時刻まで何も実行されない",
+        "アプリの起動や復帰のときに、直近の1回分だけが後から実行される"
+      ],
+      "answer": 3,
+      "explanation": "Desktop は起動時や復帰時に過去7日の飛ばした予定を調べ、いちばん最近の1回分だけを後から実行し、それより古い分は捨てます。そのため朝の予定が夜に動くこともあり、時刻が大事な作業は依頼文に条件を書いておきます。",
+      "sources": [
+        {
+          "title": "Claude Code Desktop でスケジュール設定されたタスクを実行する",
+          "url": "https://code.claude.com/docs/ja/desktop-scheduled-tasks"
+        }
+      ]
+    },
+    {
+      "id": "c19-03-q3",
+      "sectionId": "c19-03",
+      "question": "`/loop 10m ビルドを確かめて` を設定したあと、ターミナルを閉じてセッションを終えるとどうなるか。",
+      "choices": [
+        "クラウドに移って動き続ける",
+        "繰り返しは止まる",
+        "Desktop の予約タスクに自動で登録される",
+        "次に PC を起動したときに自動で再開する"
+      ],
+      "answer": 1,
+      "explanation": "`/loop` の予定はセッションに属し、Claude Code が動いている間だけ実行されます。ターミナルを閉じると止まる（`--resume` で再開すると戻るものもある）ので、長く続けたい作業には routines か Desktop の予約タスクを使います。",
+      "sources": [
+        {
+          "title": "スケジュールに従ってプロンプトを実行する",
+          "url": "https://code.claude.com/docs/ja/scheduled-tasks"
+        }
+      ]
+    },
+    {
+      "id": "c19-04-q1",
+      "sectionId": "c19-04",
+      "question": "ルーティンを動かすきっかけ（トリガー）の組み合わせとして正しいものはどれか。",
+      "choices": [
+        "スケジュール・メールの受信・ファイルの保存",
+        "API・Slack の投稿・PC の起動",
+        "スケジュール・API・GitHub のイベント",
+        "GitHub のイベント・画面のクリック・音声の指示"
+      ],
+      "answer": 2,
+      "explanation": "ルーティンのトリガーは、スケジュール、API（専用の URL へのトークン付きの送信）、GitHub のイベント（プルリクエストやリリース）の3種類で、1つのルーティンに組み合わせられます。",
+      "sources": [
+        {
+          "title": "ルーティンで作業を自動化する",
+          "url": "https://code.claude.com/docs/ja/routines"
+        }
+      ]
+    },
+    {
+      "id": "c19-04-q2",
+      "sectionId": "c19-04",
+      "question": "ルーティンの実行一覧で緑の表示が出ているとき、それが意味することはどれか。",
+      "choices": [
+        "セッションがエラーなく始まって終わったこと",
+        "頼んだ作業が成功したこと",
+        "変更がレビューで承認されたこと",
+        "PR がマージされたこと"
+      ],
+      "answer": 0,
+      "explanation": "緑の表示は、セッションが仕組みの上のエラーなしに始まって終わったことを示すだけです。作業そのものの成否は分からないので、実行を開いて Claude が実際に何をしたかを読んで確かめます。",
+      "sources": [
+        {
+          "title": "ルーティンで作業を自動化する",
+          "url": "https://code.claude.com/docs/ja/routines"
+        }
+      ]
+    },
+    {
+      "id": "c19-04-q3",
+      "sectionId": "c19-04",
+      "question": "ルーティンを作るとき、要らないコネクタを外しておくべき理由はどれか。",
+      "choices": [
+        "外さないとリポジトリを選べないため",
+        "コネクタはスケジュールでは使われず、無駄になるため",
+        "外したコネクタは次の実行で自動で戻るため",
+        "実行中は、含めたコネクタのツールを確認なしで使えるため"
+      ],
+      "answer": 3,
+      "explanation": "ルーティンは確認なしで自律的に動き、含めたコネクタのツールは書き込みも含めて許可を求めずに使えます。つないでいるコネクタは既定ですべて含まれるので、リポジトリ・環境・コネクタとも必要なものだけを残して届く範囲を絞ります。",
+      "sources": [
+        {
+          "title": "ルーティンで作業を自動化する",
+          "url": "https://code.claude.com/docs/ja/routines"
+        }
+      ]
+    },
+    {
+      "id": "c19-05-q1",
+      "sectionId": "c19-05",
+      "question": "仕様書ができたあと、新しいセッションで実装に入るよい点はどれか。",
+      "choices": [
+        "仕様書は新しいセッションでしか読めないため",
+        "聞き取りのやり取りが残らず、実装に集中した文脈で始められるため",
+        "プランモードは新しいセッションでしか使えないため",
+        "新しいセッションでは権限の確認が出なくなるため"
+      ],
+      "answer": 1,
+      "explanation": "公式のベストプラクティスでは、仕様書を書き終えたら新しいセッションで実装することをすすめています。聞き取りの会話がコンテキストに残らず、書かれた仕様書を手がかりに実装に集中できるためです。",
+      "sources": [
+        {
+          "title": "Claude Code のベストプラクティス",
+          "url": "https://code.claude.com/docs/ja/best-practices"
+        }
+      ]
+    },
+    {
+      "id": "c19-05-q2",
+      "sectionId": "c19-05",
+      "question": "計画を立てずにそのまま頼んでよい作業として、もっとも適切なものはどれか。",
+      "choices": [
+        "差分を1文で言える小さな変更",
+        "複数のファイルにまたがる変更",
+        "よく知らないコードを触る変更",
+        "進め方に迷っている変更"
+      ],
+      "answer": 0,
+      "explanation": "計画には手間もかかるため、誤字の修正のように差分を1文で言える小さな変更なら直接頼みます。複数のファイルにまたがるとき、よく知らないコードのとき、進め方に迷うときは、計画を立てる価値があります。",
+      "sources": [
+        {
+          "title": "Claude Code のベストプラクティス",
+          "url": "https://code.claude.com/docs/ja/best-practices"
+        }
+      ]
+    },
+    {
+      "id": "c19-05-q3",
+      "sectionId": "c19-05",
+      "question": "プランモードでの Claude の動きとして正しいものはどれか。",
+      "choices": [
+        "ソースを編集しながら、あわせて計画も書く",
+        "ファイルを読まず、指示の文だけで計画を書く",
+        "ファイルを読んで調べ、計画を示すが、承認までソースは編集しない",
+        "テストだけを自動で実行して結果を報告する"
+      ],
+      "answer": 2,
+      "explanation": "プランモードの Claude はファイルを読んで調べ、計画を示しますが、承認するまで編集はしません。計画は `Ctrl+G` でエディタに開いて直すこともできます。",
+      "sources": [
+        {
+          "title": "一般的なワークフロー",
+          "url": "https://code.claude.com/docs/ja/common-workflows"
+        },
+        {
+          "title": "Claude Code のベストプラクティス",
+          "url": "https://code.claude.com/docs/ja/best-practices"
+        }
+      ]
+    },
+    {
+      "id": "c19-06-q1",
+      "sectionId": "c19-06",
+      "question": "Claude に関数を書いてもらうとき、確かめ方を渡した頼み方として適切なものはどれか。",
+      "choices": [
+        "「きれいに書いて」とだけ頼む",
+        "終わったら「できました」とだけ報告させる",
+        "エラーが表示されないようにしてと頼む",
+        "期待する入力と結果を示し、テストを書いて通るまで直すよう頼む"
+      ],
+      "answer": 3,
+      "explanation": "合否が分かる確かめ方を渡すと、Claude は作業・確認・修正を自分で繰り返せます。報告だけでは確かめたことにならず、エラーを表示させないだけの頼み方は根本の原因を隠すことになりがちです。",
+      "sources": [
+        {
+          "title": "Claude Code のベストプラクティス",
+          "url": "https://code.claude.com/docs/ja/best-practices"
+        }
+      ]
+    },
+    {
+      "id": "c19-06-q2",
+      "sectionId": "c19-06",
+      "question": "実装したセッションとは別の、新しいセッションやサブエージェントにレビューを頼む利点はどれか。",
+      "choices": [
+        "コンテキストウィンドウの大きさが2倍になるため",
+        "作った理由に引きずられず、結果だけを見てもらえるため",
+        "レビューの指摘が必ずゼロになるため",
+        "権限の確認がすべて不要になるため"
+      ],
+      "answer": 1,
+      "explanation": "新しい文脈のレビュー役は差分と基準だけを見るので、書いた本人の考えに引きずられません。ただし抜けを探すよう頼まれると何かを挙げがちなので、正しさや仕様に関わる指摘を優先します。",
+      "sources": [
+        {
+          "title": "Claude Code のベストプラクティス",
+          "url": "https://code.claude.com/docs/ja/best-practices"
+        }
+      ]
+    },
+    {
+      "id": "c19-06-q3",
+      "sectionId": "c19-06",
+      "question": "同じ問題について2回直してもうまくいかないとき、すすめられる対応はどれか。",
+      "choices": [
+        "同じ会話のまま3回目の修正を頼む",
+        "auto mode に切り替えて任せる",
+        "`/clear` して、分かったことを盛り込んだ指示で始め直す",
+        "CLAUDE.md を削除してから頼み直す"
+      ],
+      "answer": 2,
+      "explanation": "何度も直した会話は、失敗したやり方で文脈が埋まっています。`/clear` でリセットし、分かったことを盛り込んだよりよい指示で始め直すほうが、たいていうまくいきます。",
+      "sources": [
+        {
+          "title": "Claude Code のベストプラクティス",
+          "url": "https://code.claude.com/docs/ja/best-practices"
+        }
+      ]
+    }
+  ]
+}

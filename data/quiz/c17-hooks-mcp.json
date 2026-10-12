@@ -1,0 +1,276 @@
+{
+  "schemaVersion": 1,
+  "chapterId": "c17",
+  "questions": [
+    {
+      "id": "c17-01-q1",
+      "sectionId": "c17-01",
+      "question": "CLAUDE.md に書いた指示と比べたときの、フックの特徴として正しいものはどれか。",
+      "choices": [
+        "Claude が内容を読み、必要だと判断したときだけ実行する",
+        "決まった時点が来れば、Claude の判断に関係なく実行される",
+        "会話の始めに全文がコンテキストに読み込まれ、毎回参照される",
+        "スラッシュコマンドとして自分で呼んだときだけ動く"
+      ],
+      "answer": 1,
+      "explanation": "フックは、Claude Code の動きの決まった時点で、用意したコマンドなどを自動で実行する仕組みで、その時点が来れば必ず動きます。Claude が判断して従うのは CLAUDE.md やスキルの指示のほうです。会話の始めに全文が読み込まれるのは CLAUDE.md の特徴です。",
+      "sources": [
+        {
+          "title": "hooks でアクションを自動化する",
+          "url": "https://code.claude.com/docs/ja/hooks-guide"
+        }
+      ]
+    },
+    {
+      "id": "c17-01-q2",
+      "sectionId": "c17-01",
+      "question": "Claude がファイルを編集する操作そのものを止めたい。どのフックイベントを使うのが適切か。",
+      "choices": [
+        "PostToolUse",
+        "Stop",
+        "Notification",
+        "PreToolUse"
+      ],
+      "answer": 3,
+      "explanation": "PreToolUse はツールを使う直前に動くので、その操作を止められます。PostToolUse はツールが動いた後なので、操作を取り消せません。Stop は応答を終えたとき、Notification は通知を出すときに動くイベントです。",
+      "sources": [
+        {
+          "title": "Hooks リファレンス",
+          "url": "https://code.claude.com/docs/ja/hooks"
+        }
+      ]
+    },
+    {
+      "id": "c17-02-q1",
+      "sectionId": "c17-02",
+      "question": "PreToolUse のフックのコマンドが終了コード 2 で終わったとき、どうなるか。",
+      "choices": [
+        "操作が止まり、標準エラー出力の文が理由として Claude に伝わる",
+        "フックのエラーとして表示されるが、操作はそのまま進む",
+        "操作は進み、標準出力の文が Claude のコンテキストに加わる",
+        "Claude Code が終了し、セッションが閉じられる"
+      ],
+      "answer": 0,
+      "explanation": "終了コード 2 は、止められるイベントでは操作を止める合図で、stderr に書いた文が理由になります。0・2 以外のコード（1 など）はエラーとして表示されますが、操作は止まりません。セッションが閉じることはありません。",
+      "sources": [
+        {
+          "title": "hooks でアクションを自動化する",
+          "url": "https://code.claude.com/docs/ja/hooks-guide"
+        },
+        {
+          "title": "Hooks リファレンス",
+          "url": "https://code.claude.com/docs/ja/hooks"
+        }
+      ]
+    },
+    {
+      "id": "c17-02-q2",
+      "sectionId": "c17-02",
+      "question": "練習用リポジトリで、チームに共有せず自分だけのフックを試したい。書く場所として適切なものはどれか。",
+      "choices": [
+        "リポジトリの `.claude/settings.json`",
+        "リポジトリ直下の `.mcp.json`",
+        "リポジトリの `.claude/settings.local.json`",
+        "`/hooks` の画面で直接入力する"
+      ],
+      "answer": 2,
+      "explanation": "`.claude/settings.local.json` は、そのリポジトリで自分だけに効く設定ファイルです。`.claude/settings.json` はコミットしてチームで共有するファイルです。`.mcp.json` は MCP サーバーの設定で、`/hooks` は登録を見るための画面です。",
+      "sources": [
+        {
+          "title": "hooks でアクションを自動化する",
+          "url": "https://code.claude.com/docs/ja/hooks-guide"
+        }
+      ]
+    },
+    {
+      "id": "c17-02-q3",
+      "sectionId": "c17-02",
+      "question": "フックの `if` で `Bash(git push *)` のように絞り込むときの注意として正しいものはどれか。",
+      "choices": [
+        "`if` は SessionStart などすべてのイベントで使える",
+        "絞り込みはできる範囲で行われるため、確実な禁止は権限ルールの deny で決める",
+        "`if` に合ったコマンドは、権限ルールの deny より優先して許可される",
+        "`if` を書くとマッチャーは無視される"
+      ],
+      "answer": 1,
+      "explanation": "`if` による絞り込みは、できる範囲で行われる仕組みで、コマンドの形を読み取れないときは条件に関係なくフックが動きます。そのため、必ず守らせたい禁止は権限ルールで決めます。`if` はツールのイベントでだけ使え、フックが許可を返しても deny のルールは越えられません。 また Windows では、PowerShell ツールが使われると、マッチャーが `Bash` だけのフックは動かずに素通りさせます。`Bash|PowerShell` にして確かめます。",
+      "sources": [
+        {
+          "title": "hooks でアクションを自動化する",
+          "url": "https://code.claude.com/docs/ja/hooks-guide"
+        }
+      ]
+    },
+    {
+      "id": "c17-03-q1",
+      "sectionId": "c17-03",
+      "question": "`claude mcp add` で stdio のサーバーを登録するとき、`--` の役目はどれか。",
+      "choices": [
+        "Claude Code のオプションと、サーバーを起動するコマンドを区切る",
+        "サーバーを HTTP でつなぐことを指定する",
+        "登録したサーバーを、その場で接続テストする",
+        "サーバーを全リポジトリで使えるようにする"
+      ],
+      "answer": 0,
+      "explanation": "`--` より後ろは、そのままサーバーを起動するコマンドと引数として使われます。HTTP の指定は `--transport http`、全リポジトリで使う指定は `--scope user` です。接続の状態は `claude mcp list` で確かめます。",
+      "sources": [
+        {
+          "title": "MCP を使用して Claude Code をツールに接続する",
+          "url": "https://code.claude.com/docs/ja/mcp"
+        }
+      ]
+    },
+    {
+      "id": "c17-03-q2",
+      "sectionId": "c17-03",
+      "question": "MCP サーバーを追加した後、つながっているかをシェルから確かめるコマンドはどれか。",
+      "choices": [
+        "`claude mcp serve`",
+        "`claude mcp reset-project-choices`",
+        "`claude plugin list`",
+        "`claude mcp list`"
+      ],
+      "answer": 3,
+      "explanation": "`claude mcp list` は、登録したサーバーを接続の状態（Connected、Needs authentication など）付きで一覧します。`claude mcp serve` は Claude Code 自身を MCP サーバーとして動かすコマンドで、`reset-project-choices` は project スコープのサーバーの承認をやり直すコマンドです。`claude plugin list` はプラグインの一覧です。",
+      "sources": [
+        {
+          "title": "MCP サーバーに接続する",
+          "url": "https://code.claude.com/docs/ja/mcp-quickstart"
+        }
+      ]
+    },
+    {
+      "id": "c17-04-q1",
+      "sectionId": "c17-04",
+      "question": "MCP サーバーを `--scope` を付けずに `claude mcp add` で追加したとき、どこで使えるか。",
+      "choices": [
+        "自分の全リポジトリで使える",
+        "リポジトリを使うチームの全員が使える",
+        "追加したリポジトリで、自分だけが使える",
+        "claude.ai のコネクタとして、すべての端末で使える"
+      ],
+      "answer": 2,
+      "explanation": "スコープを指定しないと local になり、追加したリポジトリで自分だけが使えます。全リポジトリで使うのは user、チームで共有するのは project スコープです。claude.ai のコネクタは claude.ai の側で追加するもので、別の仕組みです。",
+      "sources": [
+        {
+          "title": "MCP サーバーに接続する",
+          "url": "https://code.claude.com/docs/ja/mcp-quickstart"
+        }
+      ]
+    },
+    {
+      "id": "c17-04-q2",
+      "sectionId": "c17-04",
+      "question": "チームで共有する `.mcp.json` に、サーバーのトークンを書きたい。適切な書き方はどれか。",
+      "choices": [
+        "`${変数名}` で環境変数を参照し、値は各自の PC に置く",
+        "トークンをそのまま書き、リポジトリを非公開にしておく",
+        "トークンを `CLAUDE.md` に書き、Claude に読ませる",
+        "トークンをコメントとして `.mcp.json` に書いておく"
+      ],
+      "answer": 0,
+      "explanation": "`.mcp.json` では `${変数名}` の形で環境変数を参照でき、トークンそのものをファイルに書かずに済みます。共有されるファイルや CLAUDE.md に値を書くと、リポジトリを見られる人に知られてしまいます。コメントとして書いても同じです。 `claude mcp add --header` に渡した値もそのまま設定ファイルに保存されるので、`--scope project` と一緒に本物のトークンを渡してはいけません。",
+      "sources": [
+        {
+          "title": "MCP を使用して Claude Code をツールに接続する",
+          "url": "https://code.claude.com/docs/ja/mcp"
+        }
+      ]
+    },
+    {
+      "id": "c17-04-q3",
+      "sectionId": "c17-04",
+      "question": "`.mcp.json` に書かれたサーバーについて、リポジトリを取ってきた人が Claude Code を起動したときに承認を求められるのはなぜか。",
+      "choices": [
+        "サーバーの接続の速さを確認してもらうため",
+        "受け取ったリポジトリが、同意なしに PC でプログラムを動かせないようにするため",
+        "サーバーのツールを Claude が使えるか、モデルの対応を調べるため",
+        "サーバーを user スコープに移すかを選んでもらうため"
+      ],
+      "answer": 1,
+      "explanation": "project スコープのサーバーは、人から受け取ったリポジトリから入ってくるため、あなたの同意なしにプログラムを起動できないよう承認を求めます。接続の速さやモデルの対応を確かめるためではありません。スコープを変えるには、削除して追加し直します。",
+      "sources": [
+        {
+          "title": "MCP サーバーに接続する",
+          "url": "https://code.claude.com/docs/ja/mcp-quickstart"
+        }
+      ]
+    },
+    {
+      "id": "c17-05-q1",
+      "sectionId": "c17-05",
+      "question": "Claude Code のプラグインのマーケットプレイスの説明として正しいものはどれか。",
+      "choices": [
+        "プラグインを購入するためのオンラインストア",
+        "インストールしたプラグインの設定を保存するファイル",
+        "プラグインを1つずつ審査する Anthropic の窓口",
+        "プラグインの一覧と、それぞれを取ってくる場所を載せたカタログ"
+      ],
+      "answer": 3,
+      "explanation": "マーケットプレイスは、プラグインの一覧と取得元を載せたカタログで、一度追加すると、そこのプラグインを名前で入れられます。店舗やサービスの窓口ではありません。どのプラグインが有効かは、設定ファイル側に記録されます。",
+      "sources": [
+        {
+          "title": "プラグインの概要",
+          "url": "https://code.claude.com/docs/ja/plugins/overview"
+        }
+      ]
+    },
+    {
+      "id": "c17-05-q2",
+      "sectionId": "c17-05",
+      "question": "プラグイン notes-kit に入っているスキル summary を呼ぶときのコマンドの形はどれか。",
+      "choices": [
+        "`/summary@notes-kit`",
+        "`/plugin summary`",
+        "`/notes-kit:summary`",
+        "`/mcp__notes-kit__summary`"
+      ],
+      "answer": 2,
+      "explanation": "プラグインのスキルは、`/プラグイン名:スキル名` の形のコマンドになります。`@` の後ろにマーケットプレイス名を付けるのは、プラグインを入れるときの指定です。`/mcp__…__…` は MCP サーバーのプロンプトを呼ぶ形の一つです（一覧では `(MCP)` が付いて表示されます）。",
+      "sources": [
+        {
+          "title": "プラグインのインストールと管理",
+          "url": "https://code.claude.com/docs/ja/plugins/install"
+        }
+      ]
+    },
+    {
+      "id": "c17-06-q1",
+      "sectionId": "c17-06",
+      "question": "プラグインに含まれるフックや MCP サーバーのプロセスについて正しいものはどれか。",
+      "choices": [
+        "サンドボックスの外で、あなたのユーザーの権限で動く",
+        "権限ルールの deny ですべて止められる",
+        "公式のマーケットプレイスのものは Anthropic が動作を保証している",
+        "一度読んで確かめれば、その後に中身が変わることはない"
+      ],
+      "answer": 0,
+      "explanation": "フック、MCP サーバーなどのプロセスはサンドボックスの外で、あなたのユーザーの権限で動きます。権限ルールが効くのは Claude のツールの呼び出しのほうです。Anthropic はプラグインの中身を管理しておらず、自動更新で中身が変わることもあります。",
+      "sources": [
+        {
+          "title": "プラグインのセキュリティと信頼",
+          "url": "https://code.claude.com/docs/ja/plugins/security"
+        }
+      ]
+    },
+    {
+      "id": "c17-06-q2",
+      "sectionId": "c17-06",
+      "question": "人から受け取ったリポジトリを、対話のセッションで初めて開いた。リポジトリの設定ファイルに書かれたフックはどう扱われるか。",
+      "choices": [
+        "開いた瞬間にすべて実行される",
+        "ワークスペースの信頼の確認を受け入れるまで動かない",
+        "`claude -p` で動かしたときだけ確認が出る",
+        "管理者が許可するまで、受け入れても動かない"
+      ],
+      "answer": 1,
+      "explanation": "対話のセッションでは、ワークスペースの信頼の確認を受け入れるまで、設定ファイルのフックは動きません。逆に `claude -p` では確認が出ず、信頼したものとして扱われるので、先に設定ファイルを読みます。管理者の許可が要るという仕組みではありません。",
+      "sources": [
+        {
+          "title": "Hooks リファレンス",
+          "url": "https://code.claude.com/docs/ja/hooks"
+        }
+      ]
+    }
+  ]
+}

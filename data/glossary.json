@@ -95,6 +95,22 @@
       ]
     },
     {
+      "id": "g-install-scope",
+      "term": "インストールスコープ",
+      "reading": "いんすとーるすこーぷ",
+      "aliases": [
+        "installation scope",
+        "install scope"
+      ],
+      "definition": "MCP サーバーやプラグインを、だれがどのリポジトリで使えるかの範囲。自分だけ・このリポジトリの local、全員で共有する project、自分だけ・全リポジトリの user がある。",
+      "related": [
+        "g-mcp-json",
+        "g-settings-scope",
+        "g-mcp-server",
+        "g-plugin"
+      ]
+    },
+    {
       "id": "g-instructions-for-claude",
       "term": "Instructions for Claude",
       "reading": "いんすとらくしょんずふぉーくろーど",
@@ -228,6 +244,18 @@
       ]
     },
     {
+      "id": "g-stdio",
+      "term": "stdio",
+      "reading": "えすてぃーでぃーあいおー",
+      "aliases": [
+        "stdio サーバー"
+      ],
+      "definition": "MCP サーバーのつなぎ方の一つ。Claude Code が手元の PC でサーバーのプログラムを起動し、標準入出力でやり取りする。ファイルやブラウザなど PC の中のものを扱うツールに使う。",
+      "related": [
+        "g-mcp-server"
+      ]
+    },
+    {
       "id": "g-xml-tag",
       "term": "XML タグ",
       "reading": "えっくすえむえるたぐ",
@@ -330,6 +358,19 @@
       ]
     },
     {
+      "id": "g-write-tool",
+      "term": "書き込みのツール",
+      "reading": "かきこみのつーる",
+      "aliases": [
+        "write tools"
+      ],
+      "definition": "ファイルの削除やコマンドの実行、画面のクリックなど、結果が残る操作をする道具。メールを読む、画面を見るといった読み取りの道具より影響が大きく、人の確認が大切になる。",
+      "related": [
+        "g-cowork",
+        "g-prompt-injection"
+      ]
+    },
+    {
       "id": "g-customize",
       "term": "Customize",
       "reading": "かすたまいず",
@@ -422,6 +463,19 @@
       ]
     },
     {
+      "id": "g-github-actions",
+      "term": "GitHub Actions",
+      "reading": "ぎっとはぶあくしょんず",
+      "aliases": [
+        "Claude Code GitHub Actions"
+      ],
+      "definition": "GitHub のリポジトリで、プッシュやコメントなどをきっかけに処理を自動で動かす仕組み。Claude Code GitHub Actions を使うと、この中で Claude Code を動かせる。",
+      "related": [
+        "g-claude-github-app",
+        "g-repository-secret"
+      ]
+    },
+    {
       "id": "g-github-integration",
       "term": "GitHub の連携",
       "reading": "ぎっとはぶのれんけい",
@@ -471,6 +525,32 @@
       "related": [
         "g-claude-desktop",
         "g-dictation"
+      ]
+    },
+    {
+      "id": "g-cookie-import",
+      "term": "Cookie の取り込み",
+      "reading": "くっきーのとりこみ",
+      "aliases": [
+        "Import cookies"
+      ],
+      "definition": "ふだんのブラウザのログイン状態を、組み込みのブラウザに取り込む操作。サイトごとに選び、銀行・メール・シングルサインオンのサイトは最初は選ばれていない。",
+      "related": [
+        "g-built-in-browser"
+      ]
+    },
+    {
+      "id": "g-built-in-browser",
+      "term": "組み込みのブラウザ",
+      "reading": "くみこみのぶらうざ",
+      "aliases": [
+        "built-in browser"
+      ],
+      "definition": "Claude のデスクトップアプリの中にあるブラウザ（ベータ）。Cowork の仕事でサイトを開き、Claude が読む・クリックする・入力するなどの操作をする。ふだん使っているブラウザのタブやログインには触れない。",
+      "related": [
+        "g-preferred-browser",
+        "g-cookie-import",
+        "g-cowork"
       ]
     },
     {
@@ -533,7 +613,9 @@
       "aliases": [],
       "definition": "GitHub のリポジトリに入れる Claude 用のアプリ。リポジトリへのアクセスを Claude に許可する。ブラウザでつないだクラウドセッションが非公開のリポジトリで作業するときや、PR の自動修正（Auto-fix）、GitHub Actions での連携などで使う。",
       "related": [
-        "g-cloud-session"
+        "g-cloud-session",
+        "g-github-actions",
+        "g-routine"
       ]
     },
     {
@@ -637,6 +719,18 @@
       ]
     },
     {
+      "id": "g-cron-expression",
+      "term": "cron 式",
+      "reading": "くろんしき",
+      "aliases": [
+        "cron expression"
+      ],
+      "definition": "「分 時 日 月 曜日」の5つの欄で、実行する時刻や間隔を表す書き方。GitHub Actions のスケジュールや、Claude Code のセッション内の予定に使われる。",
+      "related": [
+        "g-github-actions"
+      ]
+    },
+    {
       "id": "g-permission-prompt",
       "term": "権限プロンプト",
       "reading": "けんげんぷろんぷと",
@@ -689,6 +783,18 @@
       "related": [
         "g-chat-snapshot",
         "g-share-specific-people"
+      ]
+    },
+    {
+      "id": "g-structured-output",
+      "term": "構造化出力",
+      "reading": "こうぞうかしゅつりょく",
+      "aliases": [
+        "structured output"
+      ],
+      "definition": "`--json-schema` で決めた形の JSON で答えを受け取る仕組み。非対話モードで `--output-format json` と組み合わせ、答えは `structured_output` に入る。",
+      "related": [
+        "g-non-interactive-mode"
       ]
     },
     {
@@ -790,6 +896,18 @@
       "definition": "Claude Code を起動したフォルダとその下のフォルダ。Claude が確認なしで読める範囲の基準になり、`--add-dir` や `/add-dir` で広げられる。",
       "related": [
         "g-permission-prompt"
+      ]
+    },
+    {
+      "id": "g-deletion-protection",
+      "term": "削除の保護",
+      "reading": "さくじょのほご",
+      "aliases": [
+        "deletion protection"
+      ],
+      "definition": "Claude Cowork が、ファイルを完全に消す前に必ず許可を求める仕組み。確認の度合いの設定にかかわらず働き、「Allow」を選ばない限り削除しない。",
+      "related": [
+        "g-cowork"
       ]
     },
     {
@@ -897,6 +1015,19 @@
       ]
     },
     {
+      "id": "g-exit-code",
+      "term": "終了コード",
+      "reading": "しゅうりょうこーど",
+      "aliases": [
+        "exit code"
+      ],
+      "definition": "コマンドが終わるときに返す数値。Claude Code のフックでは、0 は成功、2 は操作を止める合図として扱われ、それ以外はエラーとして表示されるが操作は止まらない。",
+      "related": [
+        "g-hook",
+        "g-stderr"
+      ]
+    },
+    {
       "id": "g-output-style",
       "term": "出力スタイル",
       "reading": "しゅつりょくすたいる",
@@ -907,6 +1038,16 @@
       "definition": "Claude Code で、セッション中のすべての応答の役割・口調・形式を決める指示。Concise や Explanatory などの組み込みのほか、Markdown ファイルで自作もできる。",
       "related": [
         "g-frontmatter"
+      ]
+    },
+    {
+      "id": "g-spec",
+      "term": "仕様書",
+      "reading": "しようしょ",
+      "aliases": [],
+      "definition": "作る機能の目的、関わるファイル、やらないこと、動きを確かめる方法などをまとめた文書。Claude Code では、先に仕様書を作ってから計画と実装に進む使い方がある。",
+      "related": [
+        "g-plan-mode"
       ]
     },
     {
@@ -1038,6 +1179,19 @@
       "definition": "保存されたセッションの一覧から、再開するものを選ぶ画面。`claude --resume` やセッション中の `/resume` で開き、検索や名前の変更もできる。",
       "related": [
         "g-session"
+      ]
+    },
+    {
+      "id": "g-connected-folder",
+      "term": "接続したフォルダ",
+      "reading": "せつぞくしたふぉるだ",
+      "aliases": [
+        "connected folders"
+      ],
+      "definition": "Claude Cowork に読み書きを許した、手元のパソコンのフォルダ。Claude はデスクトップアプリを通して、ファイルの機能で触れられるのはこのフォルダの中だけ（画面を操作させる機能を許すと、画面に映るものはこの範囲に限られない）。作業用のフォルダを分けて接続すると安全。",
+      "related": [
+        "g-cowork",
+        "g-folder-instructions"
       ]
     },
     {
@@ -1177,6 +1331,19 @@
       ]
     },
     {
+      "id": "g-tool-search",
+      "term": "ツール検索",
+      "reading": "つーるけんさく",
+      "aliases": [
+        "tool search",
+        "MCP tool search"
+      ],
+      "definition": "MCP のツールの詳しい定義を、Claude が必要としたときにだけ読み込む Claude Code の仕組み。始めはツールの名前などだけが入るので、サーバーを増やしてもコンテキストウィンドウを使いすぎない。",
+      "related": [
+        "g-context-window"
+      ]
+    },
+    {
       "id": "g-design-system",
       "term": "デザインシステム",
       "reading": "でざいんしすてむ",
@@ -1200,6 +1367,20 @@
       "related": [
         "g-mcp-server",
         "g-connector"
+      ]
+    },
+    {
+      "id": "g-desktop-scheduled-task",
+      "term": "Desktop の予約タスク",
+      "reading": "ですくとっぷのよやくたすく",
+      "aliases": [
+        "Desktop scheduled tasks",
+        "Desktop scheduled task"
+      ],
+      "definition": "Claude のデスクトップアプリで作る、手元の PC で決まった時刻に新しいセッションを始めるタスク。アプリが開いていて PC が起きているときだけ動く。Claude Cowork の予約タスク（g-scheduled-task）とは別の機能。",
+      "related": [
+        "g-routine",
+        "g-scheduled-task"
       ]
     },
     {
@@ -1237,7 +1418,8 @@
       "related": [
         "g-usage-limit",
         "g-context-window"
-      ]
+      ],
+      "noAutoLink": true
     },
     {
       "id": "g-share-specific-people",
@@ -1250,6 +1432,17 @@
       "related": [
         "g-chat-snapshot",
         "g-public-link"
+      ]
+    },
+    {
+      "id": "g-mcp-json",
+      "term": ".mcp.json",
+      "reading": "どっとえむしーぴーじぇいそん",
+      "aliases": [],
+      "definition": "リポジトリの直下に置く、チームで共有する MCP サーバーの設定ファイル。project スコープで追加したサーバーが書かれ、取ってきた人は使う前に承認を求められる。",
+      "related": [
+        "g-install-scope",
+        "g-mcp-server"
       ]
     },
     {
@@ -1316,6 +1509,21 @@
       ]
     },
     {
+      "id": "g-non-interactive-mode",
+      "term": "非対話モード",
+      "reading": "ひたいわもーど",
+      "aliases": [
+        "non-interactive mode",
+        "ヘッドレス実行",
+        "headless mode"
+      ],
+      "definition": "`claude -p` のように、対話画面を開かずに Claude Code へ依頼を1回だけ処理させ、結果を出力して終える使い方。スクリプトや CI から使う。",
+      "related": [
+        "g-cli",
+        "g-bare-mode"
+      ]
+    },
+    {
       "id": "g-display-language",
       "term": "表示言語",
       "reading": "ひょうじげんご",
@@ -1324,6 +1532,18 @@
       ],
       "definition": "Claude の画面のメニューやボタンに使われる言語。変わるのは画面の文字だけで、Claude は話しかけた言語で答える。",
       "related": []
+    },
+    {
+      "id": "g-stderr",
+      "term": "標準エラー出力",
+      "reading": "ひょうじゅんえらーしゅつりょく",
+      "aliases": [
+        "stderr"
+      ],
+      "definition": "コマンドがエラーや警告などを書き出す先。フックが終了コード 2 で操作を止めたとき、ここに書いた文が止めた理由として伝えられる。",
+      "related": [
+        "g-exit-code"
+      ]
     },
     {
       "id": "g-fast-mode",
@@ -1339,6 +1559,19 @@
       ]
     },
     {
+      "id": "g-folder-instructions",
+      "term": "フォルダの指示",
+      "reading": "ふぉるだのしじ",
+      "aliases": [
+        "folder instructions"
+      ],
+      "definition": "デスクトップで手元のフォルダを選んだときに加わる、そのフォルダの作業向けの指示。作業の途中で Claude が書き足すこともある。",
+      "related": [
+        "g-connected-folder",
+        "g-cowork"
+      ]
+    },
+    {
       "id": "g-hook",
       "term": "フック",
       "reading": "ふっく",
@@ -1348,6 +1581,20 @@
       "definition": "ファイルの編集後など、決まったタイミングで自動的に実行される処理（主にシェルコマンド）。CLAUDE.md の指示と違い、Claude の判断にかかわらず必ず実行される。",
       "related": [
         "g-claude-md"
+      ]
+    },
+    {
+      "id": "g-hook-event",
+      "term": "フックイベント",
+      "reading": "ふっくいべんと",
+      "aliases": [
+        "hook event",
+        "hook events"
+      ],
+      "definition": "Claude Code でフックを動かす時点の種類。ツールを使う直前の PreToolUse、直後の PostToolUse、セッション開始の SessionStart、応答の終わりの Stop などがある。",
+      "related": [
+        "g-hook",
+        "g-matcher"
       ]
     },
     {
@@ -1399,6 +1646,16 @@
       "definition": "Claude がコードを読んで調べ、計画を書くだけで、ソースを編集しない権限モード。計画を承認すると実装に進む。",
       "related": [
         "g-permission-mode"
+      ]
+    },
+    {
+      "id": "g-preferred-browser",
+      "term": "Preferred browser",
+      "reading": "ぷりふぁーどぶらうざ",
+      "aliases": [],
+      "definition": "デスクトップアプリの Settings > Cowork にある、Cowork の仕事で使うブラウザを選ぶ設定。組み込みのブラウザと Claude in Chrome から選ぶ。",
+      "related": [
+        "g-built-in-browser"
       ]
     },
     {
@@ -1505,6 +1762,18 @@
       ]
     },
     {
+      "id": "g-bare-mode",
+      "term": "bare モード",
+      "reading": "べあもーど",
+      "aliases": [
+        "bare mode"
+      ],
+      "definition": "`--bare` を付けて、フック・スキル・MCP サーバー・CLAUDE.md などの自動の読み込みを省いて Claude Code を起動する方法。どのマシンでも同じ条件で動かしたい CI やスクリプトに向く。",
+      "related": [
+        "g-non-interactive-mode"
+      ]
+    },
+    {
       "id": "g-beta",
       "term": "ベータ",
       "reading": "べーた",
@@ -1530,6 +1799,19 @@
       ]
     },
     {
+      "id": "g-marketplace",
+      "term": "マーケットプレイス",
+      "reading": "まーけっとぷれいす",
+      "aliases": [
+        "marketplace",
+        "plugin marketplace"
+      ],
+      "definition": "Claude Code のプラグインの一覧と、それぞれを取ってくる場所を載せたカタログ。一度追加すると、そこにあるプラグインを名前で入れられる。Anthropic の公式のものは claude-plugins-official。Web サイトの Claude Marketplace とは別のもの。",
+      "related": [
+        "g-plugin"
+      ]
+    },
+    {
       "id": "g-rewind-menu",
       "term": "巻き戻しメニュー",
       "reading": "まきもどしめにゅー",
@@ -1539,6 +1821,19 @@
       "definition": "Claude Code で、前の時点のコードや会話に戻すための画面。空の入力欄で `Esc` を2回押すか、`/rewind` で開く。チェックポイントの記録を使う。",
       "related": [
         "g-checkpoint"
+      ]
+    },
+    {
+      "id": "g-matcher",
+      "term": "マッチャー",
+      "reading": "まっちゃー",
+      "aliases": [
+        "matcher"
+      ],
+      "definition": "フックの設定で、どの対象のときに動かすかを絞る指定。ツールのイベントではツール名を書き、`Edit|Write` のように `|` で複数を並べられる。空にするとすべてに当てはまる。",
+      "related": [
+        "g-hook-event",
+        "g-hook"
       ]
     },
     {
@@ -1590,6 +1885,34 @@
       "definition": "Claude Code でモデルを指定するときの短い別名。`opus`・`sonnet`・`haiku` などがあり、その系統の推奨のモデル（Anthropic API では最新）を指すので、正確なバージョン名を覚えなくてよい。",
       "related": [
         "g-fast-mode"
+      ]
+    },
+    {
+      "id": "g-scheduled-task",
+      "term": "予約タスク",
+      "reading": "よやくたすく",
+      "aliases": [
+        "scheduled tasks",
+        "scheduled task"
+      ],
+      "definition": "一度説明しておいた仕事を、決まった間隔で、または頼んだときに Claude Cowork が実行する機能。クラウドで動くので、パソコンが閉じていても予定どおりに動く（手元のファイルやアプリが要るものを除く）。「Scheduled」のページで管理する。",
+      "related": [
+        "g-cowork"
+      ]
+    },
+    {
+      "id": "g-live-artifact",
+      "term": "ライブアーティファクト",
+      "reading": "らいぶあーてぃふぁくと",
+      "aliases": [
+        "live artifacts",
+        "live artifact"
+      ],
+      "definition": "以前の Claude Cowork で作られた、古い形式のアーティファクト（チャットの legacy artifacts とは別のもの）。開く・共有することはできるが、その場では直せない。直すときは新しいアーティファクトとして公開し直す。",
+      "related": [
+        "g-cowork",
+        "g-legacy-artifact",
+        "g-artifact"
       ]
     },
     {
@@ -1646,6 +1969,20 @@
       ]
     },
     {
+      "id": "g-repository-secret",
+      "term": "リポジトリシークレット",
+      "reading": "りぽじとりしーくれっと",
+      "aliases": [
+        "GitHub Secrets",
+        "repository secrets"
+      ],
+      "definition": "GitHub のリポジトリに、API キーなどの秘密の値を登録しておく場所。ワークフローからは名前で参照し、値はファイルに書かない。",
+      "related": [
+        "g-github-actions",
+        "g-api-key"
+      ]
+    },
+    {
       "id": "g-remote-control",
       "term": "Remote Control",
       "reading": "りもーとこんとろーる",
@@ -1656,6 +1993,20 @@
       "related": [
         "g-cloud-session",
         "g-session"
+      ]
+    },
+    {
+      "id": "g-routine",
+      "term": "ルーティン",
+      "reading": "るーてぃん",
+      "aliases": [
+        "routines",
+        "routine"
+      ],
+      "definition": "依頼文・リポジトリ・コネクタをまとめて保存し、Anthropic が管理するクラウドで自動で動かす Claude Code の設定。スケジュール・API・GitHub のイベントをきっかけに動く。リサーチプレビューの機能。",
+      "related": [
+        "g-desktop-scheduled-task",
+        "g-cron-expression"
       ]
     },
     {

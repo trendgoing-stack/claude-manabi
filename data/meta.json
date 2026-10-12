@@ -1,5 +1,5 @@
 {
-  "dataVersion": "2026.10.12-1",
+  "dataVersion": "2026.10.12-2",
   "schemaVersion": 1,
   "parts": [
     {
@@ -23,13 +23,16 @@
     "text/a07-connectors.json",
     "text/a08-skills.json",
     "text/a09-devices.json",
+    "text/a10-cowork.json",
     "text/c11-start.json",
     "text/c12-basics.json",
     "text/c13-context.json",
     "text/c14-safety.json",
     "text/c15-settings.json",
     "text/c16-extend.json",
-    "text/c18-parallel.json"
+    "text/c17-hooks-mcp.json",
+    "text/c18-parallel.json",
+    "text/c19-automation.json"
   ],
   "dictFiles": [],
   "quizFiles": [
@@ -42,21 +45,24 @@
     "quiz/a07-connectors.json",
     "quiz/a08-skills.json",
     "quiz/a09-devices.json",
+    "quiz/a10-cowork.json",
     "quiz/c11-start.json",
     "quiz/c12-basics.json",
     "quiz/c13-context.json",
     "quiz/c14-safety.json",
     "quiz/c15-settings.json",
     "quiz/c16-extend.json",
-    "quiz/c18-parallel.json"
+    "quiz/c17-hooks-mcp.json",
+    "quiz/c18-parallel.json",
+    "quiz/c19-automation.json"
   ],
   "glossaryFile": "glossary.json",
   "tryFile": "try.json",
   "counts": {
-    "sections": 95,
-    "quiz": 234,
+    "sections": 113,
+    "quiz": 281,
     "dict": 0,
-    "glossary": 135,
+    "glossary": 162,
     "try": 0
   }
 }

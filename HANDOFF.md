@@ -6,47 +6,62 @@
 
 | フェーズ | 状態 |
 |---|---|
-| 1 最小構成と試作 | **完了・ユーザーの確認待ち**（確認後にフェーズ2へ） |
-| 2 内容の拡充 | 未着手 |
+| 1 最小構成と試作 | 完了（2026-10-12） |
+| 2 内容の拡充 | **完了・ユーザーの確認待ち**（確認後にフェーズ3へ） |
 | 3 辞典と定着 | 未着手 |
 | 4 仕上げ（PWA・設定・公開） | 未着手 |
 
-合意事項（2026-10-12、PLAN.md の 7 節）：章立ては19章案、出典は日本語版リンク・英語版で照合、push はフェーズ1の報告後にユーザーの了承を得てから、`/help` はフェーズ3で一度だけユーザーに出力を貼ってもらう。
+合意事項（2026-10-12、PLAN.md の 7 節）：章立ては19章案、出典は日本語版リンク・英語版で照合、`/help` はフェーズ3で一度だけユーザーに出力を貼ってもらう。**push はまだしていない**（GitHub のリポジトリ作成と push はユーザーの了承待ち）。
 
-## 1. フェーズ1でできたもの
+## 1. できているもの
 
-- fe-manabi から移植：router、dom、date、dialog、toast、figure（図のレンダラー）、terms（用語の検出）、serve.py。storage・loader・lesson・term は作り直し
-- 5タブ（ホーム／学ぶ／演習／記録／設定）。演習・記録・辞典・用語集の一覧・暗記カード・やってみよう は「準備中」の仮画面（`js/views/placeholder.js`）
-- 学ぶ：テキスト（`js/views/learn.js`）：部ごとの目次・章・節・前後の移動・要約／詳細（設定 `learnMode` に保存）・使える場所／提供状況／確認日のバッジ・鮮度の警告・公式ドキュメントのリンク・読んだ・用語ポップアップ・コードのコピー（`js/clipboard.js`）
-- ホーム（続きから読む・部ごとの進捗・古い可能性のある件数）、`#/stale`（古い可能性のある節の一覧）、`#/term/<id>`、設定（文字サイズ・初期表示・鮮度の日数・バージョン・非公式の表記）、ヘルプ
-- 新しい図種：`chat`・`terminal`・`dir`（`js/render/figure.js` の末尾）。`tools/figures.html` で一覧できる
-- 読み込み（`js/loader.js`）：meta → 現在の画面が必要な種類 → 残りを後から。失敗したファイル名をホーム・設定・トーストに出す。`?fixture=1` で `tools/fixture/data/` のテストデータを読む
-- 検査：`tools/validate-core.js`（Node：`node tools/validate.mjs`、ブラウザ：`tools/validate.html`）
-- 作成と検査の道具：`tools/chapters.json`（章の設計）、`tools/chapter-prep.mjs`（作業ファイル）、`tools/CHAPTER_BRIEF.md`・`QA_BRIEF.md`・`FIX_BRIEF.md`、`tools/check-draft.mjs`（下書きの検査）、`tools/merge-chapter.mjs`（本番への取り込み）
-- 試作2章：a04 プロジェクト（6節・5,305字・11分・図5・15問）、c13 CLAUDE.md とコンテキスト管理（6節・6,201字・13分・図5・17問）。全12節 doc-verified。用語集 19語
+### アプリ
+- 5タブ（ホーム／学ぶ／演習／記録／設定）。辞典・暗記カード・やってみよう は「準備中」の仮画面（`js/views/placeholder.js`）
+- 学ぶ：テキスト（`js/views/learn.js`）。目次・章・節・前後の移動・要約／詳細（設定 `learnMode`）・バッジ・鮮度の警告・公式ドキュメント・読んだ・用語ポップアップ・コードのコピー（`js/clipboard.js`）
+- 学ぶ：用語集（`js/views/glossary.js`、五十音の行・検索 150ms 待ち）、用語の詳細（`js/views/term.js`）。検索の正規化は `js/search.js`（辞典でも使う）
+- 演習：確認クイズ（`js/quiz.js`・`js/views/quiz.js`）。`#/quiz`（メニュー）・`#/quiz/chapter|section/<id>`・`#/quiz/random`・`#/quiz/weak`・`#/quiz/run`・`#/quiz/result`。中断と再開、苦手は不正解率の高い順・同率は最終回答の古い順。出題は節が doc-verified／tried の問題だけ
+- 記録（`js/views/records.js`）：読了率・正答率・苦手な章（5回以上・80%未満）・課題の件数・鮮度
+- ホーム（続きから読む・進捗・鮮度）、`#/stale`、設定（文字サイズ・初期表示・鮮度の日数・版・非公式の表記）、ヘルプ
+- 図種 `chat`・`terminal`・`dir` を追加。流れ図の列幅は箱の幅に合わせる
+- 用語の `noAutoLink: true`：一般的な語と同じ表記の用語は自動リンクせず `[[ ]]` のときだけリンク。現在 g-project・g-memory・g-token
 
-## 2. 次の作業（フェーズ2）
+### データ（全部 doc-verified）
+- 解説 19章・113節（本文 約12.4万字。1章 10〜16分）、クイズ 281問、用語 162語
+- 辞典・課題は 0（フェーズ3）
 
-1. ユーザーのフェーズ1の確認結果を反映する（分量・文体・図・UI）
-2. `tools/chapters.json` に残り17章の設計（節の案・最初に読む公式ページ）を足す。公式の目次：`https://code.claude.com/docs/llms.txt`、ヘルプセンターのコレクション（`https://support.claude.com/en/collections/...`）
-3. 2〜3章ずつ並行で：`node tools/chapter-prep.mjs <id>...` → 作成（Opus・CHAPTER_BRIEF）→ 検査（別の Opus・QA_BRIEF）→ 反映（Sonnet・FIX_BRIEF）→ `node tools/merge-chapter.mjs <id>...` → `node tools/validate.mjs`
-   - 並行で作るときは用語の重複に注意（今回 g-context-window・g-skill が重なった）。反映の担当には重複分を terms から外させ、定義は呼び出し元が両章向けにまとめる。または、先に取り込んだ章の後で次の章の chapter-prep をやり直す
-4. 用語集の一覧（五十音順・検索）、演習タブ（章を選ぶ／ランダム／苦手、中断と再開、結果）、記録タブ
-5. TESTING.md にフェーズ2の項目を足す、HANDOFF.md を更新
+## 2. 次の作業（フェーズ3：辞典と定着）
 
-## 3. 作業上の注意
+1. ユーザーのフェーズ2の確認結果を反映する
+2. 辞典（約120項目、`data/dict/<種類>.json`）：スラッシュコマンド・キー操作・CLI オプション・設定キー・ファイル・パス。CLI オプションは同梱 CLI の `--help` と照合、スラッシュコマンドは `commands.md` と照合し、**ユーザーに一度だけ `/help` の出力を貼ってもらう**。作成と検査は章と同じ方式（ブリーフを辞典用に作る）。節の `dictIds` を埋める
+3. 辞典の画面（種類の絞り込み・検索。`js/search.js` の normalize で `/`・`-` の有無を無視）
+4. 暗記カード（用語・辞典の項目。範囲を選ぶ、左右スワイプ（Pointer Events、`touch-action: pan-y`）、覚えた／まだ）、ホームの「今日の復習」
+5. やってみよう（約30件、`data/try.json`）：一覧（部・所要時間・完了で絞り込み）・詳細・やったのチェックとメモ。節の `tryIds` を埋める
+6. 鮮度：`tools/stale.mjs` と `tools/RECHECK_BRIEF.md`
+7. 「AIに聞く」を fe-manabi（`js/ui/ask-ai.js`・`js/ai-prompt.js`）から移植。確認日と「最新の公式ドキュメントを優先して指摘して」の一文を入れる。答え合わせ前のクイズでは正解と解説を入れない
 
-- データを変えたら `data/meta.json` の `dataVersion` を上げる（sw.js はフェーズ4で追加。追加後は `VERSION` も同じ値に）
-- `node tools/validate.mjs` を通してからコミットする。push はユーザーの了承を得てから
-- 一時ファイルは `work/`（git に含めない）。担当ごとに接頭辞を分ける
+## 3. 作業の手順（章・辞典の作成）
+
+`node tools/chapter-prep.mjs <id>...` → 作成（Opus・CHAPTER_BRIEF）→ 検査（別の Opus・QA_BRIEF）→ 反映（Sonnet・FIX_BRIEF）→ `node tools/merge-chapter.mjs <id>...` → `node tools/validate.mjs`
+
+- 用語の重複：取り込みは章番号の若い順に行い、`merge-chapter.mjs` が同じ id・表記の用語を自動で外し、`[[表示|id]]` と related を付け替える。共有する用語の定義は、第1部・第2部の両方の読者に通じる言い方にそろえる（今回 g-context-window・g-skill・g-mcp・g-plugin などを手でまとめた）
+- 検査で多かった指摘：公式の表や例をそのまま訳す、使える場所（surfaces）を広く取りすぎる、ベータの表記漏れ（a10-06 は blocker）、安全の注意の抜け（共有の資格情報のコネクタ、worktree の削除でコミットが消える、Windows の PowerShell でフックが素通り、`--header` のトークンが設定ファイルに残る など）
+- 利用上限で止まったエージェントは SendMessage で「続きから」と送ると再開できる。下書きは節ごとに保存させる
+
+## 4. 作業上の注意
+
+- データを変えたら `data/meta.json` の `dataVersion` を上げる（現在 2026.10.12-2。sw.js はフェーズ4で追加。追加後は `VERSION` も同じ値に）
+- `node tools/validate.mjs` を通してからコミットする
+- 一時ファイルは `work/`（git に含めない）
 - 同梱の Claude Code CLI：`%APPDATA%/Claude/claude-code/2.1.295/d2e29494ec83/claude.exe --help`（PATH には無い。版が上がるとパスが変わる）
-- 開発用サーバー：`.claude/launch.json` の `static`（`python tools/serve.py 8765`）。ローカルの Python サーバーは1ファイル約0.3秒かかるので、初回表示が遅く見えるのは正常
+- 開発用サーバー：`.claude/launch.json` の `static`（`python tools/serve.py 8765`）。1ファイル約0.3秒かかるので初回表示が遅いのは正常
 - リポジトリの git 設定（user.name／user.email）は fe-manabi と同じ noreply アドレスをリポジトリ単位で設定済み
-- 文体は「です・ます」調（fe-manabi は「だ・である」調だったが、アプリの使い方の解説なので変えた）
+- 文体は「です・ます」調
 
-## 4. フェーズ1の消費（サブエージェントのトークン数・時間）
+## 5. 消費（サブエージェントのトークン数）
 
-| 章 | 作成（Opus） | 検査（Opus） | 反映（Sonnet） | 計 |
+| フェーズ | 作成（Opus） | 検査（Opus） | 反映（Sonnet） | 計 |
 |---|---|---|---|---|
-| a04 | 12.2万・7分 | 10.4万・4分 | 6.1万・0.5分 | 28.7万 |
-| c13 | 26.6万・8分 | 14.7万・4分 | 8.2万・0.5分 | 49.4万 |
+| 1（2章） | 38.8万 | 25.1万 | 14.3万 | 78.2万 |
+| 2（17章） | 約289万 | 約240万 | 約136万 | 約664万（1章あたり約39万） |
+
+フェーズ2は利用上限で3回止まり、止まる前の分はこの数に入っていない。

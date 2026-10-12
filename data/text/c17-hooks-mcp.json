@@ -1,0 +1,954 @@
+{
+  "schemaVersion": 1,
+  "id": "c17",
+  "part": "c",
+  "order": 17,
+  "title": "第17章 フック・MCP・プラグイン",
+  "summary": "Claude Code の外側に機能を足す3つの仕組みを学びます。決まったタイミングで必ず処理を動かすフック、外部のツールやデータをつなぐ MCP、拡張をまとめて入れるプラグインの使い方を押さえ、入れる前に何を確かめるべきかを身につけます。",
+  "minutes": 16,
+  "sections": [
+    {
+      "id": "c17-01",
+      "title": "17.1 フックとは",
+      "points": [
+        "フックは、Claude Code の決まったタイミングで、自分で決めた処理を自動で動かす仕組み",
+        "CLAUDE.md の指示は Claude が判断して従うが、フックはその時点が来れば必ず動く",
+        "どのタイミングで動かすかはフックイベントで選ぶ",
+        "PreToolUse はツールの前なので操作を止められ、PostToolUse は後なので取り消せない"
+      ],
+      "digest": {
+        "text": "フックは、Claude Code の動きの決まった時点で、自分が用意したコマンドなどを自動で実行する仕組みです。CLAUDE.md やスキルの指示は Claude が判断して従うので守られないこともありますが、フックはその時点が来れば必ず動きます。時点はフックイベントで選び、セッションの開始、指示の送信、ツールを使う前後、通知、応答の終わりなどがあります。ツールを使う前の PreToolUse なら操作を止められますが、後の PostToolUse では取り消せません。",
+        "keys": [
+          "フック：決まった時点で必ず動く処理",
+          "SessionStart・UserPromptSubmit：始まり・指示の送信",
+          "PreToolUse：ツールの前（止められる）",
+          "PostToolUse：ツールの後（取り消せない）",
+          "Notification・Stop：通知・応答の終わり",
+          "処理の種類はふつう command"
+        ]
+      },
+      "blocks": [
+        {
+          "type": "p",
+          "text": "CLAUDE.md やスキルに書いた指示は、Claude が読んで、判断して従うものです。「ファイルを直したら必ず整形して」と書いても、うっかり抜けることがあります。フック（hooks）は、Claude Code の動きの決まった時点で、あなたが用意したコマンドなどを自動で実行する仕組みです。Claude が実行するかどうかを選ぶのではなく、その時点が来れば必ず動きます。"
+        },
+        {
+          "type": "p",
+          "text": "練習用の「メモアプリ」のリポジトリで使うなら、たとえば次のような場面が考えられます。"
+        },
+        {
+          "type": "list",
+          "items": [
+            "Claude が入力待ちになったら、デスクトップに通知を出す",
+            "Claude がファイルを編集したら、整形ツールをかける",
+            "決めたコマンドや、触ってほしくないファイルへの操作を止める",
+            "セッションの始まりに、作業の前提になる情報を Claude に渡す"
+          ]
+        },
+        {
+          "type": "h",
+          "text": "フックイベント"
+        },
+        {
+          "type": "p",
+          "text": "処理を動かす時点を、フックイベント（hook event）と呼びます。イベントの種類はたくさんありますが、最初は次の6つを押さえれば十分です。"
+        },
+        {
+          "type": "table",
+          "table": {
+            "header": [
+              "イベント",
+              "動くとき",
+              "使い方の例"
+            ],
+            "rows": [
+              [
+                "SessionStart",
+                "セッションを始めた・再開したとき",
+                "作業の前提を Claude に渡す"
+              ],
+              [
+                "UserPromptSubmit",
+                "指示を送った後、Claude が処理する前",
+                "指示の内容を確かめる"
+              ],
+              [
+                "PreToolUse",
+                "ツールを使う直前",
+                "危ない操作を止める"
+              ],
+              [
+                "PostToolUse",
+                "ツールが成功した直後",
+                "編集したファイルを整形する"
+              ],
+              [
+                "Notification",
+                "Claude Code が通知を出すとき",
+                "入力待ちを知らせる"
+              ],
+              [
+                "Stop",
+                "Claude が応答を終えたとき",
+                "終わったことを記録する"
+              ]
+            ]
+          }
+        },
+        {
+          "type": "figure",
+          "figure": {
+            "type": "flow",
+            "steps": [
+              {
+                "id": "a",
+                "label": "指示を送る",
+                "kind": "terminal"
+              },
+              {
+                "id": "b",
+                "label": "UserPromptSubmit"
+              },
+              {
+                "id": "c",
+                "label": "PreToolUse"
+              },
+              {
+                "id": "d",
+                "label": "ツールを実行"
+              },
+              {
+                "id": "e",
+                "label": "PostToolUse"
+              },
+              {
+                "id": "f",
+                "label": "Stop"
+              },
+              {
+                "id": "g",
+                "label": "次の指示を待つ",
+                "kind": "terminal"
+              }
+            ]
+          },
+          "caption": "1回のやり取りで、主なフックイベントが動く順番の簡略図。ツールを使うたびに PreToolUse と PostToolUse が動きます"
+        },
+        {
+          "type": "p",
+          "text": "PreToolUse はツールを使う前に動くので、その操作を止められます。PostToolUse はツールが動いた後なので、操作そのものは取り消せません。Stop は、頼んだ作業がすべて終わったときではなく、Claude が応答を終えるたびに動きます。"
+        },
+        {
+          "type": "p",
+          "text": "フックで動かす処理の種類（`type`）は、ふつうはシェルのコマンドを実行する `command` です。ほかに、URL に情報を送る `http`、Claude のモデルに判断させる `prompt` などがあります。この章では `command` だけを扱います。"
+        },
+        {
+          "type": "note",
+          "kind": "tip",
+          "text": "「いつも同じ手順を、例外なく実行させたい」ときはフック、「必要なときに Claude に知識や手順を使わせたい」ときはスキル、と考えると選びやすくなります。"
+        }
+      ],
+      "surfaces": [
+        "cli",
+        "desktop",
+        "ide"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "hooks でアクションを自動化する",
+          "url": "https://code.claude.com/docs/ja/hooks-guide"
+        },
+        {
+          "title": "Hooks リファレンス",
+          "url": "https://code.claude.com/docs/ja/hooks"
+        }
+      ],
+      "checkedAt": "2026-10-12",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "tryIds": [],
+      "dictIds": []
+    },
+    {
+      "id": "c17-02",
+      "title": "17.2 フックを書く",
+      "points": [
+        "フックは settings.json の hooks に「イベント → マッチャー → 処理」の3段で書く",
+        "練習は自分だけの `.claude/settings.local.json` に書き、`/hooks` で登録を確かめる",
+        "終了コード 2 で終わると操作が止まり、stderr の文が Claude に理由として伝わる",
+        "必ず守らせたい禁止は、フックだけに頼らず権限ルールでも決める",
+        "Windows では PowerShell ツールが使われることがあり、`Bash` だけのマッチャーでは止まらないので `Bash|PowerShell` にする"
+      ],
+      "digest": {
+        "text": "フックは設定ファイルの `hooks` に書き、置き場所で効く範囲が決まります。形は、イベント名の中にマッチャーで対象を絞った組を置き、その中に動かす処理を並べる3段です。練習では、練習用リポジトリの `.claude/settings.local.json` に書き、`/hooks` で登録されたかを確かめます。コマンドが終了コード 2 で終わると、止められるイベントでは操作が止まり、stderr の文が Claude に伝わります。1 で終わっても止まりません。`if` の絞り込みはできる範囲での仕組みなので、必ず守らせたい禁止は権限ルールの deny で決めます。Windows では Claude が PowerShell ツールでコマンドを動かすことがあり、マッチャーが `Bash` だけのフックは動かず素通りさせるので、`Bash|PowerShell` にして `PowerShell(git push *)` の処理も書きます。",
+        "keys": [
+          "書く場所：settings.json の `hooks`",
+          "形：イベント → マッチャー → 処理",
+          "`/hooks`：CLI では登録を見るだけの画面",
+          "終了コード 0＝成功、2＝止める、その他＝止まらない",
+          "確実な禁止は権限ルールの deny",
+          "Windows は `Bash|PowerShell` にする（`Bash` だけでは素通り）"
+        ]
+      },
+      "blocks": [
+        {
+          "type": "p",
+          "text": "フックは、第15章で扱った設定ファイルの `hooks` という項目に書きます。どのファイルに書くかで、効く範囲が変わります。"
+        },
+        {
+          "type": "figure",
+          "figure": {
+            "type": "dir",
+            "tree": [
+              {
+                "name": "~/.claude/",
+                "children": [
+                  {
+                    "name": "settings.json",
+                    "note": "自分の全リポジトリ"
+                  }
+                ]
+              },
+              {
+                "name": "practice-notes/",
+                "note": "練習用",
+                "children": [
+                  {
+                    "name": ".claude/",
+                    "children": [
+                      {
+                        "name": "settings.json",
+                        "note": "チームで共有"
+                      },
+                      {
+                        "name": "settings.local.json",
+                        "note": "自分だけ・練習向き",
+                        "hl": true
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "caption": "フックを書く主な設定ファイル。練習は、リポジトリの中の自分だけのファイルで始めます"
+        },
+        {
+          "type": "p",
+          "text": "ほかに、プラグインの `hooks/hooks.json` などにも書けます。別々の場所のフックは、すべてが合わさって動きます。"
+        },
+        {
+          "type": "h",
+          "text": "書き方の形"
+        },
+        {
+          "type": "p",
+          "text": "形は3段の入れ子です。いちばん外がイベント名で、その中にマッチャー（matcher）で対象を絞った組を置き、さらにその中に動かす処理を並べます。ツールのイベントでは、マッチャーにツール名を `Edit|Write` のように書きます。空にするとすべてに当てはまり、大文字と小文字は区別されます。"
+        },
+        {
+          "type": "h",
+          "text": "例：練習用リポジトリで git push を止める"
+        },
+        {
+          "type": "p",
+          "text": "練習用のメモアプリのリポジトリ `practice-notes` で、`git push` を動かさないようにする例です。`if` には、第14章の権限ルールと同じ書き方で、当てはめる Bash のコマンドを書きます。コマンドが終了コード 2 で終わると操作が止まり、標準エラー出力（stderr）の文が理由として Claude に伝わります。"
+        },
+        {
+          "type": "code",
+          "lang": "json",
+          "caption": "practice-notes/.claude/settings.local.json",
+          "code": "{\n  \"hooks\": {\n    \"PreToolUse\": [\n      {\n        \"matcher\": \"Bash\",\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"if\": \"Bash(git push *)\",\n            \"command\": \"echo '練習用リポジトリでは push しません' >&2; exit 2\"\n          }\n        ]\n      }\n    ]\n  }\n}"
+        },
+        {
+          "type": "steps",
+          "title": "試し方",
+          "items": [
+            "練習用リポジトリの `.claude/settings.local.json` に書いて保存します。起動中に書き換えても、ふつうは自動で読み込まれます。",
+            "`/hooks` を開き、PreToolUse の下にフックがあるかを確かめます。CLI の `/hooks` は見るための画面で、ここからは書き換えられません。",
+            "Claude に「origin に push して」と頼み、操作が止まることを確かめます。止まらずに push の権限の確認が出たら、許可せずに断り、設定を見直します。"
+          ]
+        },
+        {
+          "type": "figure",
+          "figure": {
+            "type": "terminal",
+            "title": "Claude Code",
+            "lines": [
+              {
+                "kind": "prompt",
+                "text": "origin に push して"
+              },
+              {
+                "kind": "dim",
+                "text": "Bash: git push origin main"
+              },
+              {
+                "kind": "ng",
+                "text": "PreToolUse のフックが止めた"
+              },
+              {
+                "kind": "hl",
+                "text": "練習用リポジトリでは push しません"
+              },
+              {
+                "text": "push は止められました。…"
+              }
+            ]
+          },
+          "caption": "フックが操作を止めたときの流れの簡略図。実際の表示とは異なります"
+        },
+        {
+          "type": "h",
+          "text": "終了コードの意味"
+        },
+        {
+          "type": "list",
+          "items": [
+            "0：成功です。操作はそのまま進みます。",
+            "2：止められるイベントなら、操作を止めます。stderr の文が理由になります。",
+            "それ以外：フックのエラーとして表示されますが、操作は止まらずに進みます。1 で終わっても止まらない点に注意します。"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "コマンドは既定では bash で動きます。Windows で Git Bash がないときは PowerShell で動くので、`>&2` のような書き方は使えません。また Windows では、Claude がコマンドを PowerShell ツールで動かすことがあります。そのときは、マッチャーが `Bash` だけのフックは動きません。Windows では `matcher` を `Bash|PowerShell` にし、`PowerShell(git push *)` に当てる `if` のフックも並べて書きます。試し方の 3 で止まらなかったときも、まずこれを疑いましょう。"
+        },
+        {
+          "type": "note",
+          "kind": "pitfall",
+          "text": "`if` の絞り込みは、できる範囲で行われる仕組みです。コマンドの形を読み取れないときは、条件に関係なくフックが動きます。必ず守らせたい禁止は、第14章の権限ルールの deny で決めましょう。Windows で `matcher` が `Bash` だけのフックは、PowerShell ツールの操作を止めずに素通りさせます。"
+        }
+      ],
+      "surfaces": [
+        "cli",
+        "desktop",
+        "ide"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "hooks でアクションを自動化する",
+          "url": "https://code.claude.com/docs/ja/hooks-guide"
+        },
+        {
+          "title": "Hooks リファレンス",
+          "url": "https://code.claude.com/docs/ja/hooks"
+        }
+      ],
+      "checkedAt": "2026-10-12",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "tryIds": [],
+      "dictIds": []
+    },
+    {
+      "id": "c17-03",
+      "title": "17.3 MCP サーバーをつなぐ",
+      "points": [
+        "MCP は、AI と外部のツールをつなぐためのオープンな規格",
+        "URL でつなぐ HTTP のサーバーと、手元でプログラムを起動する stdio のサーバーがある",
+        "ターミナルで `claude mcp add` を実行して登録し、`claude mcp list` で状態を確かめる",
+        "会話の中では `/mcp` で状態の確認・サインイン・オンとオフの切り替えができる"
+      ],
+      "digest": {
+        "text": "MCP（Model Context Protocol）は、AI とツールをつなぐオープンな規格です。MCP サーバーをつなぐと、課題管理やデータベース、ブラウザの操作などのツールを Claude Code が使えるようになります。インターネット上のサーバーには HTTP で、手元で起動するプログラムには stdio でつなぎます。登録はターミナルで `claude mcp add` を実行し、stdio では `--` の後ろに起動するコマンドを書きます。登録しただけでは動くとは限らないので、`claude mcp list` で状態を確かめます。使わないサーバーは削除しておきます。",
+        "keys": [
+          "MCP：外部のツールをつなぐ規格",
+          "HTTP：URL でつなぐ（離れた場所向き）",
+          "stdio：手元でプログラムを起動",
+          "`claude mcp add`・`list`・`get`・`remove`",
+          "stdio は `--` の後ろがサーバーのコマンド",
+          "会話の中では `/mcp`"
+        ]
+      },
+      "blocks": [
+        {
+          "type": "p",
+          "text": "MCP（Model Context Protocol）は、AI とツールをつなぐためのオープンな規格です。MCP サーバーをつなぐと、課題管理サービスの検索、データベースへの問い合わせ、ブラウザの操作といったツールが Claude Code に加わります。ほかのツールの画面から情報を貼り付ける作業をくり返しているなら、つなぐと Claude が直接扱えます。第7章のコネクタも同じ MCP の仕組みです。"
+        },
+        {
+          "type": "figure",
+          "figure": {
+            "type": "network",
+            "nodes": [
+              {
+                "id": "cc",
+                "label": "Claude Code",
+                "kind": "pc",
+                "x": 2.5,
+                "y": 0
+              },
+              {
+                "id": "local",
+                "label": "手元のサーバー",
+                "kind": "server",
+                "x": 0.9,
+                "y": 2.2
+              },
+              {
+                "id": "web",
+                "label": "Web のサーバー",
+                "kind": "cloud",
+                "x": 4.1,
+                "y": 2.2
+              }
+            ],
+            "links": [
+              {
+                "from": "cc",
+                "to": "local",
+                "label": "stdio"
+              },
+              {
+                "from": "cc",
+                "to": "web",
+                "label": "HTTP"
+              }
+            ]
+          },
+          "caption": "MCP サーバーとのつながり方の簡略図。手元のサーバーは Claude Code が起動し、Web のサーバーには URL でつなぎます"
+        },
+        {
+          "type": "h",
+          "text": "サーバーの2つの形"
+        },
+        {
+          "type": "list",
+          "items": [
+            "HTTP：インターネット上で動いているサーバーに、URL でつなぎます。離れた場所のサーバーには、この形が勧められています。古い SSE という方式は非推奨です。",
+            "stdio：あなたの PC の上で、Claude Code がプログラムを起動してつなぎます。ブラウザやファイル、手元のデータベースなど、PC の中のものを扱うツールに使います。"
+          ]
+        },
+        {
+          "type": "h",
+          "text": "登録して確かめる"
+        },
+        {
+          "type": "p",
+          "text": "登録は、Claude Code の会話の中ではなく、ターミナルで `claude mcp add` を実行して行います。`<名前>` は自分で決める呼び名です。Claude の出力でツールを表示するときや、削除するときに使います。"
+        },
+        {
+          "type": "code",
+          "lang": "shell",
+          "code": "# HTTP のサーバー（URL でつなぐ）\nclaude mcp add --transport http <名前> <URL>\n\n# stdio のサーバー（-- の後ろが起動するコマンド）\nclaude mcp add <名前> -- <コマンド> [引数...]\n\n# 登録したサーバーと接続の状態を一覧する\nclaude mcp list\n\n# 1つのサーバーの詳細を見る・削除する\nclaude mcp get <名前>\nclaude mcp remove <名前>"
+        },
+        {
+          "type": "p",
+          "text": "stdio の `--` は、Claude Code のオプションとサーバーのコマンドの区切りです。`--` より後ろは、そのままサーバーの起動に使われます。`--env` で環境変数を渡すときなど、Claude Code のオプションは `--` より前に書きます。"
+        },
+        {
+          "type": "figure",
+          "figure": {
+            "type": "terminal",
+            "lines": [
+              {
+                "kind": "prompt",
+                "text": "claude mcp list"
+              },
+              {
+                "kind": "ok",
+                "text": "issues: ✔ Connected"
+              },
+              {
+                "kind": "hl",
+                "text": "wiki: ! Needs authentication"
+              },
+              {
+                "kind": "ng",
+                "text": "browser: ✘ Failed to connect"
+              }
+            ]
+          },
+          "caption": "接続の状態の表示の簡略図。Connected なら使える状態、Needs authentication はサインインが必要な状態です"
+        },
+        {
+          "type": "p",
+          "text": "Connected になったら、Claude Code を起動して使います。ふだんは Claude が必要なツールを自分で選びます。初めてそのツールを使うときは権限プロンプトが出て、出力にはどのサーバーのツールかが表示されます。会話の中では `/mcp` で、状態の確認、サインイン、オンとオフの切り替えができます。"
+        },
+        {
+          "type": "p",
+          "text": "リソースを持つサーバーなら、入力欄で `@` を打つとファイルと並んで候補に出ます。デスクトップアプリの Code タブや VS Code でも、それぞれの画面から追加できます。"
+        },
+        {
+          "type": "note",
+          "kind": "pitfall",
+          "text": "stdio のサーバーは、追加が完了と表示されても起動できるとは限りません。必ず `claude mcp list` で状態を確かめます。`npx` で動くサーバーは、初回はダウンロードの間 Failed と出ることがあります。"
+        },
+        {
+          "type": "note",
+          "kind": "tip",
+          "text": "つないだサーバーは、ツールの名前などで毎回のコンテキストを少し使います（詳しい定義は、ツール検索で必要なときだけ読み込まれます）。使わないサーバーは削除しておきましょう。"
+        }
+      ],
+      "surfaces": [
+        "cli",
+        "desktop",
+        "ide"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "MCP サーバーに接続する",
+          "url": "https://code.claude.com/docs/ja/mcp-quickstart"
+        },
+        {
+          "title": "MCP を使用して Claude Code をツールに接続する",
+          "url": "https://code.claude.com/docs/ja/mcp"
+        }
+      ],
+      "checkedAt": "2026-10-12",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "tryIds": [],
+      "dictIds": []
+    },
+    {
+      "id": "c17-04",
+      "title": "17.4 MCP のスコープと認証",
+      "points": [
+        "スコープは local（既定）・project・user の3つで、使える人と場所が変わる",
+        "project スコープは `.mcp.json` に保存され、初めて使うときに承認を求められる",
+        "サインインが必要なサーバーは、`/mcp` から Authenticate を選んでブラウザで認証する",
+        "トークンなどの秘密の値は `.mcp.json` に直接書かず、環境変数で渡す。`--header` で渡した値もそのまま設定ファイルに保存される"
+      ],
+      "digest": {
+        "text": "MCP サーバーをどこで使えるかは、インストールスコープで決まります。既定の local は自分だけがそのリポジトリで、user は自分だけが全リポジトリで、project はリポジトリを使う全員が使えます。project は `.mcp.json` に書かれ、取ってきた人が使う前に承認を求められます。スコープを変えるには、削除して追加し直します。サインインが必要なサーバーは `/mcp` の Authenticate でブラウザから認証します。共有するファイルにはトークンを書かず、`${変数名}` で環境変数を参照します。`claude mcp add --header` に渡した値もそのまま設定ファイルに保存されるので、`--scope project` と一緒に本物のトークンを渡してはいけません。",
+        "keys": [
+          "local：自分・このリポジトリ（既定）",
+          "project：全員・`.mcp.json`",
+          "user：自分・全リポジトリ",
+          "優先は local → project → user",
+          "`/mcp` の Authenticate でサインイン",
+          "秘密の値は `${変数名}` で参照",
+          "`--header` の値は設定ファイルにそのまま保存される"
+        ]
+      },
+      "blocks": [
+        {
+          "type": "p",
+          "text": "登録したサーバーをどこで使えるかは、インストールスコープ（scope）で決まります。何も指定しなければ local になり、登録したリポジトリで自分だけが使えます。保存先は `~/.claude.json` で、17.2 の `.claude/settings.local.json` とは別のファイルです。"
+        },
+        {
+          "type": "table",
+          "table": {
+            "header": [
+              "スコープ",
+              "使える人と場所",
+              "保存先",
+              "向いている例"
+            ],
+            "rows": [
+              [
+                "local",
+                "自分だけ・このリポジトリ",
+                "`~/.claude.json`",
+                "試しにつなぐサーバー"
+              ],
+              [
+                "project",
+                "リポジトリを使う全員",
+                "リポジトリ直下の `.mcp.json`",
+                "チームで使う課題管理"
+              ],
+              [
+                "user",
+                "自分だけ・全リポジトリ",
+                "`~/.claude.json`",
+                "どこでも使う自分の道具"
+              ]
+            ]
+          }
+        },
+        {
+          "type": "code",
+          "lang": "shell",
+          "code": "# 自分の全リポジトリで使う\nclaude mcp add --scope user --transport http <名前> <URL>\n\n# チームで共有する（.mcp.json に書かれる）\nclaude mcp add --scope project --transport http <名前> <URL>"
+        },
+        {
+          "type": "p",
+          "text": "スコープは追加したときに決まるので、変えたいときは `claude mcp remove` で消してから追加し直します。同じサーバーが複数の場所にあるときは、次の図の上のものが使われ、中身は混ざりません。"
+        },
+        {
+          "type": "figure",
+          "figure": {
+            "type": "layers",
+            "arrow": [
+              "優先",
+              "後回し"
+            ],
+            "levels": [
+              {
+                "label": "local",
+                "note": "自分・このリポジトリ",
+                "hl": true
+              },
+              {
+                "label": "project",
+                "note": ".mcp.json"
+              },
+              {
+                "label": "user",
+                "note": "自分・全リポジトリ"
+              },
+              {
+                "label": "プラグインのもの"
+              },
+              {
+                "label": "claude.ai のコネクタ"
+              }
+            ]
+          },
+          "caption": "同じサーバーが複数の場所にあるときの優先順位（プラグインとコネクタは、接続先が同じなら同じサーバーとみなされます）"
+        },
+        {
+          "type": "h",
+          "text": "チームで共有する"
+        },
+        {
+          "type": "p",
+          "text": "`.mcp.json` をコミットすると、リポジトリを取ってきた人が Claude Code を起動したときに、そのサーバーを使うかの承認を求められます。受け取ったリポジトリが、同意なしに PC でプログラムを動かせないようにするためです。選択をやり直すには `claude mcp reset-project-choices` を実行します。"
+        },
+        {
+          "type": "h",
+          "text": "サインインと秘密の値"
+        },
+        {
+          "type": "p",
+          "text": "サインインが必要なサーバーは、追加した直後は Needs authentication と表示されます。`/mcp` でそのサーバーを選び、Authenticate を選ぶと、ブラウザでサインインの画面が開きます。やめるときは Clear authentication で取り消せます。"
+        },
+        {
+          "type": "p",
+          "text": "トークンでつなぐサーバーには、`--header` でヘッダーを渡します。渡した値はそのまま設定ファイルに保存されるので、`--scope project` と一緒に本物のトークンを渡してはいけません。local や user でも、`~/.claude.json` に平文のまま残ります。`.mcp.json` に書くときは、`${変数名}` の形で環境変数を参照し、値そのものはファイルに書きません。"
+        },
+        {
+          "type": "code",
+          "lang": "json",
+          "caption": ".mcp.json の例。WIKI_TOKEN の値は各自の PC の環境変数に置きます",
+          "code": "{\n  \"mcpServers\": {\n    \"team-wiki\": {\n      \"type\": \"http\",\n      \"url\": \"https://wiki.example.com/mcp\",\n      \"headers\": { \"Authorization\": \"Bearer ${WIKI_TOKEN}\" }\n    }\n  }\n}"
+        },
+        {
+          "type": "note",
+          "kind": "caution",
+          "text": "`.mcp.json` はリポジトリに入り、共有されます。トークンやパスワードを直接書くと、リポジトリを見られる人の全員に知られてしまいます。値は環境変数で渡し、ファイルには書かないようにしましょう。`claude mcp add --header` に渡した値もそのまま保存されるので、project スコープの共有ファイルには同じ危険があります。"
+        }
+      ],
+      "surfaces": [
+        "cli",
+        "ide"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "MCP サーバーに接続する",
+          "url": "https://code.claude.com/docs/ja/mcp-quickstart"
+        },
+        {
+          "title": "MCP を使用して Claude Code をツールに接続する",
+          "url": "https://code.claude.com/docs/ja/mcp"
+        }
+      ],
+      "checkedAt": "2026-10-12",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "tryIds": [],
+      "dictIds": []
+    },
+    {
+      "id": "c17-05",
+      "title": "17.5 プラグインを入れる・管理する",
+      "points": [
+        "プラグインは、スキル・サブエージェント・フック・MCP サーバーなどを1つにまとめたもの",
+        "マーケットプレイスはプラグインのカタログで、公式のものは最初の対話のセッションで追加される",
+        "`/plugin` で探して詳細を読み、スコープを選んで入れる。スキルは `/プラグイン名:スキル名` で呼ぶ",
+        "有効なプラグインは、使っていないセッションにも加わる"
+      ],
+      "digest": {
+        "text": "プラグインは、スキル、サブエージェント、フック、MCP サーバーなどを1つにまとめ、まとめて入れたり配ったりする仕組みです。プラグインはマーケットプレイスというカタログから入れ、Anthropic の公式のものは、ターミナルで初めて対話のセッションを始めたときに追加されます。`/plugin` の Discover タブで探し、詳細の Will install で加わるものを読んでから、スコープを選んで入れます。入れたスキルは `/プラグイン名:スキル名` で呼びます。有効なプラグインは毎回のセッションに加わるので、使わないものは無効にします。",
+        "keys": [
+          "プラグイン：拡張をまとめた単位",
+          "マーケットプレイス：プラグインのカタログ",
+          "`/plugin` の Discover・Installed・Marketplaces",
+          "スコープ：user・project・local",
+          "スキルは `/プラグイン名:スキル名`",
+          "使わないものは無効化・アンインストール"
+        ]
+      },
+      "blocks": [
+        {
+          "type": "p",
+          "text": "スキル、サブエージェント、フック、MCP サーバーは、それぞれ単独でも使えます。プラグイン（plugin）は、これらをひとまとめにして入れたり配ったりする仕組みです。だれかが作った道具一式を一度に入れたいときや、自分の道具一式をチームで使いたいときに向いています。Claude アプリのプラグインは第8章で扱います。"
+        },
+        {
+          "type": "figure",
+          "figure": {
+            "type": "dir",
+            "tree": [
+              {
+                "name": "notes-kit/",
+                "note": "プラグイン",
+                "children": [
+                  {
+                    "name": ".claude-plugin/",
+                    "children": [
+                      {
+                        "name": "plugin.json",
+                        "note": "名前などの情報",
+                        "hl": true
+                      }
+                    ]
+                  },
+                  {
+                    "name": "skills/",
+                    "children": [
+                      {
+                        "name": "summary/",
+                        "children": [
+                          {
+                            "name": "SKILL.md",
+                            "note": "/notes-kit:summary"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "name": "agents/",
+                    "children": [
+                      {
+                        "name": "proofreader.md",
+                        "note": "サブエージェント"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "hooks/",
+                    "children": [
+                      {
+                        "name": "hooks.json",
+                        "note": "フック"
+                      }
+                    ]
+                  },
+                  {
+                    "name": ".mcp.json",
+                    "note": "MCP サーバー"
+                  }
+                ]
+              }
+            ]
+          },
+          "caption": "架空のプラグイン notes-kit の中身の例。スキルはプラグイン名を付けたコマンドになります"
+        },
+        {
+          "type": "p",
+          "text": "プラグインは、マーケットプレイス（marketplace）から入れるのが基本です。マーケットプレイスは、プラグインの一覧と取ってくる場所を載せたカタログです。Anthropic の公式の `claude-plugins-official` は、ターミナルで初めて対話のセッションを始めたときに自動で追加されます。ほかのものは `/plugin marketplace add` に GitHub の `owner/repo` などを付けて追加します。"
+        },
+        {
+          "type": "steps",
+          "title": "ターミナルで探して入れる",
+          "items": [
+            "Claude Code で `/plugin` を実行します。Discover タブに、追加済みのマーケットプレイスのプラグインが並びます。",
+            "プラグインを選んで詳細を開き、Will install の欄で、加わるスキル・フック・MCP サーバーなどを読みます。",
+            "スコープを選んで入れます。自分の全リポジトリ（user）、このリポジトリの全員（project）、このリポジトリの自分だけ（local）から選びます。",
+            "最後の表示を読みます。再読み込みが必要なときは、ふつうは自動で行われます。保留と出たときは `/reload-plugins` を実行します。",
+            "`/` を打ち、`/プラグイン名:スキル名` の形のコマンドが出ることを確かめます。"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "シェルからは `claude plugin install` や `claude plugin uninstall` などで同じ操作ができます。デスクトップアプリの Code タブでは入力欄の横の「+」から Plugins を、VS Code では `/plugins` を使います。"
+        },
+        {
+          "type": "h",
+          "text": "管理する"
+        },
+        {
+          "type": "p",
+          "text": "`/plugin` の Installed タブで、有効と無効の切り替え、更新、アンインストールができます。自動更新は、公式のマーケットプレイスでは既定でオン、ほかの多くでは既定でオフです。更新されても、動いているセッションは読み込み済みの版のままで、`/reload-plugins` か次のセッションで新しい版になります。"
+        },
+        {
+          "type": "note",
+          "kind": "pitfall",
+          "text": "有効なプラグインは、使っていないセッションにも加わります。スキルなどの名前と説明は毎回コンテキストに入り、MCP サーバーは一緒に起動し、フックはイベントのたびに動きます。使わないものは無効にするか、アンインストールしましょう。"
+        }
+      ],
+      "surfaces": [
+        "cli",
+        "desktop",
+        "ide"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "プラグインの概要",
+          "url": "https://code.claude.com/docs/ja/plugins/overview"
+        },
+        {
+          "title": "プラグインのインストールと管理",
+          "url": "https://code.claude.com/docs/ja/plugins/install"
+        }
+      ],
+      "checkedAt": "2026-10-12",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "tryIds": [],
+      "dictIds": []
+    },
+    {
+      "id": "c17-06",
+      "title": "17.6 入れる前に確かめること",
+      "points": [
+        "フック・MCP サーバー・プラグインは、あなたのユーザーの権限で処理を動かせる",
+        "フックや MCP サーバーのプロセスそのものはサンドボックスの外で動き、権限ルールの対象外（Claude が MCP のツールを呼ぶことには権限ルールが効く）",
+        "入れる前に出どころと中身を読み、まず練習用のリポジトリで試す",
+        "人から受け取ったリポジトリのフックや `.mcp.json` も、確認が出たら読んでから受け入れる"
+      ],
+      "digest": {
+        "text": "フックのコマンドは、あなたのユーザーの権限そのままで動き、あなたが触れるファイルに手が届きます。プラグインはフックや MCP サーバー、実行ファイルを含むことがあり、それらの処理はサンドボックスの外で動きます。入れる前に、出どころ、Will install の欄、`hooks/hooks.json`・`.mcp.json`・`bin/` の中身を読み、練習用のリポジトリで試します。自動更新で中身が変わることもあります。受け取ったリポジトリでは、ワークスペースの信頼や MCP サーバーの承認の確認を、内容を読んでから受け入れます。`claude -p` では確認が出ないので、先に設定ファイルを読みます。",
+        "keys": [
+          "フックはユーザーの権限で動く",
+          "フック・サーバーの処理はサンドボックスの外",
+          "出どころ・Will install・中身を読む",
+          "自動更新で中身が変わることがある",
+          "信頼の確認は読んでから受け入れる",
+          "`-p` では信頼の確認が出ない"
+        ]
+      },
+      "blocks": [
+        {
+          "type": "p",
+          "text": "ここまでの3つは便利な反面、どれもあなたの PC で処理を動かせます。コマンドのフックは、あなたのユーザーの権限そのままで動き、あなたが削除できるファイルにも手が届きます。プラグインには、フックや MCP サーバー、実行ファイルのほか、裏で動き続けるコマンドや、Claude Code の中で動くプログラムが入っていることがあります。"
+        },
+        {
+          "type": "p",
+          "text": "第14章の権限ルールとサンドボックスは、Claude が行うツールの呼び出しに効く仕組みです。フックや MCP サーバーのプロセスそのものは、サンドボックスの外で動きます（Claude が MCP のツールを呼ぶことには、権限ルールが効きます）。また、外部の内容を取ってくる MCP サーバーは、プロンプトインジェクションの入口になることがあります。"
+        },
+        {
+          "type": "figure",
+          "figure": {
+            "type": "flow",
+            "steps": [
+              {
+                "id": "a",
+                "label": "入れたいものがある",
+                "kind": "terminal"
+              },
+              {
+                "id": "b",
+                "label": "出どころは信頼できる？",
+                "kind": "decision",
+                "next": [
+                  {
+                    "to": "d",
+                    "label": "はい"
+                  },
+                  {
+                    "to": "x",
+                    "label": "いいえ"
+                  }
+                ]
+              },
+              {
+                "id": "x",
+                "label": "入れない",
+                "kind": "terminal",
+                "col": 1
+              },
+              {
+                "id": "d",
+                "label": "中身を読む"
+              },
+              {
+                "id": "e",
+                "label": "練習用で試す"
+              },
+              {
+                "id": "f",
+                "label": "使い始める",
+                "kind": "terminal"
+              }
+            ]
+          },
+          "caption": "フック・MCP サーバー・プラグインを入れる前の確かめ方の流れ"
+        },
+        {
+          "type": "h",
+          "text": "確かめること"
+        },
+        {
+          "type": "list",
+          "items": [
+            "出どころ：だれが作り、どこから取ってくるのか。マーケットプレイスの取得元は `claude plugin marketplace list` で分かります。",
+            "加わるもの：`/plugin` の詳細の Will install を読みます。フックがあることは分かっても、何を動かすかまでは分かりません。",
+            "中身：`hooks/hooks.json`、`.mcp.json`、`bin/` のファイルを読み、ファイルを消す・外部に送るといった処理がないかを見ます。",
+            "更新：自動更新がオンだと、読んだ後に中身が変わることがあります。"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "プラグインの詳細には、Anthropic はプラグインに含まれる MCP サーバーやファイルを管理しておらず、意図どおりに動くかを確かめられない、という趣旨の注意が出ます。公式のマーケットプレイスのものでも、中身を見る習慣をつけましょう。"
+        },
+        {
+          "type": "h",
+          "text": "リポジトリから入ってくる設定"
+        },
+        {
+          "type": "p",
+          "text": "受け取ったリポジトリの `.claude/settings.json` や `.mcp.json` に、フックや MCP サーバーが書かれていることがあります。対話のセッションでは、ワークスペースの信頼の確認を受け入れるまで、設定ファイルのフックは動きません。project スコープの MCP サーバーも承認を求められます。内容を読んでから受け入れましょう。"
+        },
+        {
+          "type": "note",
+          "kind": "caution",
+          "text": "`claude -p` で動かすときは信頼の確認が出ず、信頼したものとして扱われます。知らないリポジトリでは先に `.claude/` の設定ファイルを読みます。その回だけフックを止めるには `--settings '{\"disableAllHooks\": true}'` を付けます。"
+        },
+        {
+          "type": "note",
+          "kind": "tip",
+          "text": "新しいものは、まず練習用のリポジトリで local スコープで試します。外すときは、プラグインは `claude plugin uninstall`、MCP サーバーは `claude mcp remove` を使い、フックは設定ファイルから項目を消します。"
+        }
+      ],
+      "surfaces": [
+        "cli",
+        "desktop",
+        "ide"
+      ],
+      "status": "ga",
+      "sources": [
+        {
+          "title": "プラグインのセキュリティと信頼",
+          "url": "https://code.claude.com/docs/ja/plugins/security"
+        },
+        {
+          "title": "Hooks リファレンス",
+          "url": "https://code.claude.com/docs/ja/hooks"
+        },
+        {
+          "title": "MCP を使用して Claude Code をツールに接続する",
+          "url": "https://code.claude.com/docs/ja/mcp"
+        },
+        {
+          "title": "hooks でアクションを自動化する",
+          "url": "https://code.claude.com/docs/ja/hooks-guide"
+        }
+      ],
+      "checkedAt": "2026-10-12",
+      "verification": {
+        "status": "doc-verified",
+        "note": "2026-10-12 公式ドキュメントと照合（検査：別エージェント）"
+      },
+      "tryIds": [],
+      "dictIds": []
+    }
+  ]
+}
