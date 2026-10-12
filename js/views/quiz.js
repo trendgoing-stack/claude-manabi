@@ -12,6 +12,8 @@ import { sourceList } from '../render/badges.js';
 import { parts, chaptersOf, chapterById, findSection, sectionHref } from '../parts.js';
 import { confirmDialog } from '../ui/dialog.js';
 import * as quiz from '../quiz.js';
+import { reviewQuestions } from '../review.js';
+import { setAiContext } from '../ui/ask-ai.js';
 
 const LABELS = ['ア', 'イ', 'ウ', 'エ'];
 
@@ -63,6 +65,10 @@ function startFrom(root, mode, arg) {
     label = '全体からランダム';
     pool = quiz.shuffled(quiz.eligible()).slice(0, quiz.SET_SIZE);
     reason = '出題できる問題がありません（公式情報で確認済みの節の問題だけを出します）。';
+  } else if (mode === 'review') {
+    label = '今日の復習';
+    pool = reviewQuestions().slice(0, quiz.SET_SIZE);
+    reason = '最後に間違えた問題はありません。';
   } else if (mode === 'weak') {
     label = '苦手を復習';
     pool = quiz.weakOrder().slice(0, quiz.SET_SIZE);
@@ -174,6 +180,7 @@ function runView(root) {
     const q = quiz.questionById(item.id);
     const hit = findSection(q.sectionId);
     const last = s.pos === s.items.length - 1;
+    setAiContext({ kind: 'question', q, order: item.order, revealed: !!item.done, section: hit?.section });
     const prev = s.pos > 0 ? h('button', { type: 'button', class: 'btn', onClick: () => { quiz.back(s); draw(); window.scrollTo(0, 0); } }, '前へ') : null;
 
     fill(

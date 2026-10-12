@@ -7,6 +7,7 @@ import { renderSectionBody } from '../render/lesson.js';
 import { metaBadges, staleNotice, sourceList } from '../render/badges.js';
 import { parts, chaptersOf, chapterById, flatSections, sectionHref, progressOf } from '../parts.js';
 import { toast } from '../ui/toast.js';
+import { setAiContext } from '../ui/ask-ai.js';
 
 /** 学ぶタブの上部の切り替え（テキスト／辞典／用語集／暗記カード） */
 export function learnNav(current) {
@@ -112,6 +113,7 @@ function quizButton(section) {
 
 function sectionView(root, chapter, section) {
   storage.touchSection(section.id);
+  setAiContext({ kind: 'section', chapter, section, part: parts().find((p) => p.id === chapter.part)?.title });
   const flat = flatSections();
   const i = flat.findIndex((x) => x.section.id === section.id);
   const link = (x, label) => (x ? h('a', { class: 'btn', href: sectionHref(x.chapter.id, x.section.id) }, label) : h('span', { class: 'btn is-placeholder', 'aria-hidden': 'true' }));

@@ -92,13 +92,13 @@ export function touchSection(sectionId) {
 
 // ---- クイズの回答記録（問題 id → 正解数・不正解数・最終回答日時） ----
 
-/** @returns {Object<string, {ok:number, ng:number, last:number}>} */
+/** @returns {Object<string, {ok:number, ng:number, last:number, lastOk:boolean}>} */
 export const getAnswers = () => read('answers', {});
 
 export function recordAnswer(questionId, correct) {
   const m = { ...getAnswers() };
   const p = m[questionId] ?? { ok: 0, ng: 0, last: 0 };
-  m[questionId] = { ok: p.ok + (correct ? 1 : 0), ng: p.ng + (correct ? 0 : 1), last: Date.now() };
+  m[questionId] = { ok: p.ok + (correct ? 1 : 0), ng: p.ng + (correct ? 0 : 1), last: Date.now(), lastOk: !!correct };
   return write('answers', m);
 }
 
@@ -110,7 +110,7 @@ export const clearQuizSession = () => remove('quizSession');
 
 // ---- 暗記カード（カード id → 状態） ----
 
-/** @returns {Object<string, {state:'ok'|'ng', due:string, at:number}>} */
+/** @returns {Object<string, {state:'ok'|'ng', due:string|null, at:number}>} カード id（g:用語id／d:辞典id）→ 状態 */
 export const getCards = () => read('cards', {});
 
 export function recordCard(cardId, state, due) {

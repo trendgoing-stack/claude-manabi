@@ -5,11 +5,30 @@ import { app } from '../state.js';
 import { richText } from '../render/text.js';
 import { parts, progressOf, findSection, flatSections, sectionHref } from '../parts.js';
 import { isStale } from '../freshness.js';
+import { dueCards, reviewQuestions } from '../review.js';
 
 /** 読み込めなかったファイルの通知（ホームと設定で使う） */
 export function failedNotice() {
   if (!app.data.failed.length) return null;
   return h('p', { class: 'notice warn', role: 'alert' }, `読み込めなかったデータがあります：${app.data.failed.join('、')}。それ以外の機能は使えます。通信できる状態で再読み込みしてください。`);
+}
+
+/** 今日の復習：最後に間違えた問題と、期限の来た「まだ」のカード */
+function reviewCard() {
+  const qs = reviewQuestions().length;
+  const cs = dueCards().length;
+  return h(
+    'section',
+    { class: 'card' },
+    h('h2', null, '今日の復習'),
+    !qs && !cs ? h('p', { class: 'muted small' }, '今日の復習はありません。クイズで間違えた問題と、暗記カードで「まだ」にしたカード（翌日以降）がここに出ます。') : null,
+    h(
+      'div',
+      { class: 'btn-col' },
+      qs ? h('a', { class: 'btn big', href: '#/quiz/review' }, `間違えた問題を解く（${Math.min(qs, 10)}問${qs > 10 ? `／全${qs}問` : ''}）`) : null,
+      cs ? h('a', { class: 'btn big', href: '#/cards/review' }, `「まだ」のカードを見る（${Math.min(cs, 20)}枚${cs > 20 ? `／全${cs}枚` : ''}）`) : null,
+    ),
+  );
 }
 
 export function homeView(root) {
@@ -38,7 +57,7 @@ export function homeView(root) {
         : h('p', { class: 'muted' }, flat.length ? 'すべての節を読み終えました。' : '解説テキストがありません。'),
       next ? h('p', { class: 'muted small' }, richText(next.chapter.title)) : null,
     ),
-    h('section', { class: 'card' }, h('h2', null, '今日の復習'), h('p', { class: 'muted small' }, '間違えた問題と「まだ」のカードは、クイズと暗記カードの追加後にここへ出ます。')),
+    reviewCard(),
     h(
       'section',
       { class: 'card' },

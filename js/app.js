@@ -11,10 +11,13 @@ import { termView } from './views/term.js';
 import { staleView } from './views/stale.js';
 import { settingsView } from './views/settings.js';
 import { helpView } from './views/help.js';
-import { placeholder } from './views/placeholder.js';
 import { glossaryView } from './views/glossary.js';
 import { quizView } from './views/quiz.js';
 import { recordsView } from './views/records.js';
+import { dictView } from './views/dict.js';
+import { cardsView } from './views/cards.js';
+import { tryView } from './views/try.js';
+import { initAskAi } from './ui/ask-ai.js';
 
 // ルート名 → 下部タブ
 const TAB_OF = {
@@ -62,7 +65,10 @@ const needs = (kinds, view) => (root, params) => {
 
 /** 現在のルートが先に必要とするデータ */
 const ROUTE_NEEDS = {
-  home: ['texts', 'dict'],
+  home: ['texts', 'glossary', 'quiz', 'dict'],
+  dict: ['texts', 'glossary', 'dict'],
+  cards: ['texts', 'glossary', 'dict'],
+  try: ['texts', 'glossary', 'try'],
   learn: ['texts', 'glossary', 'quiz', 'dict', 'try'],
   term: ['texts', 'glossary'],
   terms: ['texts', 'glossary'],
@@ -94,12 +100,12 @@ async function main() {
   const n = (k) => ROUTE_NEEDS[k] ?? [];
   route('home', needs(n('home'), homeView));
   route('learn', needs(n('learn'), learnView));
-  route('dict', placeholder('辞典', 'フェーズ3', 'dict'));
+  route('dict', needs(n('dict'), dictView));
   route('terms', needs(n('terms'), glossaryView));
   route('term', needs(n('term'), termView));
-  route('cards', placeholder('暗記カード', 'フェーズ3', 'cards'));
+  route('cards', needs(n('cards'), cardsView));
   route('quiz', needs(n('quiz'), quizView));
-  route('try', placeholder('やってみよう', 'フェーズ3'));
+  route('try', needs(n('try'), tryView));
   route('records', needs(n('records'), recordsView));
   route('stale', needs(n('stale'), staleView));
   route('settings', needs(n('settings'), settingsView));
@@ -107,6 +113,7 @@ async function main() {
 
   if (metaOk) await ensure(ROUTE_NEEDS[parseHash().name] ?? []);
   start(onRouteChange);
+  initAskAi();
   if (metaOk) {
     // 残りは後から読む
     ensure(ALL_KINDS).then(() => {

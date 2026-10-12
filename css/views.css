@@ -291,3 +291,9 @@ code.inline { font-family: var(--mono); font-size: 0.9em; padding: 0 4px; border
 .record-title { display: inline-flex; align-items: center; min-height: 44px; font-weight: 700; color: var(--text); text-decoration: none; }
 a.bar-row { color: var(--text); text-decoration: none; min-height: 44px; }
 .lesson-chapters a[aria-disabled="true"] { opacity: 0.6; }
+
+/* ---- 辞典 ---- */
+.dict-keys { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 8px; }
+.dict-keys .pill { font-family: var(--mono); font-size: 0.85rem; }
+h1.mono { font-family: var(--mono); font-size: 1.3rem; overflow-wrap: anywhere; }
+.term-name.mono { font-family: var(--mono); }
