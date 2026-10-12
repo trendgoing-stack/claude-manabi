@@ -1,4 +1,4 @@
-// 演習タブ：確認クイズ（メニュー・出題・結果）。「やってみよう」はフェーズ3で追加
+// 演習タブ：確認クイズ（メニュー・出題・結果）。「やってみよう」は views/try.js
 //   #/quiz                メニュー（章を選ぶ／全体からランダム／苦手を復習、続きから）
 //   #/quiz/chapter/<章id>  #/quiz/section/<節id>  #/quiz/random  #/quiz/weak   セットを作って出題へ
 //   #/quiz/run            出題   #/quiz/result   結果

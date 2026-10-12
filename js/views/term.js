@@ -1,4 +1,4 @@
-// 用語の詳細（用語集の一覧はフェーズ2で追加）
+// 用語の詳細（一覧は views/glossary.js）
 import { h, put } from '../dom.js';
 import { app } from '../state.js';
 import { richText } from '../render/text.js';

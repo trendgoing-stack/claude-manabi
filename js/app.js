@@ -46,6 +46,71 @@ function onRouteChange(name) {
   }
   document.body.classList.toggle('is-busy', BUSY_ROUTES.has(busyName()));
   applySettings();
+  showUpdateBanner();
+}
+
+// ---- Service Worker ----
+
+let waitingWorker = null;
+
+/** 新しい版があれば「更新があります」を出す。クイズの出題中には出さない */
+function showUpdateBanner() {
+  const banner = document.getElementById('update-banner');
+  banner.hidden = !waitingWorker || BUSY_ROUTES.has(busyName());
+}
+
+async function registerServiceWorker() {
+  if (!('serviceWorker' in navigator)) return;
+  // 開発中（localhost）はキャッシュが邪魔になるので登録しない。?sw=1 を付けたときだけ有効にする
+  const isLocal = ['localhost', '127.0.0.1', '[::1]'].includes(location.hostname);
+  if (isLocal && !new URLSearchParams(location.search).has('sw')) {
+    for (const reg of await navigator.serviceWorker.getRegistrations()) reg.unregister();
+    return;
+  }
+  try {
+    const reg = await navigator.serviceWorker.register('./sw.js', { scope: './' });
+    const track = (worker) => {
+      if (!worker) return;
+      const check = () => {
+        // 既に制御中のワーカーがいる状態で installed になったものが「更新」
+        if (worker.state === 'installed' && navigator.serviceWorker.controller) {
+          waitingWorker = worker;
+          showUpdateBanner();
+        }
+      };
+      worker.addEventListener('statechange', check);
+      check();
+    };
+    track(reg.waiting);
+    reg.addEventListener('updatefound', () => track(reg.installing));
+
+    let reloading = false;
+    // 新しいワーカーは waiting で待たせ、バナーのタップでだけ切り替える
+    document.getElementById('update-banner').addEventListener('click', () => {
+      const w = waitingWorker;
+      if (!w) return;
+      // 新しいワーカーが有効になったら再読み込みする（controllerchange が届かない環境の備え）
+      w.addEventListener('statechange', () => {
+        if (w.state === 'activated' && !reloading) {
+          reloading = true;
+          location.reload();
+        }
+      });
+      w.postMessage({ type: 'SKIP_WAITING' });
+    });
+    // 初回インストール時の controllerchange では再読み込みしない
+    const hadController = !!navigator.serviceWorker.controller;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (reloading || !hadController) return;
+      reloading = true;
+      location.reload();
+    });
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') reg.update().catch(() => {});
+    });
+  } catch {
+    // file:// や非対応環境では何もしない
+  }
 }
 
 /**
@@ -78,7 +143,7 @@ const ROUTE_NEEDS = {
   settings: ALL_KINDS,
 };
 
-/** sw.js の VERSION をアプリのバージョンとして表示する（sw.js はフェーズ4で追加） */
+/** sw.js の VERSION をアプリのバージョンとして表示する */
 async function readAppVersion() {
   try {
     const res = await fetch('./sw.js');
@@ -114,6 +179,7 @@ async function main() {
   if (metaOk) await ensure(ROUTE_NEEDS[parseHash().name] ?? []);
   start(onRouteChange);
   initAskAi();
+  registerServiceWorker();
   if (metaOk) {
     // 残りは後から読む
     ensure(ALL_KINDS).then(() => {

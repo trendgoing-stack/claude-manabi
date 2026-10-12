@@ -1,6 +1,9 @@
-// 設定（文字サイズ・要約／詳細の初期表示・鮮度の警告の日数・バージョンと収録件数）
-// データ管理（エクスポート／インポート／全削除）はフェーズ4で追加する
+// 設定（文字サイズ・要約／詳細の初期表示・鮮度の警告の日数・データ管理・バージョンと収録件数・ヘルプ）
 import { h, put } from '../dom.js';
+import { buildExport, shareExport, downloadExport, markExported, importData } from '../io.js';
+import { confirmDialog } from '../ui/dialog.js';
+import { toast } from '../ui/toast.js';
+import { navigate } from '../router.js';
 import * as storage from '../storage.js';
 import { app } from '../state.js';
 import { failedNotice } from './home.js';
@@ -14,6 +17,83 @@ function radios(name, options, current, onChange) {
     options.map(([value, label]) =>
       h('label', { class: 'radio-item' }, h('input', { type: 'radio', name, value: String(value), checked: String(current) === String(value), onChange: () => onChange(value) }), label),
     ),
+  );
+}
+
+const fmt = (ms) => {
+  const d = new Date(ms);
+  return `${d.getFullYear()}年${d.getMonth() + 1}月${d.getDate()}日`;
+};
+
+/** データ管理：エクスポート／インポート（統合・置き換え）／全削除 */
+function dataCard() {
+  const last = storage.getMeta().lastExportAt;
+  let mode = 'merge';
+  const result = h('p', { class: 'small', role: 'status' });
+  const file = h('input', { type: 'file', accept: 'application/json,.json', hidden: true });
+  file.addEventListener('change', async () => {
+    const f = file.files?.[0];
+    file.value = '';
+    if (!f) return;
+    const text = await f.text();
+    if (mode === 'replace' && !(await confirmDialog('この端末の学習記録を、ファイルの内容で置き換えます。よろしいですか？', { ok: '置き換える', danger: true }))) return;
+    try {
+      const r = importData(text, mode);
+      result.className = 'small';
+      result.textContent = `取り込みました（読んだ節 ${r.read}件・回答した問題 ${r.answers}問）。`;
+      toast('取り込みました');
+    } catch (e) {
+      // 形式が不正なときは何も変えていない
+      result.className = 'small notice warn';
+      result.textContent = `取り込めませんでした：${e.message}。データは変更していません。`;
+    }
+  });
+  const modeRadios = h(
+    'div',
+    { class: 'radio-list', role: 'radiogroup', 'aria-label': '取り込み方' },
+    [['merge', '統合する（この端末の記録と合わせる。新しいほうを残す）'], ['replace', '置き換える（この端末の記録を消して、ファイルの内容にする）']].map(([v, label]) =>
+      h('label', { class: 'radio-item' }, h('input', { type: 'radio', name: 'import-mode', value: v, checked: v === mode, onChange: () => { mode = v; } }), label),
+    ),
+  );
+  return h(
+    'section',
+    { class: 'card' },
+    h('h2', null, 'データ管理'),
+    h('p', { class: 'muted small' }, '学習記録（読んだ節・クイズの回答・カード・やってみよう・設定）はこの端末のブラウザにだけ保存され、外部には送信されません。Safari とホーム画面のアプリでは保存先が別なので、移すときはエクスポートしたファイルを、もう一方でインポートしてください。'),
+    h('p', { class: 'muted small' }, last ? `最後のエクスポート：${fmt(last)}` : 'まだエクスポートしていません。'),
+    h(
+      'div',
+      { class: 'btn-col' },
+      h('button', {
+        type: 'button',
+        class: 'btn big',
+        onClick: async () => {
+          const text = buildExport();
+          const r = await shareExport(text);
+          if (r === 'unavailable') downloadExport(text);
+          if (r !== 'cancelled') {
+            markExported();
+            toast('エクスポートしました');
+          }
+        },
+      }, 'エクスポート（ファイルに保存）'),
+    ),
+    h('h3', null, 'インポート'),
+    modeRadios,
+    h('div', { class: 'btn-col' }, h('button', { type: 'button', class: 'btn big', onClick: () => file.click() }, 'ファイルを選んでインポート'), file),
+    result,
+    h('h3', null, '全削除'),
+    h('div', { class: 'btn-col' }, h('button', {
+      type: 'button',
+      class: 'btn big danger',
+      onClick: async () => {
+        if (!(await confirmDialog('この端末の学習記録と設定をすべて削除します。元に戻せません。先にエクスポートしておくことをおすすめします。削除しますか？', { ok: 'すべて削除', danger: true }))) return;
+        storage.clearAll();
+        storage.init();
+        toast('すべて削除しました');
+        navigate('home');
+      },
+    }, '学習記録をすべて削除')),
   );
 }
 
@@ -44,6 +124,7 @@ export function settingsView(root) {
       h('h2', null, '「情報が古い可能性」の警告'),
       radios('stale', [[60, '確認から60日'], [90, '確認から90日（標準）'], [180, '確認から180日']], s.staleDays, (v) => storage.saveSettings({ staleDays: Number(v) })),
     ),
+    dataCard(),
     h(
       'section',
       { class: 'card' },

@@ -1,0 +1,17 @@
+{
+  "name": "Claudeまなび帳",
+  "short_name": "Claudeまなび",
+  "description": "Claude アプリと Claude Code の機能を学ぶ、非公式の学習アプリ。解説はすべてオリジナル。",
+  "lang": "ja",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f5f6f8",
+  "theme_color": "#3d4fa0",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
